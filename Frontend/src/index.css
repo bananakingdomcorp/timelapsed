@@ -246,15 +246,21 @@ body {
 }
 
 .recurringCalendar {
+  margin-top: 8%;
   display: grid;
-  grid-template-columns: repeat(7, 10%);
-  grid-template-rows: 20%;
-  background-color: blue;
-  height: 10%;
-  grid-template-areas: 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'
-
-}
-
-.recurringCalendarDay {
+  grid-template-columns: repeat(7, 14%);
+  width: 95%;
+  height: 8%;
+  grid-template-areas: 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday';
+  font-size: 1vw;
   grid-column-start: auto;
+
 }
+
+.recurringCalendar > .recurringCalenderDay {
+  border:groove 2px dodgerblue;
+  margin: 1%;
+  text-align: center;
+
+}
+
