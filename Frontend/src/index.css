@@ -1,0 +1,260 @@
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.background {
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(to bottom right, white, lightgrey, lightblue);
+  overflow-x: scroll;
+  white-space: nowrap
+
+}
+
+
+.card {
+  background-image: linear-gradient(to right, white, white), radial-gradient(circle at top left, grey, dodgerblue);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  width: 80%;
+  height: 10rem;
+  margin-bottom: 100%, 2cm;
+  word-wrap: normal;
+  white-space: normal;
+  border: double 2px transparent;
+  border-top-right-radius: 5%;
+  border-bottom-left-radius: 5%;
+  border-top-left-radius: 20%;
+  border-bottom-right-radius: 20%;
+  position: relative; 
+  left : 50%;
+  transform: translateX(-50%);
+  padding: 0;
+
+}
+
+.addCard {
+  position: absolute;
+  margin-top: 20%;
+  left: 15%;
+  width: 85%;
+  height: 100%;
+
+
+
+}
+
+.addButton {
+  border: thin 1px transparent;
+  border-image: linear-gradient(to right, red, orange);
+  border-image-slice: 1;
+  border-top-right-radius: 5%;
+  border-bottom-left-radius: 5%;
+  border-top-left-radius: 5%;
+  border-bottom-right-radius: 5%;
+  width: 70%;
+  height: 30%;
+  padding: 0;
+  background: -webkit-linear-gradient(top left, red, orange);
+  -webkit-background-clip: text, content-box;
+	-webkit-text-fill-color: transparent;
+}
+
+.addTopic {
+  margin-top: 10vh;
+  width: 15rem;
+  height: 80vh;
+  overflow-y: auto;
+  display: inline-block;
+
+}
+
+.addCardTitle {
+  border: none;
+  margin-left: 5%;
+  width: 65%;
+  outline: none;
+  font-weight: bold;
+  font-size: 18px;
+  color: dodgerblue;
+}
+
+.addCardTitle::placeholder {
+  font-weight: normal;
+  font-size: 14px;
+  color: black;
+
+}
+
+
+.topic {
+  margin-top: 10vh;
+  margin-left: 1vw;
+  width: 15rem;
+  height: auto;
+  max-height: 80vh;
+  overflow-y: auto;
+  vertical-align: top;
+  display: inline-block;
+  background-image: linear-gradient(to right, white, white), radial-gradient(circle at top left,lightblue, grey);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  border:groove 2px transparent;
+  border-top-right-radius: 5vh;
+  border-bottom-left-radius: 5vh;
+  border-top-left-radius: 5vh;
+  border-bottom-right-radius: 5vh;
+
+}
+
+.nameplate {
+  height: auto;
+  position: relative;
+  word-wrap: normal;
+  white-space: normal;
+  overflow: hidden;
+
+}
+
+.topicAddCard {
+  font-size:2vh;
+  margin-left: 6vw;
+  color: grey;
+
+
+}
+
+.topicAddCard:hover {
+  text-decoration: underline;
+  color: black;
+  font-weight: bold;
+}
+
+.nameplate p {
+  color: dodgerblue;
+  font-size: 3vh;
+  font-weight: bold;
+  margin-left: 1vw;
+}
+
+.addCardModal {
+  background-color: white;
+  height: 80vh;
+  width: 50vw;
+  position:absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  z-index: 1;
+  border-style: groove;
+  border-color: grey;
+  border-width: 5px;
+
+}
+
+.addCardModalTitle {
+  width: 100%;
+  height: 15%;
+  margin-top: 3%;
+  border: none;
+  font-size: 4vh;
+
+}
+
+.addCardModalTitle::placeholder {
+  color: black;
+  font: italic bold 4vh Georgia, serif;
+}
+.addCardModalDescription {
+  width: 100%;
+  height: 15%;
+  margin-top: 3%;
+  border: none;
+  font-style: italic;
+  font-size: 2vh;
+
+
+}
+
+.addCardModalDescription::placeholder {
+  color: black;
+  font: italic bold 4vh Georgia, serif;
+}
+
+.addCardModalSelectPrompt {
+  float: left;
+  animation: addCardModalSelectPromptFadeIn ease 3s;
+}
+
+@keyframes addCardModalSelectPromptFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+
+}
+
+.addCardModalOptions {
+  float: left;
+  margin-top : 1%;
+  margin-left: 1%;
+}
+@keyframes addCardModalOptionsDropDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+.addCardModalOptionsOpen {
+  animation: addCardModalOptionsDropDown ease 2s;
+}
+
+
+
+.addCardModalInstructions {
+  position: absolute;
+  z-index: 5000; 
+  /* put at a high number so it will always be on top.  */
+  background-color: lightblue;
+  font-size: 13px;
+}
+
+.addCardModalTimedClicked {
+  background-color: black;
+}
+
+.addCardModalRecurringClicked {
+  background-color: black;
+
+}
+
+.recurringCalendar {
+  display: grid;
+  grid-template-columns: repeat(7, 10%);
+  grid-template-rows: 20%;
+  background-color: blue;
+  height: 10%;
+  grid-template-areas: 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'
+
+}
+
+.recurringCalendarDay {
+  grid-column-start: auto;
+}
