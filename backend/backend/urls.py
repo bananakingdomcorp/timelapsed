@@ -6,11 +6,11 @@ from timelapsed import views
 
 router = routers.DefaultRouter()    
 
-router.register(r'user', views.UsersView)
-router.register(r'topic', views.TopicView)
-router.register(r'card', views.CardView)
-router.register(r'event', views.EventView)
-router.register(r'date', views.DateRangeView)
+router.register(r'user', views.UsersView, basename = 'user')
+router.register(r'topic', views.TopicView, basename = 'topic')
+router.register(r'card', views.CardView, basename = 'card')
+router.register(r'event', views.EventView, basename = 'event')
+router.register(r'date', views.DateRangeView, basename = 'date')
 
 """
 Note, all of the routes that are mentioned here may or may not be used, they are just here for now so that I can test that the work. 
@@ -21,3 +21,4 @@ Note, all of the routes that are mentioned here may or may not be used, they are
 urlpatterns = [
     path('admin/', admin.site.urls),  path('api/', include(router.urls))     
 ]
+

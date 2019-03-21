@@ -1,6 +1,7 @@
 {
   "private": true,
   "homepage": "https://create-react-app-redux.now.sh",
+  "proxy": "http://localhost:8000",
   "scripts": {
     "deploy": "now && now alias",
     "start": "node scripts/start.js",
@@ -16,6 +17,7 @@
   "dependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
+    "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "^24.5.0",
@@ -60,7 +62,7 @@
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "redux": "4.0.1",
-    "redux-thunk": "2.3.0",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.10.0",
     "sanitize.css": "7.0.3",
     "sass-loader": "7.1.0",

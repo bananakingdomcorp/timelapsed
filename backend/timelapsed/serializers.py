@@ -2,12 +2,12 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Event, Date_Range, Card
+from timelapsed.models import Users, Topic, Event, Date_Range, Card
 
 class UsersSerializer(serializers.ModelSerializer):
   class Meta:
     model = Users
-    fields = ('id', 'Email')
+    fields = ('Email',)
 
 
 class CardSerializer(serializers.ModelSerializer):
