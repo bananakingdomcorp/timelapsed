@@ -109,6 +109,8 @@ class Date_Range(models.Model):
     def save(self, *args, **kwargs):
       if not self.Event_ID and not self.Card_ID:
         raise Exception("You can't leave both fields as null")
+      if self.Event_ID and self.Card_ID:
+        raise Exception("You have to have one field as null")
       super().save(*args, **kwargs)
 
     class Meta:
