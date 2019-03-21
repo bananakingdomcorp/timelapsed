@@ -106,6 +106,10 @@ class Date_Range(models.Model):
         'timelapsed.Card',
         on_delete=models.CASCADE, related_name="dateranges", null=True
     )
+    def save(self, *args, **kwargs):
+      if not self.Event_ID and not self.Card_ID:
+        raise Exception("You can't leave both fields as null")
+      super().save(*args, **kwargs)
 
     class Meta:
         ordering = ('-pk',)
