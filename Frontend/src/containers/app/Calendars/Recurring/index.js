@@ -7,6 +7,14 @@ import Day from './day'
 class RecurringCalender extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      selected : []
+    }
+  }
+
+  selectDay  () {
+
+
   }
 
   render() {
@@ -16,12 +24,13 @@ class RecurringCalender extends React.Component {
 
 
 
+
     return (
       <div className = 'recurringCalendar'>
 
       {theWeek.map((date) => {
         return (
-          <Day name = {date} /> 
+          <Day name = {date} selected = {this.state.selected} /> 
         )
       })}
       </div>

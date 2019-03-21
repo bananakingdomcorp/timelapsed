@@ -1,3 +1,5 @@
 {
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "python.pythonPath": "C:\\Users\\davis\\.virtualenvs\\timelapsed-YjBB0IY1\\Scripts\\python.exe",
+  "python.linting.pylintEnabled": true
 }

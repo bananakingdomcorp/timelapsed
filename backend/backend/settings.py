@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^4kn$8l$*u+vu2fvb+v8xeu*sc2o!a80e(0db=701(!so60kj&'
+SECRET_KEY = 'bh*en-!s+2fce7*%#412^$z9ol$bw@z42g5ubo7i7za!g9ofij'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,9 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',       
-    'rest_framework',       
-    'timelapsed',
+    'timelapsed'
 ]
 
 MIDDLEWARE = [
@@ -76,10 +74,15 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'timelapsed',
+        'USER': 'davis',
+        'PASSWORD': 'test',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
