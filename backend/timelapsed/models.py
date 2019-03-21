@@ -85,7 +85,7 @@ class Event(models.Model):
         return reverse('timelapsed_event_update', args=(self.pk,))
 
 
-class DateRange(models.Model):
+class Date_Range(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
