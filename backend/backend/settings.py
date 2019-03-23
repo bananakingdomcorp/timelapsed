@@ -19,6 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 import backend.secret_key as secret
 
+import backend.google_keys as google
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -41,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
     'corsheaders',
     'rest_framework',
 
@@ -73,12 +78,37 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+
+#Django-Rest-Framework settings
+
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+
+      'oauth2_provider.contrib.rest_framework.OAuth2Authentication', 
+      'rest_framework_social_oauth2.authentication.SocialAuthentication',
+  ),
+}
+
+AUTHENTICATION_BACKENDS = (
+
+  'social_core.backends.google.GoogleOAuth2', 
+  'rest_framework_social_oauth2.backends.DjangoOAuth2',
+  'django.contrib.auth.backends.ModelBackend',
+)
+
+#Google Auth Keys
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = google.CLIENT_ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = google.CLIENT_SECRET
+
 
 
 # Database
@@ -140,3 +170,5 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_WHITELIST = (
   'localhost:3000/'
 )
+
+CORS_ALLOW_CREDENTIALS = True

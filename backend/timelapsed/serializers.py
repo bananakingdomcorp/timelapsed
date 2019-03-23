@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from timelapsed.models import Users, Topic, Event, Date_Range, Card
+from .models import Users, Topic, Event, Date_Range, Card
 
 class UsersSerializer(serializers.ModelSerializer):
   class Meta:

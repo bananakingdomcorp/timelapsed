@@ -19,6 +19,7 @@ Note, all of the routes that are mentioned here may or may not be used, they are
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  path('api/', include(router.urls))     
+    path('admin/', admin.site.urls),  
+    path('api/', include(router.urls)), 
+    path('auth/', include('rest_framework_social_oauth2.urls'))     
 ]
-
