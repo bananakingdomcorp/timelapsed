@@ -30,9 +30,8 @@ class BackGroundPage extends React.Component {
 
       })
       .then(() => {
-        console.log(Api().headers)
         //Query our backend for our information.
-        Api().post('/user', {
+        Api().post('/user/', {
           user: response.profileObj.email
         })
 
