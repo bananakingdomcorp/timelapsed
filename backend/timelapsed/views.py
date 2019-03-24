@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 
@@ -12,13 +13,17 @@ from .serializers import UsersSerializer, TopicSerializer, EventSerializer, Date
 
 class UsersView(viewsets.ModelViewSet):
   #UsersView is designed to either authenticate or create a user.
+  authentication_classes = (TokenAuthentication)
   queryset= Users.objects.all()
   permission_classes = (IsAuthenticated, )
   serializer_class= UsersSerializer
+
+
   @api_view(['POST'])
   def check_for_user(request):
 
-    print(request.data)
+
+    # print(request.data)
 
 
 

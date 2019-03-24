@@ -95,6 +95,7 @@ REST_FRAMEWORK = {
 
       'oauth2_provider.contrib.rest_framework.OAuth2Authentication', 
       'rest_framework_social_oauth2.authentication.SocialAuthentication',
+      'rest_framework.authentication.TokenAuthentication',
   ),
 }
 
@@ -171,6 +172,8 @@ STATIC_URL = '/static/'
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_WHITELIST = (
-   'localhost:3000',
-)
+CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_WHITELIST = (
+#    'localhost:3000',
+# )
