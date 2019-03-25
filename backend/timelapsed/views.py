@@ -17,11 +17,11 @@ class UsersView(viewsets.ModelViewSet):
   serializer_class= UsersSerializer
 
 
-  # @api_view(['POST'])
-  # def check_for_user(self, request):
-  #   serializer = UsersSerializer
-  #   # print(request.data)
-  #   return Response(serializer.data)
+  @api_view(['POST'])
+  def check_for_user(self, request):
+    serializer = UsersSerializer
+    # print(request.data)
+    return Response(serializer.data)
 
 
 

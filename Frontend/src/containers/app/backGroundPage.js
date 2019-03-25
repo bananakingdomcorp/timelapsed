@@ -33,11 +33,16 @@ class BackGroundPage extends React.Component {
           
         //Query our backend for our information.
         let data = new FormData();
-        data.append('Email', `${response.profileObj.email}`)
+        // data.append('Email', response.profileObj.email)
+        data.append('Email', 'blahblah@blahblah.com')
 
-        Api().post('/user/', data)
+        //For this response, 201 means that you created a new record, will probably return a 200 to return information. 
 
-
+        Api().post('/user/', data,)
+        .then((res) => {
+          console.log(res)
+        })
+      
       })
 
     }
