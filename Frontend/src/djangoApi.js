@@ -12,11 +12,12 @@ const djangoApi = () => {
   
   const token = store.getState().authToken;
 
+
   const params = {
 
     baseURL: 'http://localhost:8000/api',
     
-    headers: {'Authorization': 'Token ' + token}
+    headers: {'Authorization': 'Bearer ' + token}
     
     };
 

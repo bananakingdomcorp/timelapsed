@@ -24,12 +24,12 @@ class BackGroundPage extends React.Component {
         token: response.accessToken
       })
       .then((res) => {
-        console.log(res.data.access_token)
         //Set our Auth Token in Redux
         setAuthToken(res.data.access_token)
 
       })
       .then(() => {
+          
         //Query our backend for our information.
         Api().post('/user/', {
           user: response.profileObj.email

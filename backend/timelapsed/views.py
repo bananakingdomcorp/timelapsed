@@ -3,7 +3,6 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 
@@ -13,7 +12,6 @@ from .serializers import UsersSerializer, TopicSerializer, EventSerializer, Date
 
 class UsersView(viewsets.ModelViewSet):
   #UsersView is designed to either authenticate or create a user.
-  authentication_classes = (TokenAuthentication,)
   queryset= Users.objects.all()
   permission_classes = (IsAuthenticated, )
   serializer_class= UsersSerializer
@@ -29,25 +27,21 @@ class UsersView(viewsets.ModelViewSet):
 
 
 class TopicView(viewsets.ModelViewSet):
-  authentication_classes = (TokenAuthentication,)
   serializer_class= TopicSerializer
   queryset= Topic.objects.all()
   permission_classes = (IsAuthenticated, )
 
 class EventView(viewsets.ModelViewSet):
-  authentication_classes = (TokenAuthentication,)
   serializer_class= EventSerializer
   queryset= Event.objects.all()
   permission_classes = (IsAuthenticated, )
 
-class DateRangeView(viewsets.ModelViewSet):
-  authentication_classes = (TokenAuthentication,)  
+class DateRangeView(viewsets.ModelViewSet): 
   serializer_class= DateRangeSerializer
   queryset= Date_Range.objects.all()
   permission_classes = (IsAuthenticated, )
 
 class CardView(viewsets.ModelViewSet):
-  authentication_classes = (TokenAuthentication,)
   serializer_class= CardSerializer
   queryset= Card.objects.all()
   permission_classes = (IsAuthenticated, )
