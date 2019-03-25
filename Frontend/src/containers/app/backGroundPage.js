@@ -6,7 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import {setAuthToken} from '../../modules/token';
 import Axios from 'axios';
 import {clientId, clientSecret} from '../../djangoSecrets';
-import Api from  './../../djangoApi'
+import {Api, token} from  './../../djangoApi'
 
 class BackGroundPage extends React.Component {
   constructor(props) {
@@ -25,15 +25,17 @@ class BackGroundPage extends React.Component {
       })
       .then((res) => {
         //Set our Auth Token in Redux
+        console.log(res.data.access_token)
         this.props.setAuthToken(res.data.access_token)
 
       })
       .then(() => {
           
         //Query our backend for our information.
-        Api().post('/user/', {
-          user: response.profileObj.email
-        })
+        let data = new FormData();
+        data.append('Email', `${response.profileObj.email}`)
+
+        Api().post('/user/', data)
 
 
       })

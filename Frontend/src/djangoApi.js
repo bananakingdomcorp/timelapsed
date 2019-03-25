@@ -8,21 +8,21 @@
 import store from './store'
 import axios from 'axios'
 
-const djangoApi = () => {
-  
-  const token = store.getState().authToken;
 
 
-  const params = {
 
+
+export const Api =() => {
+
+  let token = store.getState().token.authToken
+
+  let params = {
     baseURL: 'http://localhost:8000/api',
     
-    headers: {'Authorization': 'Bearer ' + token}
-    
-    };
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  }
 
-    return axios.create(params)
-
+  return axios.create(params)
 }
-
-export default djangoApi
