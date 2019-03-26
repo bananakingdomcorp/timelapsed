@@ -4,6 +4,7 @@
 
 import store from './store'
 import axios from 'axios'
+import {clientId, clientSecret} from '../../djangoSecrets';
 
 
 
@@ -22,18 +23,41 @@ export const Api =() => {
     }
   }
 
-  let res = axios.create(params)
+  let temp = axios.create(params)
 
-  res.interceptors.response.use(function (response) {
+  temp.interceptors.response.use(function (response) {
     // Do something with response data
     console.log(response)
     return response
   }, function (error) {
     // Do something with response error
-    console.log('error', error)
+    let lastRequest = error.config;
+    console.log(lastRequest)
+
+
+    if(error.response.status === 401) {
+      
+      return  axios.post('http://localhost:8000/auth/convert-token', {
+        grant_type: 'convert_token', 
+        client_id: clientId,
+        client_secret: clientSecret,
+        backend: 'google-oauth2',
+        // token: refresh token here
+      })
+      .then((res) => {
+        //Retry out original request
+
+
+
+
+      })
+
+    }
+
+
     return Promise.reject(error);
   }
   );
 
-  return res
+  return temp
 }
