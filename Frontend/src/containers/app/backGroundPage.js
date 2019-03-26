@@ -25,7 +25,6 @@ class BackGroundPage extends React.Component {
       })
       .then((res) => {
         //Set our Auth Token in Redux
-        console.log(res.data.access_token)
         this.props.setAuthToken(res.data.access_token)
 
       })
