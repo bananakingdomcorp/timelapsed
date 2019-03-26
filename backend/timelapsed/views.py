@@ -37,7 +37,10 @@ class GetDataView(viewsets.ModelViewSet):
   http_method_names = ['get']
 
   def list(self, request):
-    queryset= Topic.objects.all()
+    serializer = GetUserTopics(data = request.GET)
+    if serializer.is_valid:
+      return Response('hi', 201)
+    return Response('hi', 200)
     
 
 

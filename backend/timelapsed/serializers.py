@@ -9,9 +9,10 @@ class GetUserTopics(serializers.ModelSerializer):
 
   def create(self, validated_data):
     print('HELOOOOOOO')
+    
   class Meta:
     model = Topic
-    fields = '__all__'
+    fields = ('User')
 
 
 
