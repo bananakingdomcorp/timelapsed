@@ -7,6 +7,8 @@ from .models import Users, Topic, Event, Date_Range, Card
 
 class GetUserTopics(serializers.ModelSerializer):
 
+
+
   class Meta:
     model = Topic
 
@@ -17,7 +19,9 @@ class GetTopcCards(serializers.ModelSerializer) :
 
 class UsersSerializer(serializers.ModelSerializer):
   #Something here to find all cards/topics, then place into a list. 
+
   def create(self, validated_data):
+
     return super().create(validated_data)
 
 
