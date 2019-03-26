@@ -14,6 +14,7 @@ class BackGroundPage extends React.Component {
   }
  
   responseGoogle = (response) => {
+    console.log(response)
     if (response.accessToken !== undefined) {
       //Outside of this request, use our djangoapi
       Axios.post('http://localhost:8000/auth/convert-token', {
@@ -32,8 +33,7 @@ class BackGroundPage extends React.Component {
           
         //Query our backend for our information.
         let data = new FormData();
-        // data.append('Email', response.profileObj.email)
-        data.append('Email', 'blahblah@blahblah.com')
+        data.append('Email', response.profileObj.email)
 
         //For this response, 201 means that you created a new record, will probably return a 200 to return information. 
 
