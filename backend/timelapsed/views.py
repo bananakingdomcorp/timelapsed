@@ -24,11 +24,21 @@ class UsersView(viewsets.ModelViewSet):
     queryset= Users.objects.all()
     serializer = UsersSerializer(data = request.data)
     if not serializer.is_valid():
-      return Response(serializer.data, 400)
+      return Response(serializer.data, 200)
 
       #We created a new record
     return Response(serializer.data, 201)
 
+
+class GetDataView(viewsets.ModelViewSet):
+  queryset= Topic.objects.all()
+  permission_classes = (IsAuthenticated, )
+  serializer_class = GetUserTopics
+  http_method_names = ['get']
+
+  def list(self, request):
+    queryset= Topic.objects.all()
+    
 
 
 
