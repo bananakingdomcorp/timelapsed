@@ -7,6 +7,7 @@ from timelapsed import views
 router = routers.DefaultRouter()    
 
 router.register(r'user', views.UsersView, basename = 'user')
+router.regisger(r'getdata', )
 
 router.register(r'topic', views.TopicView, basename = 'topic')
 router.register(r'card', views.CardView, basename = 'card')

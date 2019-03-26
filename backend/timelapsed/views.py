@@ -8,19 +8,29 @@ from rest_framework.response import Response
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, TopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer
+from .serializers import UsersSerializer, TopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, GetUserTopics
+
+from .services import *
 
 class UsersView(viewsets.ModelViewSet):
   #UsersView is designed to either authenticate or create a user.
   queryset= Users.objects.all()
   permission_classes = (IsAuthenticated, )
   serializer_class= UsersSerializer
+  http_method_names = ['post']
 
 
   def create(self, request):
-    print(request.data)
-    serializer = UsersSerializer(request)
-    return Response(serializer.data)
+    queryset= Users.objects.all()
+    serializer = UsersSerializer(data = request.data)
+    if not serializer.is_valid():
+      return Response(serializer.data, 400)
+
+      #We created a new record
+    return Response(serializer.data, 201)
+
+
+
 
 
 

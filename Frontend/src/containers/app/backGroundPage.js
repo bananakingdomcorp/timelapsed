@@ -14,8 +14,7 @@ class BackGroundPage extends React.Component {
   }
  
   responseGoogle = (response) => {
-    console.log(response)
-    if (response.accessToken !== undefined) {
+      if (response.accessToken !== undefined) {
       //Outside of this request, use our djangoapi
       Axios.post('http://localhost:8000/auth/convert-token', {
         grant_type: 'convert_token', 
@@ -35,11 +34,20 @@ class BackGroundPage extends React.Component {
         let data = new FormData();
         data.append('Email', response.profileObj.email)
 
-        //For this response, 201 means that you created a new record, will probably return a 200 to return information. 
+        //For this response, 201 means that you created a new record, will return a 400 if already exists. 
 
         Api().post('/user/', data,)
         .then((res) => {
-          console.log(res)
+          if (res.status === 400) {
+            //Then we can get more information. If it is 201, you have no records.
+            //Eventually I think we would like to merge this and the last requests, not sure how to do that from the Django side right now. 
+            Api().get('/getdata/',data)
+            .then((res) => {
+              console.log(res)
+            })
+
+
+          }
         })
       
       })

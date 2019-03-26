@@ -7,27 +7,28 @@ from .models import Users, Topic, Event, Date_Range, Card
 
 class GetUserTopics(serializers.ModelSerializer):
 
-
-
+  def create(self, validated_data):
+    print('HELOOOOOOO')
   class Meta:
     model = Topic
+    fields = '__all__'
 
-class GetTopcCards(serializers.ModelSerializer) :
+
+
+class GetTopicCards(serializers.ModelSerializer) :
 
   class Meta:
     model = Card
 
+
 class UsersSerializer(serializers.ModelSerializer):
-  #Something here to find all cards/topics, then place into a list. 
-
-  def create(self, validated_data):
-
-    return super().create(validated_data)
-
 
   class Meta:
     model = Users
     fields = ('Email',)
+
+  def create(self, validated_data):
+    return super().create(validated_data)
 
 
 class CardSerializer(serializers.ModelSerializer):
