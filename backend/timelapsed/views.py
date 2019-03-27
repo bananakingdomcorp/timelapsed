@@ -40,8 +40,10 @@ class GetDataView(viewsets.ModelViewSet):
     serializer = GetUserDataSerializer(data = request.GET)
     if serializer.is_valid():
       #send to our helper functions...
-      print(services.get_user_information(serializer.data))
+      info = services.get_user_information(serializer.data)
+      print(info)
       return Response(serializer.data, 201)
+      # return Response(list(info), 201)
     print(serializer.errors)
     
     return Response(serializer.data, 200)
