@@ -8,9 +8,9 @@ from rest_framework.response import Response
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, TopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, GetUserTopics
+from .serializers import UsersSerializer, TopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, GetUserDataSerializer
 
-from .services import *
+import  timelapsed.services as services
 
 class UsersView(viewsets.ModelViewSet):
   #UsersView is designed to either authenticate or create a user.
@@ -33,20 +33,19 @@ class UsersView(viewsets.ModelViewSet):
 class GetDataView(viewsets.ModelViewSet):
   queryset= Topic.objects.all()
   permission_classes = (IsAuthenticated, )
-  serializer_class = GetUserTopics
+  serializer_class = GetUserDataSerializer
   http_method_names = ['get']
 
   def list(self, request):
-    print(request.GET)
-    serializer = GetUserTopics(data = request.GET)
+    serializer = GetUserDataSerializer(data = request.GET)
     if serializer.is_valid():
-      # print(serializer.data)
+      #send to our helper functions...
+      print(services.get_user_information(serializer.data))
       return Response(serializer.data, 201)
     print(serializer.errors)
-    return Response(serializer.data, 200)
     
-
-
+    return Response(serializer.data, 200)
+  
 
 
 

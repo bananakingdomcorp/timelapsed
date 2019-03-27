@@ -5,11 +5,7 @@ from rest_framework import serializers
 from .models import Users, Topic, Event, Date_Range, Card
 
 
-class GetUserTopics(serializers.ModelSerializer):
-
-  def create(self, validated_data):
-    print('HELOOOOOOO')
-    
+class GetUserDataSerializer(serializers.ModelSerializer):
   class Meta:
     model = Topic
     fields = ('Email',)
