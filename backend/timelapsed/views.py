@@ -37,10 +37,13 @@ class GetDataView(viewsets.ModelViewSet):
   http_method_names = ['get']
 
   def list(self, request):
+    print(request.GET)
     serializer = GetUserTopics(data = request.GET)
-    if serializer.is_valid:
-      return Response('hi', 201)
-    return Response('hi', 200)
+    if serializer.is_valid():
+      # print(serializer.data)
+      return Response(serializer.data, 201)
+    print(serializer.errors)
+    return Response(serializer.data, 200)
     
 
 

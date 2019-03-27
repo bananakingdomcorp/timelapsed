@@ -12,7 +12,7 @@ class GetUserTopics(serializers.ModelSerializer):
     
   class Meta:
     model = Topic
-    fields = ('User')
+    fields = ('Email',)
 
 
 

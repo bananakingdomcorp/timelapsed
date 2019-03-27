@@ -41,7 +41,7 @@ class Topic(models.Model):
     id = models.BigAutoField(primary_key=True)
 
     # Relationship Fields
-    User = models.ForeignKey(
+    Email = models.ForeignKey(
         'timelapsed.Users',
         on_delete=models.CASCADE, related_name="topics", 
     )
@@ -66,7 +66,7 @@ class Event(models.Model):
     id = models.BigAutoField(primary_key=True)
 
     # Relationship Fields
-    User = models.ForeignKey(
+    Email = models.ForeignKey(
         'timelapsed.Users',
         on_delete=models.CASCADE, related_name="events", 
     )
@@ -94,7 +94,7 @@ class Date_Range(models.Model):
     End_Time = models.TimeField()
 
     # Relationship Fields
-    User = models.ForeignKey(
+    Email = models.ForeignKey(
         'timelapsed.Users',
         on_delete=models.CASCADE, related_name="dateranges", 
     )
@@ -137,7 +137,7 @@ class Card(models.Model):
     Expected_Finish = models.DateField()
 
     # Relationship Fields
-    User = models.ForeignKey(
+    Email = models.ForeignKey(
         'timelapsed.Users',
         on_delete=models.CASCADE, related_name="cards", 
     )
