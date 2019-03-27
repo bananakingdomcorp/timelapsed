@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -42,9 +43,8 @@ class GetDataView(viewsets.ModelViewSet):
       #send to our helper functions...
       info = services.get_user_information(serializer.data)
       print(info)
-      return Response(serializer.data, 201)
-      # return Response(list(info), 201)
-    print(serializer.errors)
+      # return JsonResponse(info, 201)
+      # return Response(info, 201)
     
     return Response(serializer.data, 200)
   
