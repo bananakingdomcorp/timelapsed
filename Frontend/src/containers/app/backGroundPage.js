@@ -6,7 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import {setAuthToken} from '../../modules/token';
 import Axios from 'axios';
 import {clientId, clientSecret} from '../../djangoSecrets';
-import {Api, token} from  './../../djangoApi'
+import {Api} from  './../../djangoApi'
 
 class BackGroundPage extends React.Component {
   constructor(props) {
@@ -41,6 +41,7 @@ class BackGroundPage extends React.Component {
 
           if (res.status === 200) {
             //From here we need to make a redux call that both organizes as well as writes our information to the board. 
+            
           }
         })
       

@@ -42,8 +42,15 @@ class AddTopicView(viewsets.ModelViewSet):
   http_method_names = ['post']
 
   def create (self, request):
-    print('hello there, creating')
-    
+    serializer = AddTopicSerializer(data = request.data)
+    if serializer.is_valid():
+      serializer.create(serializer.data, request.user.email)
+      
+
+    print(serializer.data, 'SERIALIZED')
+
+
+
 
 
 

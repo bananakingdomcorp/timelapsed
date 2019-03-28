@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {addTopic} from '../../../modules/board';
-import Api from '../../../djangoApi';
+import {Api} from '../../../djangoApi';
 
 
 class  AddATopic extends React.Component {
@@ -19,12 +19,21 @@ class  AddATopic extends React.Component {
     e.preventDefault();
 
     //Call the DB first to add the topic, then add to the store. 
+    let data = new FormData();
+    data.append('Name', this.state.title)
+    Api().post('/addtopic/', data)
+    .then((res) => {
+      console.log(res)
 
-    
+    })
 
 
-    this.props.addTopic(this.state.title);
-    this.setState({title: ''})
+
+
+    //COMMENTED OUT FOR NOW, ADD REDUX AFTER SERVER RESPONSE
+
+    // this.props.addTopic(this.state.title);
+    // this.setState({title: ''})
   }
 
   changeTitleValue(e) {

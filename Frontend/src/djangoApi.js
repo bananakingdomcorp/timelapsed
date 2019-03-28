@@ -34,6 +34,11 @@ export const Api =() => {
       store.dispatch(setAuthToken(''))
 
     }
+    if(error.response.status === 500) {
+      //If the server is down, set our server down page.
+
+      console.log('Server down error')
+    }
     return Promise.reject(error);
   });
 

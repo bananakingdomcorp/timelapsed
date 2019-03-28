@@ -22,16 +22,12 @@ class CardSerializer(serializers.ModelSerializer):
 
 class AddTopicSerializer(serializers.ModelSerializer):
 
-  def create(self, validated_data):
-    print('IN CREATION')
-
-  def save(self, validated_data):
-    print('SAVING')
-
+  def create(self, validated_data, user):
+    print('IN CREATION', validated_data, user)
 
   class Meta:
     model = Topic
-    fields =  ('id','User', 'Name', 'Position')
+    fields =  ('Name', )
 
 class EventSerializer(serializers.ModelSerializer):
   class Meta:
