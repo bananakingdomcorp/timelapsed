@@ -7,6 +7,7 @@ import {setAuthToken} from '../../modules/token';
 import Axios from 'axios';
 import {clientId, clientSecret} from '../../djangoSecrets';
 import {Api} from  './../../djangoApi'
+import {setBoard} from '../../modules/board';
 
 class BackGroundPage extends React.Component {
   constructor(props) {
@@ -38,10 +39,14 @@ class BackGroundPage extends React.Component {
 
         Api().post('/user/', data,)
         .then((res) => {
-          console.log(res)
 
           if (res.status === 200) {
             //From here we need to make a redux call that both organizes as well as writes our information to the board. 
+            this.props.setBoard(res.data)
+
+
+
+
             
           }
         })
@@ -76,7 +81,7 @@ class BackGroundPage extends React.Component {
         {googs}
 
         { Object.keys(this.props.board).map((item) => {
-          return (<div className = 'topic'> <Topic name = {item} key = {item} number = {item} /> </div>)
+          return (<div className = 'topic'> <Topic id = {item} key = {item} /> </div>)
         })
 
         }
@@ -100,7 +105,9 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  setAuthToken
+  setAuthToken,
+  setBoard
+
 }
 
 

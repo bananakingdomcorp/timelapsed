@@ -26,7 +26,7 @@ class Topic extends React.Component {
     return (
       <div >
         <div className = 'nameplate'>
-          <p> {this.props.name} </p>
+          <p> {this.props.board[this.props.id][0]} </p>
         </div>
           <AddACard modal = {this.state.modal} openModal = {this.openModal} closeModal = {this.closeModal} />
       </div>
@@ -46,4 +46,4 @@ const mapDispatchToProps = {
 }
 
 
-export default connect(null, mapDispatchToProps) (Topic)
+export default connect(mapStateToProps, mapDispatchToProps) (Topic)
