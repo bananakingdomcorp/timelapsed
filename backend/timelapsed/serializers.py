@@ -5,14 +5,6 @@ from rest_framework import serializers
 from .models import Users, Topic, Event, Date_Range, Card
 
 
-
-
-class GetTopicCards(serializers.ModelSerializer) :
-
-  class Meta:
-    model = Card
-
-
 class UsersSerializer(serializers.ModelSerializer):
 
   class Meta:
@@ -28,7 +20,15 @@ class CardSerializer(serializers.ModelSerializer):
     model = Card
     fields = ('id','User', 'Topic', 'Name', 'Description', 'Position', 'Expected_Finish')
 
-class TopicSerializer(serializers.ModelSerializer):
+class AddTopicSerializer(serializers.ModelSerializer):
+
+  def create(self, validated_data):
+    print('IN CREATION')
+
+  def save(self, validated_data):
+    print('SAVING')
+
+
   class Meta:
     model = Topic
     fields =  ('id','User', 'Name', 'Position')
