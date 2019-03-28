@@ -38,6 +38,7 @@ class BackGroundPage extends React.Component {
 
         Api().post('/user/', data,)
         .then((res) => {
+          console.log(res)
 
           if (res.status === 200) {
             //From here we need to make a redux call that both organizes as well as writes our information to the board. 

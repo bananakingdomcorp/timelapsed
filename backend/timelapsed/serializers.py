@@ -23,11 +23,28 @@ class CardSerializer(serializers.ModelSerializer):
 class AddTopicSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
-    print('IN CREATION', validated_data, user)
+    # first, find the proper position. We can just add from the previous highest position.
+    pos = Topic.objects.values('Position').filter(Email = user).order_by('-Position').first()
+
+    n = Topic.objects.create(Name = validated_data['Name'], Position = pos['Position'] + 1, Email = Users.objects.get(Email = user))
+
+    print(n.id)
+    print(validated_data['Name'])
+    return ({'Name' : validated_data['Name'], 'id': str(n.id)})
 
   class Meta:
     model = Topic
     fields =  ('Name', )
+
+class EditTopicSerializer(serializers.ModelSerializer):
+  class Meta: 
+    model = Topic
+    fields = ('Name', 'id')
+
+class SwitchTopicSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Topic
+    fields = ('Name', 'id', 'position')
 
 class EventSerializer(serializers.ModelSerializer):
   class Meta:

@@ -23,17 +23,13 @@ class  AddATopic extends React.Component {
     data.append('Name', this.state.title)
     Api().post('/addtopic/', data)
     .then((res) => {
-      console.log(res)
+      if(res.status === 201) {
+        this.props.addTopic(res.data);
+        this.setState({title: ''})
+      }
 
     })
 
-
-
-
-    //COMMENTED OUT FOR NOW, ADD REDUX AFTER SERVER RESPONSE
-
-    // this.props.addTopic(this.state.title);
-    // this.setState({title: ''})
   }
 
   changeTitleValue(e) {

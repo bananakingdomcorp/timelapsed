@@ -9,7 +9,7 @@ from django.http import JsonResponse
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicSerializer
 
 import  timelapsed.services as services
 
@@ -44,13 +44,16 @@ class AddTopicView(viewsets.ModelViewSet):
   def create (self, request):
     serializer = AddTopicSerializer(data = request.data)
     if serializer.is_valid():
-      serializer.create(serializer.data, request.user.email)
-      
+      created = serializer.create(serializer.data, request.user.email)
 
-    print(serializer.data, 'SERIALIZED')
-
+    return Response(created, 201)
 
 
+class EditTopicView(viewsets.ModelViewSet):
+  serializer_class = EditTopicSerializer
+  queryset = Topic.objects.all()
+  permission_classes = (IsAuthenticated,)
+  http_method_names = ['update']
 
 
 
