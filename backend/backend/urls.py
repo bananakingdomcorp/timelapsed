@@ -8,7 +8,8 @@ router = routers.DefaultRouter()
 
 router.register(r'user', views.UsersView, basename = 'user')
 
-router.register(r'addtopic', views.AddTopicView, basename = 'add topic')
+router.register(r'topic', views.TopicView, basename = 'add topic')
+
 router.register(r'edittopic', views.EditTopicView, basename = 'edit topic')
 router.register(r'card', views.CardView, basename = 'card')
 router.register(r'event', views.EventView, basename = 'event')

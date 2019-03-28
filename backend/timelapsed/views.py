@@ -9,7 +9,7 @@ from django.http import JsonResponse
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicSerializer, DeleteTopicSerializer
 
 import  timelapsed.services as services
 
@@ -35,11 +35,11 @@ class UsersView(viewsets.ModelViewSet):
 
 
 
-class AddTopicView(viewsets.ModelViewSet):
+class TopicView(viewsets.ModelViewSet):
   serializer_class= AddTopicSerializer
   queryset= Topic.objects.all()
   permission_classes = (IsAuthenticated, )
-  http_method_names = ['post']
+  http_method_names = ['post', 'update', 'delete']
 
   def create (self, request):
     serializer = AddTopicSerializer(data = request.data)
@@ -47,6 +47,31 @@ class AddTopicView(viewsets.ModelViewSet):
       created = serializer.create(serializer.data, request.user.email)
 
     return Response(created, 201)
+
+  def update(self, request):
+    '''
+    How does the update work:
+
+    There may be multiple positional arguments. 
+
+    If there are, then a switch is happening. 
+
+    If there are not, then we are just updating a title.
+
+    '''
+
+    
+    return Response('DO NOT USE', 200)
+
+  def destroy(self, request):
+    serializer = DeleteTopicSerializer(data = request.data)
+    if serializer.is_valid:
+      serializer.delete(serializer.data)
+      return Response('deleted', 200)
+
+
+
+  
 
 
 class EditTopicView(viewsets.ModelViewSet):

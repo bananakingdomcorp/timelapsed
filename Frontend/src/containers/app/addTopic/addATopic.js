@@ -21,7 +21,7 @@ class  AddATopic extends React.Component {
     //Call the DB first to add the topic, then add to the store. 
     let data = new FormData();
     data.append('Name', this.state.title)
-    Api().post('/addtopic/', data)
+    Api().post('/topic/', data)
     .then((res) => {
       if(res.status === 201) {
         this.props.addTopic(res.data);

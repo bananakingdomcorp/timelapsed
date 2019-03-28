@@ -20,6 +20,8 @@ class CardSerializer(serializers.ModelSerializer):
     model = Card
     fields = ('id','User', 'Topic', 'Name', 'Description', 'Position', 'Expected_Finish')
 
+
+
 class AddTopicSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
@@ -35,6 +37,20 @@ class AddTopicSerializer(serializers.ModelSerializer):
   class Meta:
     model = Topic
     fields =  ('Name', )
+
+
+
+class DeleteTopicSerializer(serializers.ModelSerializer):
+
+  def delete(self, validated_data):
+    temp = Topic.objects.get(id = validated_data['id']).delete()
+    return
+
+  class Meta: 
+    model = Topic
+    fields = ('id',)
+
+    
 
 class EditTopicSerializer(serializers.ModelSerializer):
   class Meta: 
