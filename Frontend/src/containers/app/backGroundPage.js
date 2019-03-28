@@ -45,8 +45,6 @@ class BackGroundPage extends React.Component {
             this.props.setBoard(res.data)
 
 
-
-
             
           }
         })

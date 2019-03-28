@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
       return {
         board: {
           ...state.board,
-          [action.name] : []
+          ...action.name
           
         }
       }
