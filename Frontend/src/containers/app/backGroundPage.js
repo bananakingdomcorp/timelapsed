@@ -40,7 +40,7 @@ class BackGroundPage extends React.Component {
         .then((res) => {
 
           if (res.status === 200) {
-            console.log(res.data)
+            //From here we need to make a redux call that both organizes as well as writes our information to the board. 
           }
         })
       
