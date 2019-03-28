@@ -38,20 +38,22 @@ class BackGroundPage extends React.Component {
 
         Api().post('/user/', data,)
         .then((res) => {
-          if (res.status === 200) {
-            //Then we can get more information. If it is 201, you have no records.
-            //Eventually I think we would like to merge this and the last requests, not sure how to do that from the Django side right now. 
-            Api().get('/getdata/', {
-              params: {
-                Email: response.profileObj.email
-              }
-            })
-            .then((res) => {
-              console.log(res)
-            })
+          console.log(res)
+
+          // if (res.status === 200) {
+          //   //Then we can get more information. If it is 201, you have no records.
+          //   //Eventually I think we would like to merge this and the last requests, not sure how to do that from the Django side right now. 
+          //   Api().get('/getdata/', {
+          //     params: {
+          //       Email: response.profileObj.email
+          //     }
+          //   })
+          //   .then((res) => {
+          //     console.log(res)
+          //   })
 
 
-          }
+          // }
         })
       
       })

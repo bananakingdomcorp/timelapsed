@@ -9,12 +9,12 @@ from django.http import JsonResponse
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, TopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, GetUserDataSerializer
+from .serializers import UsersSerializer, TopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer
 
 import  timelapsed.services as services
 
 class UsersView(viewsets.ModelViewSet):
-  #UsersView is designed to either authenticate or create a user.
+  #UsersView is designed to either create a user, or respond back with a users data.
   queryset= Users.objects.all()
   permission_classes = (IsAuthenticated, )
   serializer_class= UsersSerializer
@@ -25,29 +25,12 @@ class UsersView(viewsets.ModelViewSet):
     queryset= Users.objects.all()
     serializer = UsersSerializer(data = request.data)
     if not serializer.is_valid():
-      return Response(serializer.data, 200)
+      info = services.get_user_information(serializer.data)
+      #Returning information about an exising record.
+      return Response(info, 200)
 
       #We created a new record
     return Response(serializer.data, 201)
-
-
-class GetDataView(viewsets.ModelViewSet):
-  queryset= Topic.objects.all()
-  permission_classes = (IsAuthenticated, )
-  serializer_class = GetUserDataSerializer
-  http_method_names = ['get']
-
-  def list(self, request):
-    serializer = GetUserDataSerializer(data = request.GET)
-    if serializer.is_valid():
-      #send to our helper functions...
-      info = services.get_user_information(serializer.data)
-      print(info)
-      # return JsonResponse(info, 201)
-      # return Response(info, 201)
-    
-    return Response(serializer.data, 200)
-  
 
 
 
