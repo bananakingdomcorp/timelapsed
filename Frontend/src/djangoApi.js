@@ -4,7 +4,6 @@
 
 import store from './store'
 import axios from 'axios'
-import {clientId, clientSecret} from './djangoSecrets';
 import setAuthToken from './modules/token'
 
 
@@ -16,6 +15,7 @@ export const Api =() => {
   let token = store.getState().token.authToken
 
   let params = {
+    //Or whatever your server port is 
     baseURL: 'http://localhost:8000/api',
     
     headers: {
@@ -30,7 +30,7 @@ export const Api =() => {
     return response
   }, function (error) {
     if(error.response.status === 401) {
-      //If we need to log in again, reset the state so that it does that, then return an error to the user. 
+      //If we need to log in again, reset the state so that it does that. 
       store.dispatch(setAuthToken(''))
 
     }
