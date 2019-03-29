@@ -11,7 +11,7 @@ import MonthlyCalender from './../../Calendars/Monthly/index';
 
 
 
-const addCardModalRoot = document.querySelector('#modal-root')
+const ModalRoot = document.querySelector('#modal-root')
 
 class AddCardModal extends React.Component {
   constructor(props) {
@@ -31,13 +31,13 @@ class AddCardModal extends React.Component {
 
 
   componentWillMount() {
-    addCardModalRoot.appendChild(this.el);
+    ModalRoot.appendChild(this.el);
     document.addEventListener("mousedown", this.handleClickOutside)
 
   }
 
   componentWillUnmount() {
-    addCardModalRoot.removeChild(this.el)
+    ModalRoot.removeChild(this.el)
     document.removeEventListener("mousedown", this.handleClickOutside)
   }
 

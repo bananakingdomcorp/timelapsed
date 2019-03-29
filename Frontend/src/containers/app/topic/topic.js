@@ -3,6 +3,9 @@ import React from 'react';
 
 import {connect} from  'react-redux';
 import AddCardModal from './addCard/addCardModal';
+import EditPanelModal from './editPanel/editPanelModal';
+
+
 
 
 class Topic extends React.Component {
@@ -10,9 +13,20 @@ class Topic extends React.Component {
     super(props);
     this.state = {
       addCardModal: false,
+      editCardModal: false,
 
     }
   }
+
+  openEditCardModal = () => {
+    this.setState({editCardModal: true})
+  }
+
+  closeEditCardModal = () => {
+    this.setState({editCardModal: false})
+
+  }
+
   openAddCardModal= () =>  {
     this.setState({addCardModal : true})
 
@@ -24,8 +38,13 @@ class Topic extends React.Component {
 
   render() {
     let modalView = null;
-    if (this.state.addCardModal == true) {
+    if (this.state.addCardModal === true) {
       modalView = <AddCardModal closeModal = {this.closeAddCardModal} />
+    }
+
+    let editView = null;
+    if(this.state.editCardModal === true) {
+      editView = <EditPanelModal closeModal = {this.closeEditCardModal} id = {this.props.id} />
     }
 
     return (
@@ -37,6 +56,7 @@ class Topic extends React.Component {
             Add a task
           </div>
         {modalView}
+        {editView}
       </div>
     )
   }
