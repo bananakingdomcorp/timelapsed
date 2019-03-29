@@ -39,7 +39,7 @@ class Topic extends React.Component {
   render() {
     let modalView = null;
     if (this.state.addCardModal === true) {
-      modalView = <AddCardModal closeModal = {this.closeAddCardModal} />
+      modalView = <AddCardModal closeModal = {this.closeAddCardModal} id= {this.props.id} />
     }
 
     let editView = null;

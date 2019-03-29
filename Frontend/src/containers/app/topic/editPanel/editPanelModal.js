@@ -18,6 +18,8 @@ class EditPanelModal extends React.Component{
     super(props)
     this.state = {
       name : this.props.board[this.props.id][0],
+      switchPosition: -Infinity,
+      switchDropdownOpen: false
     }
 
     this.el = document.createElement('div');
@@ -42,14 +44,50 @@ class EditPanelModal extends React.Component{
     }
   }
 
+  nameChange = (e) => {
+    this.setState({name: e.target.value})
+  }
+
+  switchDropdown() {
+    this.setState({switchDropdown: true})
+
+  }
+
+  setSwitchPostion= (e) => {
+    this.setState({setSwitchPostion: e.target.value})
+    this.setState({switchDropdownOpen: false})
+
+  }
+
 
   render() {
+
+    let dropDown = <option onClick = {this.switchDropdown} > Select Topic  </option>
+
+    if(this.state.switchDropdownOpen === true) {
+      dropDown = []
+      for (let key in this.props.board) {
+        dropDown.push(<li value = {this.props.board} onClick = {(e) => this.setSwitchPostion(e.target.value)} > {this.props.board[key][0]} </li> )
+      }
+
+    }
+
+    if(this.state.switchDropdownOpen === false && this.state.switchPosition !== -Infinity) {
+      dropDown =  <li onClick = {this.switchDropdown} > {this.props.board[this.state.switchPosition][0]} </li>
+    }
     
 
     return ReactDOM.createPortal(
       <div className = 'editPanelModal' ref = {this.editPanelModalRef}> 
-        
+        <input className = 'editPanelNameChange' onChange = {(e) => this.nameChange(e.target.value)} value = {this.state.name} />
 
+        <p>Change Position with another Topic</p>
+
+        <ul>
+          {this.dropdown}
+        </ul>
+
+        
 
       </div>
     )
