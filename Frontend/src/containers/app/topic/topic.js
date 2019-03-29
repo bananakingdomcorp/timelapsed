@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import {connect} from  'react-redux';
-import AddACard from './addACard';
+import AddCardModal from './addCard/addCardModal';
 
 
 class Topic extends React.Component {
@@ -23,12 +23,20 @@ class Topic extends React.Component {
   }
 
   render() {
+    let modalView = null;
+    if (this.state.addCardModal == true) {
+      modalView = <AddCardModal closeModal = {this.closeAddCardModal} />
+    }
+
     return (
       <div >
         <div className = 'nameplate'>
           <p> {this.props.board[this.props.id][0]} </p>
         </div>
-          <AddACard modal = {this.state.addCardModal} openModal = {this.openAddCardModal} closeModal = {this.closeAddCardModal} />
+          <div className =  'topicAddCard' onClick= {this.openAddCardModal}>
+            Add a task
+          </div>
+        {modalView}
       </div>
     )
   }
