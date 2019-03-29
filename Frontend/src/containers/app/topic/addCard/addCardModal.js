@@ -11,7 +11,7 @@ import MonthlyCalender from './../../Calendars/Monthly/index';
 
 
 
-const addCardModalRoot = document.querySelector('#create-card-modal-root')
+const addCardModalRoot = document.querySelector('#modal-root')
 
 class AddCardModal extends React.Component {
   constructor(props) {

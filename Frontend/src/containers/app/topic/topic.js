@@ -9,17 +9,17 @@ class Topic extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      addCardModal: false,
 
     }
   }
-  openModal= () =>  {
-    this.setState({modal : true})
+  openAddCardModal= () =>  {
+    this.setState({addCardModal : true})
 
   }
 
-  closeModal = () =>  {
-    this.setState({modal: false});
+  closeAddCardModal = () =>  {
+    this.setState({addCardModal: false});
   }
 
   render() {
@@ -28,7 +28,7 @@ class Topic extends React.Component {
         <div className = 'nameplate'>
           <p> {this.props.board[this.props.id][0]} </p>
         </div>
-          <AddACard modal = {this.state.modal} openModal = {this.openModal} closeModal = {this.closeModal} />
+          <AddACard modal = {this.state.addCardModal} openModal = {this.openAddCardModal} closeModal = {this.closeAddCardModal} />
       </div>
     )
   }
