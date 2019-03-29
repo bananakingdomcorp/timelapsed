@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom'
 
 import {connect} from 'react-redux';
 
+import DeletionWarningModal from './deletionWarningModal';
+
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -19,7 +21,8 @@ class EditPanelModal extends React.Component{
     this.state = {
       name : this.props.board[this.props.id][0],
       switchPosition: -Infinity,
-      switchDropdownOpen: false
+      switchDropdownOpen: false,
+      deletionWarningModalOpen: false
     }
 
     this.el = document.createElement('div');
@@ -87,7 +90,7 @@ class EditPanelModal extends React.Component{
           {this.dropdown}
         </ul>
 
-        
+
 
       </div>
     )
