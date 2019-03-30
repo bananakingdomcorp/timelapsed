@@ -1,5 +1,6 @@
 export const ADD_TOPIC = 'board/ADD_TOPIC'
 export const SET_BOARD = 'board/SET_BOARD'
+export const DELETE_TOPIC = 'board/DELETE_TOPIC'
 
 
 
@@ -24,6 +25,12 @@ export default (state = initialState, action) => {
         ...state,
         board: action.board
       }
+    case DELETE_TOPIC:
+      return {
+        board: action.rest
+      }
+      
+
 
     default:
       return state
@@ -41,5 +48,13 @@ export const addTopic = (name) => {
   return {
       type: ADD_TOPIC,
       name
+  }
+}
+
+export const deleteTopic = (id) => {
+  const {[id] : value, ...rest} = this.state.board.board
+  return {
+    type: DELETE_TOPIC,
+    rest
   }
 }

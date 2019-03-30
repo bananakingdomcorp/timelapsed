@@ -41,7 +41,7 @@ class AddTopicSerializer(serializers.ModelSerializer):
 class DeleteTopicSerializer(serializers.ModelSerializer):
 
   def delete(self, validated_data):
-    temp = Topic.objects.get(id = validated_data['id']).delete()
+    temp = Topic.objects.get(id = validated_data).delete()
     return
 
   class Meta: 

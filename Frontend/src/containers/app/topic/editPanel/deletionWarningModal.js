@@ -27,6 +27,12 @@ class DeletionWarningModal extends React.Component{
     this.props.loadParentListener()
   }
 
+  handleSubmit = () => {
+    this.props.closeModal()
+    this.props.handleDeletion()
+
+  }
+
 
   render() {
     return ReactDom.createPortal(
@@ -38,7 +44,7 @@ class DeletionWarningModal extends React.Component{
        <p> Warning: If you have a lot of active cards in this topic, this may take a while.</p>
 
 
-       <button onClick = {this.props.handleDeletion}> Delete</button>
+       <button onClick = {this.handleSubmit}> Delete</button>
 
        <button onClick = {this.props.closeModal}> Cancel </button>  
       </div>, 

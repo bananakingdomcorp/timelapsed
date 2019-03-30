@@ -8,6 +8,8 @@ import DeletionWarningModal from './deletionWarningModal';
 
 import {Api} from './../../../../djangoApi';
 
+import {deleteTopic} from './../../../../modules/board'
+
 
 
 const ModalRoot = document.querySelector('#modal-root')
@@ -97,13 +99,16 @@ class EditPanelModal extends React.Component{
   }
 
   handleDeletion = () => {
-    console.log('herrrr')
-    Api().delete('topic', {id: this.props.id})
+    Api().delete(`/topic/${this.props.id}/`)
     .then((res) => {
-      console.log(res);
-      if (res.status === 200) {
+      if (res.status === 204) {
+        this.props.closeModal()
+        this.props.deleteTopic(this.props.id)
         //Call our redux deletion
       }
+    })
+    .catch((err) => {
+      console.log('err', err)
     })
 
 
@@ -186,6 +191,7 @@ function mapStateToProps(state) {
 }
 
 const matchDispatchToProps = {
+  deleteTopic
 
 }
 

@@ -63,11 +63,12 @@ class TopicView(viewsets.ModelViewSet):
     
     return Response('DO NOT USE', 200)
 
-  def destroy(self, request):
-    serializer = DeleteTopicSerializer(data = request.data)
-    if serializer.is_valid:
-      serializer.delete(serializer.data)
-      return Response('deleted', 200)
+  def destroy(self, request, pk):
+    serializer = DeleteTopicSerializer(data = {id:pk})
+    if serializer.is_valid():
+      serializer.delete(pk)
+      return Response('deleted', 204)
+    return Response('Delete Failed', 200) #consider changing status code
 
 
 
