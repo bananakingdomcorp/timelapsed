@@ -52,9 +52,13 @@ class Topic extends React.Component {
         <div className = 'nameplate'>
           <p> {this.props.board[this.props.id][0]} </p>
         </div>
-          <div className =  'topicAddCard' onClick= {this.openAddCardModal}>
-            Add a task
-          </div>
+        <div className = 'topicEdit' onClick = {this.openEditCardModal}>
+          Edit
+        </div>
+
+        <div className =  'topicAddCard' onClick= {this.openAddCardModal}>
+          Add a task
+        </div>
         {modalView}
         {editView}
       </div>

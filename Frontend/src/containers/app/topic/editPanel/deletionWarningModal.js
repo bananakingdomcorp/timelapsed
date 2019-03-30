@@ -48,7 +48,8 @@ class DeletionWarningModal extends React.Component{
        <button onClick = {this.props.closeModal}> Delete</button>
 
        <button onclick = {this.props.handleDeletion}> Cancel </button>  
-      </div>
+      </div>, 
+      this.el
 
     )
   }
