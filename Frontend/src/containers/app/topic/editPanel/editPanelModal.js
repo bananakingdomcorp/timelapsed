@@ -51,47 +51,69 @@ class EditPanelModal extends React.Component{
     this.setState({name: e.target.value})
   }
 
-  switchDropdown() {
-    this.setState({switchDropdown: true})
+  switchDropdown= () => {
+    this.setState({switchDropdownOpen: true})
 
   }
 
   setSwitchPostion= (e) => {
-    this.setState({setSwitchPostion: e.target.value})
+
+    this.setState({switchPosition: e.target.value})
     this.setState({switchDropdownOpen: false})
 
   }
 
-  handleDeletionModalOpen() {
+  clearSwitchPosition = () => {
+
+    this.setState({switchPosition: -Infinity})
+    this.setState({switchDropdownOpen: true})
+
+  }
+
+  handleDeletionModalOpen = () => {
 
     this.setState({deletionWarningModalOpen: true})
   }
 
-  handleDeletionModalClose() {
+  handleDeletionModalClose = () => {
 
     this.setState({deletionWarningModalOpen: false})
   }
 
-  handleDeletion() {
+  handleDeletion = () => {
     //Make a call to delete the topic. 
+  }
+
+  saveChanges = () => {
+
   }
 
 
   render() {
 
     let dropDown = <option onClick = {this.switchDropdown} > Select Topic  </option>
-
+    
+    
+    let dropDownClear = null;
+    
     if(this.state.switchDropdownOpen === true) {
       dropDown = []
       for (let key in this.props.board) {
-        dropDown.push(<li value = {this.props.board} onClick = {(e) => this.setSwitchPostion(e.target.value)} > {this.props.board[key][0]} </li> )
+
+        if(key !== this.props.id) {
+          dropDown.push(<li value = {key} onClick = {(e) => this.setSwitchPostion(e)} > {this.props.board[key][0]} </li> )
+        }     
       }
 
     }
 
     if(this.state.switchDropdownOpen === false && this.state.switchPosition !== -Infinity) {
-      dropDown =  <li onClick = {this.switchDropdown} > {this.props.board[this.state.switchPosition][0]} </li>
+     
+      dropDownClear = <div onClick = {this.clearSwitchPosition} > Clear </div>
+      dropDown =  <li onClick = {this.switchDropdown}  > {this.props.board[this.state.switchPosition][0]} </li>
     }
+
+
 
     let deleteModal = null;
 
@@ -111,7 +133,12 @@ class EditPanelModal extends React.Component{
           {dropDown}
         </ul>
 
+        {dropDownClear}
+
         {deleteModal}
+
+        <button onClick = {this.saveChanges}> Save </button>
+        <button onClick = {this.props.closeModal}> Cancel </button>
 
       </div>, 
       this.el
