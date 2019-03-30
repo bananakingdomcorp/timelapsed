@@ -62,6 +62,20 @@ class EditPanelModal extends React.Component{
 
   }
 
+  handleDeletionModalOpen() {
+
+    this.setState({deletionWarningModalOpen: true})
+  }
+
+  handleDeletionModalClose() {
+
+    this.setState({deletionWarningModalOpen: false})
+  }
+
+  handleDeletion() {
+    //Make a call to delete the topic. 
+  }
+
 
   render() {
 
@@ -78,8 +92,15 @@ class EditPanelModal extends React.Component{
     if(this.state.switchDropdownOpen === false && this.state.switchPosition !== -Infinity) {
       dropDown =  <li onClick = {this.switchDropdown} > {this.props.board[this.state.switchPosition][0]} </li>
     }
-    
 
+    let deleteModal = null;
+
+    if(this.state.deletionWarningModalOpen === true) {
+      deleteModal = <DeletionWarningModal closeModal ={this.handleDeletionModalClose} handleDeletion = {this.handleDeletion} />
+    }
+
+
+  
     return ReactDOM.createPortal(
       <div className = 'editPanelModal' ref = {this.editPanelModalRef}> 
         <input className = 'editPanelNameChange' onChange = {(e) => this.nameChange(e.target.value)} value = {this.state.name} />
@@ -90,7 +111,7 @@ class EditPanelModal extends React.Component{
           {this.dropdown}
         </ul>
 
-
+        {deleteModal}
 
       </div>
     )
