@@ -6,6 +6,9 @@ import {connect} from 'react-redux';
 
 import DeletionWarningModal from './deletionWarningModal';
 
+import {Api} from './../../../../djangoApi';
+
+
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -81,10 +84,21 @@ class EditPanelModal extends React.Component{
   }
 
   handleDeletion = () => {
+    Api().delete('topic', {id: this.props.id})
+    .then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        //Call our redux deletion
+      }
+    })
+
+
     //Make a call to delete the topic. 
   }
 
   saveChanges = () => {
+
+
 
   }
 
@@ -132,6 +146,8 @@ class EditPanelModal extends React.Component{
         <ul>
           {dropDown}
         </ul>
+
+        <p onClick = {this.handleDeletionModalOpen}>Delete this Topic</p>
 
         {dropDownClear}
 
