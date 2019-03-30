@@ -34,13 +34,26 @@ class EditPanelModal extends React.Component{
 
   componentWillMount() {
     ModalRoot.appendChild(this.el)
-    document.addEventListener("mousedown", this.handleClickOutside)
+    this.listenerLoader()
+    // document.addEventListener("mousedown", this.handleClickOutside)
 
   }
 
   componentWillUnmount() {
     ModalRoot.removeChild(this.el)
+    this.listenerUnLoader()
+    // document.removeEventListener("mousedown", this.handleClickOutside)
+  }
+
+
+  listenerLoader = () => {
+    document.addEventListener("mousedown", this.handleClickOutside)
+
+  }
+
+  listenerUnLoader = () => {
     document.removeEventListener("mousedown", this.handleClickOutside)
+    
   }
 
   handleClickOutside = (e) =>  {
@@ -84,6 +97,7 @@ class EditPanelModal extends React.Component{
   }
 
   handleDeletion = () => {
+    console.log('herrrr')
     Api().delete('topic', {id: this.props.id})
     .then((res) => {
       console.log(res);
@@ -132,7 +146,7 @@ class EditPanelModal extends React.Component{
     let deleteModal = null;
 
     if(this.state.deletionWarningModalOpen === true) {
-      deleteModal = <DeletionWarningModal closeModal ={this.handleDeletionModalClose} handleDeletion = {this.handleDeletion} />
+      deleteModal = <DeletionWarningModal loadParentListener = {this.listenerLoader} unloadParentListener ={this.listenerUnLoader} closeModal ={this.handleDeletionModalClose} handleDeletion = {this.handleDeletion} />
     }
 
 

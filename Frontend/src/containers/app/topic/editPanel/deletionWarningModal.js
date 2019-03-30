@@ -18,20 +18,13 @@ class DeletionWarningModal extends React.Component{
   
   componentWillMount() {
     ModalRoot.appendChild(this.el)
-    document.addEventListener("mousedown", this.handleClickOutside)
+    this.props.unloadParentListener()
 
   }
 
   componentWillUnmount() {
     ModalRoot.removeChild(this.el)
-    document.removeEventListener("mousedown", this.handleClickOutside)
-  }
-
-  handleClickOutside = (e) =>  {
-    if (!this.deleteWarningModalRef.current.contains(e.target)) {
-      this.props.closeModal();
-
-    }
+    this.props.loadParentListener()
   }
 
 
