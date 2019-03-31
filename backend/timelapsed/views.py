@@ -60,6 +60,12 @@ class TopicView(viewsets.ModelViewSet):
 
     '''
 
+    print(request.data)
+
+    
+
+
+
     
     return Response('DO NOT USE', 200)
 

@@ -51,9 +51,12 @@ export const addTopic = (name) => {
   }
 }
 
+//Maybe this should be for every board reset?
+
 export const deleteTopic = (newBoard) => {
   return {
     type: DELETE_TOPIC,
     newBoard
   }
 }
+
