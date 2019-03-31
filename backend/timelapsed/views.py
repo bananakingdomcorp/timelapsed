@@ -9,7 +9,7 @@ from django.http import JsonResponse
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicNameSerializer , DeleteTopicSerializer, EditTopicPositionSerializer, EditTopicNameAndPositionSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicSerializer , DeleteTopicSerializer
 
 import  timelapsed.services as services
 
@@ -60,16 +60,14 @@ class TopicView(viewsets.ModelViewSet):
 
     '''
 
-    nameSerializer = EditTopicNameSerializer(data= request.data)
-    if nameSerializer.is_valid():
-      print('NAME CHANGE VALID')
+    serializer = EditTopicSerializer(data = request.data)
+    if serializer.is_valid():
+      print ('valid')
+      serializer.update(serializer.data, pk)
 
-
-    print(request.data)
+    return Response('NONE VALID', 203)
 
     
-
-    return Response('DO NOT USE', 200)
 
   def destroy(self, request, pk):
     serializer = DeleteTopicSerializer(data = {id:pk})

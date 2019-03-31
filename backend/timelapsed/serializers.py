@@ -50,20 +50,18 @@ class DeleteTopicSerializer(serializers.ModelSerializer):
 
     
 
-class EditTopicNameSerializer(serializers.ModelSerializer):
-  class Meta: 
-    model = Topic
-    fields = ('Name',)
+class EditTopicSerializer(serializers.ModelSerializer):
 
+  def update(self, validated_data, pk):
 
+    #If we are only changing the name
 
-class EditTopicPositionSerializer(serializers.ModelSerializer):
-  class Meta: 
-    model = Topic
-    fields =('id',)
+    print('test')
 
+    #If we are only changing position
 
-class EditTopicNameAndPositionSerializer(serializers.ModelSerializer):
+    #If we are changing both
+
   class Meta:
     model = Topic
     fields = ('Name', 'id')
