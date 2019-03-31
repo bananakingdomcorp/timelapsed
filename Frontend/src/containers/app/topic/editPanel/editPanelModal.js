@@ -103,7 +103,12 @@ class EditPanelModal extends React.Component{
     .then((res) => {
       if (res.status === 204) {
         this.props.closeModal()
-        this.props.deleteTopic(this.props.id)
+        
+        let temp = Object.assign({}, this.props.board);
+
+        delete temp[this.props.id]
+
+        this.props.deleteTopic(temp)
         //Call our redux deletion
       }
     })
@@ -116,6 +121,41 @@ class EditPanelModal extends React.Component{
   }
 
   saveChanges = () => {
+    //If nothing has changed.
+
+    if (this.state.name === this.props.board[this.props.id][0] && this.state.switchPosition === -Infinity ) {
+      //Nothing has happened.
+
+      this.props.closeModal();
+    }
+
+    //Only the name has changed.
+
+    if (this.state.name !== this.props.board[this.props.id][0] && this.state.switchPosition === -Infinity) {
+
+      Api().update({data: {name: this.state.name}})
+      
+      //Update the store. 
+
+    }
+
+    //Only a position change.
+
+    if(this.state.name === this.props.board[this.props.id][0] && this.state.switchPosition !== -Infinity ) {
+
+      Api().update({data: { positionSwitch: this.state.switchPosition}})
+
+      //Update the store. 
+    }
+
+    //Both have changed.
+
+    if(this.state.name !== this.props.board[this.props.id][0] && this.state.switchPosition !== -Infinity) {
+
+      Api().update({data: {name: this.state.name, positionSwitch: this.state.switchPosition}})
+
+      
+    }
 
 
 

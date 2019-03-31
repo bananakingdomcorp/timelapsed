@@ -27,7 +27,7 @@ export default (state = initialState, action) => {
       }
     case DELETE_TOPIC:
       return {
-        board: action.rest
+        board: action.newBoard
       }
       
 
@@ -51,10 +51,9 @@ export const addTopic = (name) => {
   }
 }
 
-export const deleteTopic = (id) => {
-  const {[id] : value, ...rest} = this.state.board.board
+export const deleteTopic = (newBoard) => {
   return {
     type: DELETE_TOPIC,
-    rest
+    newBoard
   }
 }
