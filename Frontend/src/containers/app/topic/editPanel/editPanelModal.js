@@ -133,7 +133,7 @@ class EditPanelModal extends React.Component{
 
     if (this.state.name !== this.props.board[this.props.id][0] && this.state.switchPosition === -Infinity) {
 
-      Api().put({data: {name: this.state.name}})
+      Api().put('/topic/',{data: {name: this.state.name}})
       
       //Update the store. 
 
@@ -143,7 +143,7 @@ class EditPanelModal extends React.Component{
 
     if(this.state.name === this.props.board[this.props.id][0] && this.state.switchPosition !== -Infinity ) {
 
-      Api().put({data: { positionSwitch: this.state.switchPosition}})
+      Api().put('/topic/', {data: { positionSwitch: this.state.switchPosition}})
 
       //Update the store. 
     }
@@ -152,7 +152,7 @@ class EditPanelModal extends React.Component{
 
     if(this.state.name !== this.props.board[this.props.id][0] && this.state.switchPosition !== -Infinity) {
 
-      Api().put({data: {name: this.state.name, positionSwitch: this.state.switchPosition}})
+      Api().put( '/topic/', {data: {name: this.state.name, positionSwitch: this.state.switchPosition}})
 
 
     }
