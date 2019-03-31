@@ -39,7 +39,7 @@ class TopicView(viewsets.ModelViewSet):
   serializer_class= AddTopicSerializer
   queryset= Topic.objects.all()
   permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', 'update', 'delete']
+  http_method_names = ['post', 'update', 'put']
 
   def create (self, request):
     serializer = AddTopicSerializer(data = request.data)
@@ -62,11 +62,8 @@ class TopicView(viewsets.ModelViewSet):
 
     print(request.data)
 
-    
 
 
-
-    
     return Response('DO NOT USE', 200)
 
   def destroy(self, request, pk):
