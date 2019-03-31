@@ -59,11 +59,13 @@ class TopicView(viewsets.ModelViewSet):
     If there are not, then we are just updating a title.
 
     '''
-
+    print (request.data, 'IN VIEWSss')
     serializer = EditTopicSerializer(data = request.data)
     if serializer.is_valid():
       print ('valid')
       serializer.update(serializer.data, pk)
+    else :
+      print('INVALID')
 
     return Response('NONE VALID', 203)
 
