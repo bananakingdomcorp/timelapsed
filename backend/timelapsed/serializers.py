@@ -50,10 +50,25 @@ class DeleteTopicSerializer(serializers.ModelSerializer):
 
     
 
-class EditTopicSerializer(serializers.ModelSerializer):
+class EditTopicNameSerializer(serializers.ModelSerializer):
   class Meta: 
     model = Topic
+    fields = ('Name',)
+
+
+
+class EditTopicPositionSerializer(serializers.ModelSerializer):
+  class Meta: 
+    model = Topic
+    fields =('id',)
+
+
+class EditTopicNameAndPositionSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Topic
     fields = ('Name', 'id')
+
+
 
 class SwitchTopicSerializer(serializers.ModelSerializer):
   class Meta:

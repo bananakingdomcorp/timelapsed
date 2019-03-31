@@ -9,7 +9,7 @@ from django.http import JsonResponse
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicSerializer, DeleteTopicSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, EventSerializer, DateRangeSerializer, CardSerializer, EditTopicNameSerializer , DeleteTopicSerializer, EditTopicPositionSerializer, EditTopicNameAndPositionSerializer
 
 import  timelapsed.services as services
 
@@ -48,7 +48,7 @@ class TopicView(viewsets.ModelViewSet):
 
     return Response(created, 201)
 
-  def update(self, request):
+  def update(self, request, pk):
     '''
     How does the update work:
 
@@ -60,9 +60,14 @@ class TopicView(viewsets.ModelViewSet):
 
     '''
 
+    nameSerializer = EditTopicNameSerializer(data= request.data)
+    if nameSerializer.is_valid():
+      print('NAME CHANGE VALID')
+
+
     print(request.data)
 
-
+    
 
     return Response('DO NOT USE', 200)
 
@@ -72,19 +77,6 @@ class TopicView(viewsets.ModelViewSet):
       serializer.delete(pk)
       return Response('deleted', 204)
     return Response('Delete Failed', 200) #consider changing status code
-
-
-
-  
-
-
-class EditTopicView(viewsets.ModelViewSet):
-  serializer_class = EditTopicSerializer
-  queryset = Topic.objects.all()
-  permission_classes = (IsAuthenticated,)
-  http_method_names = ['update']
-
-
 
 
 
