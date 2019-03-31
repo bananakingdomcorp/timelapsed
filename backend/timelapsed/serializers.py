@@ -53,25 +53,39 @@ class DeleteTopicSerializer(serializers.ModelSerializer):
 class EditTopicSerializer(serializers.ModelSerializer):
   switchPosition= serializers.CharField()
 
-
+  #clean this up into services or multiple serializers. 
   def update(self, validated_data, pk):
 
-
+    record = Topic.objects.get(id = pk)
     #If we are only changing the name
 
     if('Name' in validated_data and not 'switchPosition' in validated_data):
-      
-
-      print('NAME CHANGE ONLY')
+      record.Name = validated_data['Name']
+      record.save()
+      return
 
     #If we are only changing position
     if(not 'Name' in validated_data and 'switchPosition' in validated_data):
-      print('POSITON CHANGE ONLY')
-
+      
+      otherRecord = Topic.objects.get(validated_data['switchPosition'])
+      temp = record.Position
+      record.Position = otherRecord.Position
+      otherRecord.Position = temp
+      record.save()
+      otherRecord.save()
+      return
 
     #If we are changing both
     if('Name' in validated_data and 'switchPosition' in validated_data):
-      print('BOTH')
+      record.Name = validated_data['Name']
+      otherRecord = Topic.objects.get(validated_data['switchPosition'])
+      temp = record.Position
+      record.Position = otherRecord.Position
+      otherRecord.Position = temp
+      record.save()
+      otherRecord.save()
+
+      return
 
   class Meta:
     model = Topic
