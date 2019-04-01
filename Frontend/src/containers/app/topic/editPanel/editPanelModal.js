@@ -135,10 +135,16 @@ class EditPanelModal extends React.Component{
       console.log('only name change')
 
       Api().put(`/topic/${this.props.id}/`, {Name: this.state.name})
-      
-      //Update the store. 
+      .then((res) => {
+        if (res.status === 200) {
 
+
+          //Update the store. 
+
+        }
+      })
     }
+
 
     //Only a position change.
 
@@ -146,8 +152,12 @@ class EditPanelModal extends React.Component{
       console.log('only position change')
 
       Api().put(`/topic/${this.props.id}/`, { switchPosition: this.state.switchPosition})
+      .then((res) => {
+        if (res.status === 200) {
+          //Update the store.           
+        }
+      })
 
-      //Update the store. 
     }
 
     //Both have changed.
@@ -156,11 +166,13 @@ class EditPanelModal extends React.Component{
       console.log('both change')
 
       Api().put( `/topic/${this.props.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
-
+      .then((res) => {
+        if (res.status === 200) {
+          
+        }
+      })
 
     }
-
-
 
   }
 

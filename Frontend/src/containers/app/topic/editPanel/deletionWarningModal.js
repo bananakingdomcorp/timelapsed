@@ -13,7 +13,6 @@ class DeletionWarningModal extends React.Component{
     this.deleteWarningModalRef = React.createRef();
   }
 
-  //Not sure right now if the mousedown will work correctly or not. 
 
   
   componentWillMount() {
