@@ -28,13 +28,18 @@ export default (state = initialState, action) => {
       }
     case DELETE_TOPIC:
       return {
+        ...state,
         board: action.newBoard
       }
     case CHANGE_TOPIC_NAME:
       return {
+        ...state,
         board: {
           ...state.board,
-          ...action.id[0] = action.name
+          [action.id]: {
+            ...state.board[action.id],
+            Name: action.name
+          }
         }
       }
 
@@ -76,6 +81,6 @@ export const changeTopicName = (name, id) => {
 }
 
 export const changeTopicPositions = (topic1, topic2) => {
-  
+
 }
 

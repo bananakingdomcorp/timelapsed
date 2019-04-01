@@ -14,7 +14,7 @@ def get_user_information(data):
 
   for i in test:
     cards = [i for i in Card.objects.values('Name', 'Description', 'Expected_Finish', 'id' ).filter(Topic = i['id']).order_by('Position')]
-    obj[i['id']] = [i['Name'], cards]
+    obj[i['id']] = {'Name': i['Name'], 'Cards': cards}
 
   return obj
 

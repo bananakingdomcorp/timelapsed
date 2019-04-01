@@ -8,7 +8,7 @@ import DeletionWarningModal from './deletionWarningModal';
 
 import {Api} from './../../../../djangoApi';
 
-import {deleteTopic} from './../../../../modules/board'
+import {deleteTopic, changeTopicName} from './../../../../modules/board'
 
 
 
@@ -24,7 +24,7 @@ class EditPanelModal extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      name : this.props.board[this.props.id][0],
+      name : this.props.board[this.props.id].Name,
       switchPosition: -Infinity,
       switchDropdownOpen: false,
       deletionWarningModalOpen: false
@@ -123,7 +123,7 @@ class EditPanelModal extends React.Component{
   saveChanges = () => {
     //If nothing has changed.
 
-    if (this.state.name === this.props.board[this.props.id][0] && this.state.switchPosition === -Infinity ) {
+    if (this.state.name === this.props.board[this.props.id].Name && this.state.switchPosition === -Infinity ) {
       //Nothing has happened.
 
       this.props.closeModal();
@@ -131,24 +131,25 @@ class EditPanelModal extends React.Component{
 
     //Only the name has changed.
 
-    if (this.state.name !== this.props.board[this.props.id][0] && this.state.switchPosition === -Infinity) {
+    if (this.state.name !== this.props.board[this.props.id].Name && this.state.switchPosition === -Infinity) {
       console.log('only name change')
 
       Api().put(`/topic/${this.props.id}/`, {Name: this.state.name})
       .then((res) => {
+        //Update the store. 
         if (res.status === 200) {
-
-
-          //Update the store. 
-
+          this.props.changeTopicName(this.state.name, this.props.id)
         }
+      })
+      .then(() => {
+        this.props.closeModal()
       })
     }
 
 
     //Only a position change.
 
-    if(this.state.name === this.props.board[this.props.id][0] && this.state.switchPosition !== -Infinity ) {
+    if(this.state.name === this.props.board[this.props.id].Name && this.state.switchPosition !== -Infinity ) {
       console.log('only position change')
 
       Api().put(`/topic/${this.props.id}/`, { switchPosition: this.state.switchPosition})
@@ -157,12 +158,11 @@ class EditPanelModal extends React.Component{
           //Update the store.           
         }
       })
-
     }
 
     //Both have changed.
 
-    if(this.state.name !== this.props.board[this.props.id][0] && this.state.switchPosition !== -Infinity) {
+    if(this.state.name !== this.props.board[this.props.id].Name && this.state.switchPosition !== -Infinity) {
       console.log('both change')
 
       Api().put( `/topic/${this.props.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
@@ -189,7 +189,7 @@ class EditPanelModal extends React.Component{
       for (let key in this.props.board) {
 
         if(key !== this.props.id) {
-          dropDown.push(<li value = {key} onClick = {(e) => this.setSwitchPostion(e)} > {this.props.board[key][0]} </li> )
+          dropDown.push(<li value = {key} onClick = {(e) => this.setSwitchPostion(e)} > {this.props.board[key].Name} </li> )
         }     
       }
 
@@ -198,7 +198,7 @@ class EditPanelModal extends React.Component{
     if(this.state.switchDropdownOpen === false && this.state.switchPosition !== -Infinity) {
      
       dropDownClear = <div onClick = {this.clearSwitchPosition} > Clear </div>
-      dropDown =  <li onClick = {this.switchDropdown}  > {this.props.board[this.state.switchPosition][0]} </li>
+      dropDown =  <li onClick = {this.switchDropdown}  > {this.props.board[this.state.switchPosition].Name} </li>
     }
 
 
@@ -246,8 +246,8 @@ function mapStateToProps(state) {
 }
 
 const matchDispatchToProps = {
-  deleteTopic
-
+  deleteTopic,
+  changeTopicName
 }
 
 
