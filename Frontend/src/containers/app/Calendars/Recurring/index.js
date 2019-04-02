@@ -20,12 +20,12 @@ class RecurringCalender extends React.Component {
     this.dailyCalender = null;
   }
 
-  selectDay  (day) {
-
+  selectDay =  (day) => {
+    console.log(day)
     //Open daily calendar
     this.setState({dailyCalendarOpen: true});
 
-    this.dailyCalender = <DailyCalendar day = {day} />
+    // this.dailyCalender = <DailyCalendar day = {day} />
 
 
   }
@@ -41,6 +41,7 @@ class RecurringCalender extends React.Component {
       {theWeek.map((date) => {
         return (
           <Day name = {date} selectDay = {this.selectDay} selected = {this.state.selected} /> 
+          // <div>{date}</div>
         )
       })}
       {this.dailyCalender}

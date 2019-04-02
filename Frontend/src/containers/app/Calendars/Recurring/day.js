@@ -10,7 +10,7 @@ class Day extends React.Component {
 
 
     return (
-      <div className = 'recurringCalenderDay' onClick = {this.props.selectDay(this.props.name)}>
+      <div className = 'recurringCalenderDay' onClick = {() => this.props.selectDay(this.props.name)}>
       {this.props.name}
       </div>
 
