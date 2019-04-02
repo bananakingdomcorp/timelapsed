@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Chrono from 'chrono-node'
 
 
 class Selector extends React.Component {
@@ -9,24 +8,21 @@ class Selector extends React.Component {
     this.state = {
       start: '',
       end: '',
-      meantStart: '',
-      meantEnd: ''
     }
 
   }
 
   handleStartChange = (e) => {
-    this.setState = {start: e.target.value}
-
-  this.setState({meantStart: Chrono.parse(e.target.value)})
-
+    this.setState({start: e.target.value} )
 
   }
 
-  handleEndChange = (e) => {
-    this.setState = {end: e.target.value}
 
-    this.setState({meantEnd: Chrono.parse(e.target.value)})
+
+  handleEndChange = (e) => {
+    console.log(e)
+    this.setState({end: e.target.value})
+
 
 
 
@@ -37,16 +33,13 @@ class Selector extends React.Component {
     return (
       <div>
 
-        Enter a start time. Just type in the time that you want, and we will figure out the rest.
+        Enter a start time.
 
-        <input value = {this.state.start} onChange = {(e) => this.handleStartChange(e.target.value)}  />
-        Did you mean: {this.state.meantStart} ???
+        <input type = 'time' > </input>
 
-        Enter and end time
+        Enter an end time
 
-        <input value = {this.state.end} onChange = {(e) => {this.handleEndChange(e.target.value)}} />
-        Did you mean: {this.state.meantEnd} ????
-
+        <input type = 'time'> </input>
 
         <button onClick = {this.handleSave}>Save</button>
 
