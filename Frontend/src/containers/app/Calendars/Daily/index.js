@@ -63,6 +63,8 @@ class DailyCalendar extends React.Component {
         Add a time:
 
         <Selector addTime = {this.addTime} />
+
+        <button>Exit </button>
         
       </div>,
       this.el

@@ -43,7 +43,7 @@ class TopicView(viewsets.ModelViewSet):
   serializer_class= AddTopicSerializer
   queryset= Topic.objects.all()
   permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', 'update', 'put']
+  http_method_names = ['post', 'update', 'put', 'delete']
 
   def create (self, request):
     serializer = AddTopicSerializer(data = request.data)

@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
       return {
         board: [
           ...state.board,
-          ...action.name
+          action.name
         ]
           
         
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
     case DELETE_TOPIC:
       return {
         ...state,
-        board: action.newBoard
+        board: state.board.filter(item => item.Data.id !== action.id)
       }
     case CHANGE_TOPIC_NAME:
       let fixedName = state.board.map((item, index) => {
@@ -84,10 +84,10 @@ export const addTopic = (name) => {
 
 //Maybe this should be for every board reset?
 
-export const deleteTopic = (newBoard) => {
+export const deleteTopic = (id) => {
   return {
     type: DELETE_TOPIC,
-    newBoard
+    id
   }
 }
 

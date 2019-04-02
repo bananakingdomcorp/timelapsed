@@ -103,12 +103,7 @@ class EditPanelModal extends React.Component{
     .then((res) => {
       if (res.status === 204) {
         this.props.closeModal()
-        
-        let temp = Object.assign({}, this.props.board);
-
-        delete temp[this.props.id]
-
-        this.props.deleteTopic(temp)
+        this.props.deleteTopic(this.props.board[this.props.id].Data.id)
         //Call our redux deletion
       }
     })

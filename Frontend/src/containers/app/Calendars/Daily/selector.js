@@ -41,15 +41,15 @@ class Selector extends React.Component {
 
         Enter a start time.
 
-        <input type = 'time' onChange={(e) => {this.setState({start:e.target.value})}} />
+        <input type = 'time' onChange={(e) => {this.setState({start:e.target.value})}} value= {this.state.start} />
 
         Enter an end time
 
-        <input type = 'time' onChange={(e) => {this.setState({end:e.target.value})}} />
+        <input type = 'time' onChange={(e) => {this.setState({end:e.target.value})}} value = {this.state.end} />
 
         <div className = 'selectorErrorMessage'> {this.state.errorMessage} </div>
 
-        <button onClick = {this.handleSave} >Save</button>
+        <button onClick = {this.handleSave} >Save Time</button>
 
 
       </div>
