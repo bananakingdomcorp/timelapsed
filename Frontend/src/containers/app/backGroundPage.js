@@ -77,7 +77,6 @@ class BackGroundPage extends React.Component {
         {googs}
 
         { this.props.board.map((item, index) => {
-          console.log(index, 'PROBLEM')
           return (<div className = 'topic'> <Topic id = {index} key = {index} /> </div>)
         })
 

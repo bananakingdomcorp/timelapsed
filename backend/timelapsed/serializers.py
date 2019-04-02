@@ -68,6 +68,8 @@ class EditTopicSerializer(serializers.ModelSerializer):
 
     #If we are only changing position
     if(not 'Name' in validated_data and 'switchPosition' in validated_data):
+
+      print('HELLO, FIRST', validated_data)
       otherRecord = Topic.objects.get(id = validated_data['switchPosition'])
       temp = record.Position
       record.Position = otherRecord.Position

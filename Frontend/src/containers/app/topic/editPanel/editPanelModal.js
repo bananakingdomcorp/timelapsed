@@ -8,7 +8,7 @@ import DeletionWarningModal from './deletionWarningModal';
 
 import {Api} from './../../../../djangoApi';
 
-import {deleteTopic, changeTopicName} from './../../../../modules/board'
+import {deleteTopic, changeTopicName, changeTopicPositions, changeTopicAndPosition} from './../../../../modules/board'
 
 
 
@@ -149,18 +149,24 @@ class EditPanelModal extends React.Component{
       })
     }
 
-
     //Only a position change.
+    
+    let position = this.props.board[this.state.switchPosition].Data.id
+
 
     if(this.state.name === this.props.board[this.props.id].Data.Name && this.state.switchPosition !== -Infinity ) {
-      console.log('only position change')
 
-      Api().put(`/topic/${this.props.board[this.props.id].Data.id}/`, { switchPosition: this.state.switchPosition})
+      Api().put(`/topic/${this.props.board[this.props.id].Data.id}/`, { switchPosition: position})
       .then((res) => {
         if (res.status === 200) {
-
-          //Update the store.           
+          this.props.changeTopicPositions(this.props.id, this.state.switchPosition)
         }
+      })
+      .then(() => {
+        this.props.closeModal()
+      })
+      .catch((err) => {
+        console.log(err)
       })
     }
 
@@ -172,8 +178,14 @@ class EditPanelModal extends React.Component{
       Api().put( `/topic/${this.props.board[this.props.id].Data.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
       .then((res) => {
         if (res.status === 200) {
-          
+          this.props.changeTopicAndPosition(this.state.name, this.props.id, this.props.id, this.state.switchPosition)
         }
+      })
+      .then(() => {
+        this.props.closeModal()
+      })
+      .catch((err) => {
+        console.log(err)
       })
 
     }
@@ -251,7 +263,9 @@ function mapStateToProps(state) {
 
 const matchDispatchToProps = {
   deleteTopic,
-  changeTopicName
+  changeTopicName,
+  changeTopicPositions,
+  changeTopicAndPosition
 }
 
 

@@ -31,7 +31,7 @@ export default (state = initialState, action) => {
         board: action.newBoard
       }
     case CHANGE_TOPIC_NAME:
-      let fixed = state.board.map((item, index) => {
+      let fixedName = state.board.map((item, index) => {
         if (index ===action.id) {
           return {...state.board.item, Data: {...item.Data, Name: action.name}}
         } else {
@@ -40,7 +40,26 @@ export default (state = initialState, action) => {
       })
       return {
         ...state,
-        board: fixed
+        board: fixedName
+      }
+
+    case CHANGE_TOPIC_POSITIONS:
+      let saveOne = state.board[action.topic1];
+      let saveTwo = state.board[action.topic2];
+
+      let fixedPosition = state.board.map((item, index) => {
+        if (index === action.topic2) {
+          return saveOne;
+        }
+        if (index === action.topic1) {
+          return saveTwo;
+        }
+        return item;
+      })
+
+      return {
+        ...state,
+        board: fixedPosition
       }
 
 
@@ -81,6 +100,18 @@ export const changeTopicName = (name, id) => {
 }
 
 export const changeTopicPositions = (topic1, topic2) => {
+  return {
+    type: CHANGE_TOPIC_POSITIONS,
+    topic1,
+    topic2
+  }
 
 }
 
+export const changeTopicAndPosition = (name, id, topic1, topic2) => {
+  return dispatch => {
+    dispatch(CHANGE_TOPIC_NAME(name, id))
+    dispatch(CHANGE_TOPIC_POSITIONS(topic1,topic2))
+}
+
+}
