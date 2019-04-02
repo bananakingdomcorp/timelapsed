@@ -8,6 +8,7 @@ import Axios from 'axios';
 import {clientId, clientSecret} from '../../djangoSecrets';
 import {Api} from  './../../djangoApi'
 import {setBoard} from '../../modules/board';
+import LoginPage from './loginPage';
 
 class BackGroundPage extends React.Component {
   constructor(props) {
@@ -61,15 +62,7 @@ class BackGroundPage extends React.Component {
 
     if(this.props.token === '') {
       googs =
-      <div className = 'googleModal'>
-        <GoogleLogin
-          clientId="346085700873-dsg2gea98rmschm8f1pm4kt8u0f9av3f.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-        />
-
-     </div>
+      <LoginPage onSuccess = {this.responseGoogle} onFailure = {this.responseGoogle} />
     }
 
     return (

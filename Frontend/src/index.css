@@ -278,3 +278,19 @@ body {
   border-width: 5px;
 
 }
+
+
+.loginPage {
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  position: absolute;
+  background: white;
+  text-align: center
+}
+
+.loginPage p {
+  margin-top: 20%;
+  font-size: 3vh;
+
+}

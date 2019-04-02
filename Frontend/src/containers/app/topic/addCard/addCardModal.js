@@ -51,7 +51,7 @@ class AddCardModal extends React.Component {
   addCard = () =>  {
     console.log('cardAddTesting')
 
-    //Here we are going to simply add to our redux store one card. Yay!
+    //Here we are going to simply add to our redux store one card.
 
   }
 

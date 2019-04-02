@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import Selector from './selector'
 
 
 class DailyCalendar extends React.Component {
@@ -12,6 +13,12 @@ class DailyCalendar extends React.Component {
   }
 
   //Show existing times for this date. 
+
+  addTime = (time) => {
+
+    this.setState({times: [...this.state.times, time  ]})
+
+  }
 
 
 
@@ -29,9 +36,7 @@ class DailyCalendar extends React.Component {
 
         Add a time:
 
-        
-
-
+        <Selector addTime = {this.addTime} />
         
       </div>
     )
