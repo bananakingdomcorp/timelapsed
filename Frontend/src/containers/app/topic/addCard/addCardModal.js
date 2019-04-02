@@ -97,6 +97,17 @@ class AddCardModal extends React.Component {
     this.setState({optionOpen: true})
   }
 
+  
+  listenerLoader = () => {
+    document.addEventListener("mousedown", this.handleClickOutside)
+
+  }
+
+  listenerUnLoader = () => {
+    document.removeEventListener("mousedown", this.handleClickOutside)
+    
+  }
+
   render() {
 
     let options = null;
@@ -166,12 +177,12 @@ class AddCardModal extends React.Component {
     let secondCalendar = null;
 
     if(this.state.selectedOption == 'Recurring') {
-      firstCalendar = <RecurringCalender/>
+      firstCalendar = <RecurringCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader}/>
     }
 
     if(this.state.selectedOption === 'Timed') {
-      firstCalendar = <RecurringCalender/>
-      secondCalendar = <MonthlyCalender />
+      firstCalendar = <RecurringCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
+      secondCalendar = <MonthlyCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
     }
 
 

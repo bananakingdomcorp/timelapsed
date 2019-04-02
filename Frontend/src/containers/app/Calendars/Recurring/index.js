@@ -25,7 +25,7 @@ class RecurringCalender extends React.Component {
     //Open daily calendar
     this.setState({dailyCalendarOpen: true});
 
-    // this.dailyCalender = <DailyCalendar day = {day} />
+    this.dailyCalender = <DailyCalendar day = {day} listenerLoader = {this.props.listenerLoader} listenerUnLoader = {this.props.listenerUnLoader} />
 
 
   }

@@ -12,6 +12,19 @@ class DailyCalendar extends React.Component {
 
   }
 
+  //When this page loads, we unload our previous modal listeners, and put some here. The ones here simply close the page if click off of.
+
+  componentWillMount() {
+
+    this.props.listenerUnLoader()
+
+  }
+
+  componentWillUnmount() {
+
+    this.props.listenerUnLoader()
+  }
+
   //Show existing times for this date. 
 
   addTime = (time) => {
