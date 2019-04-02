@@ -175,7 +175,7 @@ class EditPanelModal extends React.Component{
     if(this.state.name !== this.props.board[this.props.id].Data.Name && this.state.switchPosition !== -Infinity) {
       console.log('both change')
 
-      Api().put( `/topic/${this.props.board[this.props.id].Data.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
+      Api().put( `/topic/${this.props.board[this.props.id].Data.id}/`, {Name: this.state.name, switchPosition: position})
       .then((res) => {
         if (res.status === 200) {
           this.props.changeTopicAndPosition(this.state.name, this.props.id, this.props.id, this.state.switchPosition)

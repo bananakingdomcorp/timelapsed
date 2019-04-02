@@ -110,8 +110,8 @@ export const changeTopicPositions = (topic1, topic2) => {
 
 export const changeTopicAndPosition = (name, id, topic1, topic2) => {
   return dispatch => {
-    dispatch(CHANGE_TOPIC_NAME(name, id))
-    dispatch(CHANGE_TOPIC_POSITIONS(topic1,topic2))
+    dispatch(changeTopicName(name, id))
+    dispatch(changeTopicPositions(topic1,topic2))
 }
 
 }
