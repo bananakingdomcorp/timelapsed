@@ -24,7 +24,7 @@ class EditPanelModal extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      name : this.props.board[this.props.id].Name,
+      name : this.props.board[this.props.id].Data.Name,
       switchPosition: -Infinity,
       switchDropdownOpen: false,
       deletionWarningModalOpen: false
@@ -123,7 +123,7 @@ class EditPanelModal extends React.Component{
   saveChanges = () => {
     //If nothing has changed.
 
-    if (this.state.name === this.props.board[this.props.id].Name && this.state.switchPosition === -Infinity ) {
+    if (this.state.name === this.props.board[this.props.id].Data.Name && this.state.switchPosition === -Infinity ) {
       //Nothing has happened.
 
       this.props.closeModal();
@@ -131,7 +131,7 @@ class EditPanelModal extends React.Component{
 
     //Only the name has changed.
 
-    if (this.state.name !== this.props.board[this.props.id].Name && this.state.switchPosition === -Infinity) {
+    if (this.state.name !== this.props.board[this.props.id].Date.Name && this.state.switchPosition === -Infinity) {
       console.log('only name change')
 
       Api().put(`/topic/${this.props.id}/`, {Name: this.state.name})
@@ -152,13 +152,13 @@ class EditPanelModal extends React.Component{
 
     //Only a position change.
 
-    if(this.state.name === this.props.board[this.props.id].Name && this.state.switchPosition !== -Infinity ) {
+    if(this.state.name === this.props.board[this.props.id].Data.Name && this.state.switchPosition !== -Infinity ) {
       console.log('only position change')
 
       Api().put(`/topic/${this.props.id}/`, { switchPosition: this.state.switchPosition})
       .then((res) => {
         if (res.status === 200) {
-          
+
           //Update the store.           
         }
       })
@@ -166,7 +166,7 @@ class EditPanelModal extends React.Component{
 
     //Both have changed.
 
-    if(this.state.name !== this.props.board[this.props.id].Name && this.state.switchPosition !== -Infinity) {
+    if(this.state.name !== this.props.board[this.props.id].Date.Name && this.state.switchPosition !== -Infinity) {
       console.log('both change')
 
       Api().put( `/topic/${this.props.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
@@ -193,7 +193,7 @@ class EditPanelModal extends React.Component{
       for (let key in this.props.board) {
 
         if(key !== this.props.id) {
-          dropDown.push(<li value = {key} onClick = {(e) => this.setSwitchPostion(e)} > {this.props.board[key].Name} </li> )
+          dropDown.push(<li value = {key} onClick = {(e) => this.setSwitchPostion(e)} > {this.props.board[key].Data.Name} </li> )
         }     
       }
 
@@ -202,7 +202,7 @@ class EditPanelModal extends React.Component{
     if(this.state.switchDropdownOpen === false && this.state.switchPosition !== -Infinity) {
      
       dropDownClear = <div onClick = {this.clearSwitchPosition} > Clear </div>
-      dropDown =  <li onClick = {this.switchDropdown}  > {this.props.board[this.state.switchPosition].Name} </li>
+      dropDown =  <li onClick = {this.switchDropdown}  > {this.props.board[this.state.switchPosition].Data.Name} </li>
     }
 
 

@@ -50,7 +50,7 @@ class Topic extends React.Component {
     return (
       <div >
         <div className = 'nameplate'>
-          <p> {this.props.board[this.props.id].Name} </p>
+          <p> {this.props.board[this.props.id].Data.Name} </p>
         </div>
         <div className = 'topicEdit' onClick = {this.openEditCardModal}>
           Edit
