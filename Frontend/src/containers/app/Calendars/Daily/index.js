@@ -57,7 +57,7 @@ class DailyCalendar extends React.Component {
         Existing Times for {this.props.day}:
 
         {this.state.times.map((time) => {
-          return <div> Time Start: ${time.start} ---- Time End: ${time.end} </div>
+          return <div> Time Start: {time[0]} ---- Time End: {time[1]} </div>
         })}
 
         Add a time:
