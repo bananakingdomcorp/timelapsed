@@ -8,26 +8,20 @@ class Selector extends React.Component {
     this.state = {
       start: '',
       end: '',
+      errorMessage: ''
     }
 
   }
 
-  handleStartChange = (e) => {
-    this.setState({start: e.target.value} )
+  handleSave = () => {
 
-  }
-
-
-
-  handleEndChange = (e) => {
-    console.log(e)
-    this.setState({end: e.target.value})
-
-
+    if(this.state.start === '' || this.state.end === '' ) {
+      this.setState({errorMessage: 'Please make sure that you have provided both a start and an end time.'})
+    }
+    console.log(this.state.end - this.state.start)
 
 
   }
-
 
   render() {
     return (
@@ -35,13 +29,14 @@ class Selector extends React.Component {
 
         Enter a start time.
 
-        <input type = 'time' > </input>
+        <input type = 'time' onChange={(e) => {this.setState({start:e.target.value})}} />
 
         Enter an end time
 
-        <input type = 'time'> </input>
+        <input type = 'time' onChange={(e) => {this.setState({end:e.target.value})}} />
 
-        <button onClick = {this.handleSave}>Save</button>
+        <div className = 'selectorErrorMessage'> {this.state.errorMessage} </div>
+        <button onClick = {this.handleSave} >Save</button>
 
 
       </div>
