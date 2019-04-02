@@ -144,6 +144,9 @@ class EditPanelModal extends React.Component{
       .then(() => {
         this.props.closeModal()
       })
+      .catch((err) => {
+        console.log(err)
+      })
     }
 
 
@@ -155,6 +158,7 @@ class EditPanelModal extends React.Component{
       Api().put(`/topic/${this.props.id}/`, { switchPosition: this.state.switchPosition})
       .then((res) => {
         if (res.status === 200) {
+          
           //Update the store.           
         }
       })

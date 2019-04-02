@@ -23,7 +23,6 @@ export default (state = initialState, action) => {
       }
     case SET_BOARD:
       return{
-        ...state,
         board: action.board
       }
     case DELETE_TOPIC:

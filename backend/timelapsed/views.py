@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
@@ -27,6 +29,8 @@ class UsersView(viewsets.ModelViewSet):
     if not serializer.is_valid():
       info = services.get_user_information(serializer.data)
       #Returning information about an exising record.
+
+      # return Response(json.dumps(info, cls=DjangoJSONEncoder), 200)
       return Response(info, 200)
 
       #We created a new record
@@ -63,6 +67,7 @@ class TopicView(viewsets.ModelViewSet):
     if serializer.is_valid():
       serializer.update(serializer.data, pk)
       return Response('updated', 200)
+    print(serializer.errors)
 
     return Response('NONE VALID', 200) #consider adding a default failure status code. 
 

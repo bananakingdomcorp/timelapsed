@@ -7,15 +7,19 @@ def get_user_information(data):
 
   test = [i for i in Topic.objects.values('Name', 'id').filter(Email = data['Email']).order_by('Position') ]
 
-  obj = OrderedDict()
+  arr = []
+
+  arr.append
+  # print(test)
 
   #Using an ordered Dictionary lets you get more from having a positional element. 
 
 
   for i in test:
     cards = [i for i in Card.objects.values('Name', 'Description', 'Expected_Finish', 'id' ).filter(Topic = i['id']).order_by('Position')]
-    obj[i['id']] = {'Name': i['Name'], 'Cards': cards}
-
-  return obj
+    arr.append( {'Data' : {'id': i[id], 'Name': i['Name'], 'Cards': cards}} )
+    
+  print(arr)
+  return arr
 
   

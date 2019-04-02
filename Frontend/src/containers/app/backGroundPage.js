@@ -42,7 +42,8 @@ class BackGroundPage extends React.Component {
 
           if (res.status === 200) {
             //From here we need to make a redux call that both organizes as well as writes our information to the board. 
-            this.props.setBoard(res.data)
+            console.log(res.data)
+            this.props.setBoard(res.data[0])
 
 
             
