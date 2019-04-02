@@ -1,7 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Selector from './selector'
+import ReactDOM from 'react-dom'
 
+
+const ModalRoot = document.querySelector('#modal-root-two')
 
 class DailyCalendar extends React.Component {
   constructor(props){
@@ -9,23 +12,33 @@ class DailyCalendar extends React.Component {
     this.state = {
       times: []
     }
-
+    this.el = document.createElement('div');
+    this.dailyCalendarModalRef = React.createRef();
   }
 
   //When this page loads, we unload our previous modal listeners, and put some here. The ones here simply close the page if click off of.
 
   componentWillMount() {
-
+    ModalRoot.appendChild(this.el)
     this.props.listenerUnLoader()
-
+    document.addEventListener("mousedown", this.handleClickOutside)
   }
 
   componentWillUnmount() {
+    ModalRoot.removeChild(this.el)
+    this.props.listenerLoader()
+    document.removeEventListener("mousedown", this.handleClickOutside)
+  }
+  //Show existing times for this date. 
 
-    this.props.listenerUnLoader()
+  handleClickOutside = (e) =>  {
+    if (!this.dailyCalendarModalRef.current.contains(e.target)) {
+      this.props.closeModal();
+
+    }
   }
 
-  //Show existing times for this date. 
+
 
   addTime = (time) => {
 
@@ -39,7 +52,7 @@ class DailyCalendar extends React.Component {
 
 
 
-    return (
+    return ReactDOM.createPortal(
       <div>
         Existing Times for {this.props.day}:
 
@@ -51,7 +64,9 @@ class DailyCalendar extends React.Component {
 
         <Selector addTime = {this.addTime} />
         
-      </div>
+      </div>,
+      this.el
+
     )
   }
 }

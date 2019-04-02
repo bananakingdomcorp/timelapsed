@@ -15,24 +15,38 @@ class RecurringCalender extends React.Component {
     this.state = {
       selected : [],
       dailyCalendarOpen: false,
+      currentDay : ''
 
     }
-    this.dailyCalender = null;
   }
 
   selectDay =  (day) => {
     console.log(day)
     //Open daily calendar
-    this.setState({dailyCalendarOpen: true});
-
-    this.dailyCalender = <DailyCalendar day = {day} listenerLoader = {this.props.listenerLoader} listenerUnLoader = {this.props.listenerUnLoader} />
+    this.setState({dailyCalendarOpen: true, currentDay : day});
 
 
+  }
+
+  closeModal = () => {
+
+    this.setState({dailyCalendarOpen: false})
+ 
   }
 
   render() {
 
     let theWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+    let dailyCalender = null;
+
+    if (this.state.dailyCalendarOpen === true) {
+
+      dailyCalender = <DailyCalendar closeModal = {this.closeModal} day = {this.state.currentDay} listenerLoader = {this.props.listenerLoader} listenerUnLoader = {this.props.listenerUnLoader} />
+
+    }
+
+
 
 
     return (
@@ -44,7 +58,7 @@ class RecurringCalender extends React.Component {
           // <div>{date}</div>
         )
       })}
-      {this.dailyCalender}
+      {dailyCalender}
       </div>
     )
   }
