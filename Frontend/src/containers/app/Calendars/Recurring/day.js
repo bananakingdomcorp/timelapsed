@@ -7,12 +7,10 @@ class Day extends React.Component {
 
   render() {
 
-    if(this.props.selected.contains(this.props.name)) {
-      
-    }
+
 
     return (
-      <div className = 'recurringCalenderDay'>
+      <div className = 'recurringCalenderDay' onClick = {this.props.selectDay(this.props.name)}>
       {this.props.name}
       </div>
 

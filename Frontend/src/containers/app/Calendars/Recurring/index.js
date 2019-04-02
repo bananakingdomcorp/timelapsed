@@ -4,15 +4,25 @@ import {connect} from 'react-redux';
 
 import Day from './day'
 
+import Chrono from 'chrono-node';
+
+
 class RecurringCalender extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected : []
+      selected : [],
+      dailyCalendarOpen: false,
+
     }
+    this.dailyCalender = null;
   }
 
-  selectDay  () {
+  selectDay  (day) {
+
+    //Open daily calendar
+
+    
 
 
   }
@@ -22,17 +32,15 @@ class RecurringCalender extends React.Component {
     let theWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-
-
-
     return (
       <div className = 'recurringCalendar'>
 
       {theWeek.map((date) => {
         return (
-          <Day name = {date} selected = {this.state.selected} /> 
+          <Day name = {date} selectDay = {this.selectDay} selected = {this.state.selected} /> 
         )
       })}
+      {this.dailyCalender}
       </div>
     )
   }
