@@ -29,8 +29,7 @@ class AddTopicSerializer(serializers.ModelSerializer):
     pos = Topic.objects.values('Position').filter(Email = user).order_by('-Position').first()
 
     n = Topic.objects.create(Name = validated_data['Name'], Position = pos['Position'] + 1, Email = Users.objects.get(Email = user))
-    return({n.id: {'Name': validated_data['Name'], 'Cards': [] }})
-    # return ({'Name' : validated_data['Name'], 'id': str(n.id)})
+    return({'Data': {'id': n.id, 'Name': validated_data['Name'], 'Cards': [] }})
 
   class Meta:
     model = Topic

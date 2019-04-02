@@ -42,7 +42,6 @@ class BackGroundPage extends React.Component {
 
           if (res.status === 200) {
             //From here we need to make a redux call that both organizes as well as writes our information to the board. 
-            console.log(res)
             this.props.setBoard(res.data)
     
           }
@@ -77,9 +76,9 @@ class BackGroundPage extends React.Component {
       <div>
         {googs}
 
-        { Object.keys(this.props.board).map((item) => {
-          console.log(item)
-          return (<div className = 'topic'> <Topic id = {item} key = {item} /> </div>)
+        { this.props.board.map((item, index) => {
+          console.log(index, 'PROBLEM')
+          return (<div className = 'topic'> <Topic id = {index} key = {index} /> </div>)
         })
 
         }

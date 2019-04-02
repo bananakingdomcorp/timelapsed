@@ -7,19 +7,19 @@ export const CHANGE_TOPIC_POSITIONS = 'board/CHANGE_TOPIC_POSITIONS'
 
 
 const initialState = {
-  board: {},
-  count: 0
+  board: [],
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TOPIC:
       return {
-        board: {
+        board: [
           ...state.board,
           ...action.name
+        ]
           
-        }
+        
       }
     case SET_BOARD:
       return{
@@ -31,15 +31,16 @@ export default (state = initialState, action) => {
         board: action.newBoard
       }
     case CHANGE_TOPIC_NAME:
+      let fixed = state.board.map((item, index) => {
+        if (index ===action.id) {
+          return {...state.board.item, Data: {...item.Data, Name: action.name}}
+        } else {
+          return item;
+        }
+      })
       return {
         ...state,
-        board: {
-          ...state.board,
-          [action.id]: {
-            ...state.board[action.id],
-            Name: action.name
-          }
-        }
+        board: fixed
       }
 
 

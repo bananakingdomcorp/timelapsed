@@ -99,7 +99,7 @@ class EditPanelModal extends React.Component{
   }
 
   handleDeletion = () => {
-    Api().delete(`/topic/${this.props.id}/`)
+    Api().delete(`/topic/${this.props.board[this.props.id].Data.id}/`)
     .then((res) => {
       if (res.status === 204) {
         this.props.closeModal()
@@ -131,10 +131,10 @@ class EditPanelModal extends React.Component{
 
     //Only the name has changed.
 
-    if (this.state.name !== this.props.board[this.props.id].Date.Name && this.state.switchPosition === -Infinity) {
-      console.log('only name change')
+    if (this.state.name !== this.props.board[this.props.id].Data.Name && this.state.switchPosition === -Infinity) {
 
-      Api().put(`/topic/${this.props.id}/`, {Name: this.state.name})
+
+      Api().put(`/topic/${this.props.board[this.props.id].Data.id}/`, {Name: this.state.name})
       .then((res) => {
         //Update the store. 
         if (res.status === 200) {
@@ -155,7 +155,7 @@ class EditPanelModal extends React.Component{
     if(this.state.name === this.props.board[this.props.id].Data.Name && this.state.switchPosition !== -Infinity ) {
       console.log('only position change')
 
-      Api().put(`/topic/${this.props.id}/`, { switchPosition: this.state.switchPosition})
+      Api().put(`/topic/${this.props.board[this.props.id].Data.id}/`, { switchPosition: this.state.switchPosition})
       .then((res) => {
         if (res.status === 200) {
 
@@ -166,10 +166,10 @@ class EditPanelModal extends React.Component{
 
     //Both have changed.
 
-    if(this.state.name !== this.props.board[this.props.id].Date.Name && this.state.switchPosition !== -Infinity) {
+    if(this.state.name !== this.props.board[this.props.id].Data.Name && this.state.switchPosition !== -Infinity) {
       console.log('both change')
 
-      Api().put( `/topic/${this.props.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
+      Api().put( `/topic/${this.props.board[this.props.id].Data.id}/`, {Name: this.state.name, switchPosition: this.state.switchPosition})
       .then((res) => {
         if (res.status === 200) {
           
