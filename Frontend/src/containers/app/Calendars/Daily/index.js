@@ -53,7 +53,7 @@ class DailyCalendar extends React.Component {
 
 
     return ReactDOM.createPortal(
-      <div>
+      <div className = 'dailyCalendarModal' ref = {this.dailyCalendarModalRef}>
         Existing Times for {this.props.day}:
 
         {this.state.times.map((time) => {
