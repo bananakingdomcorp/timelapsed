@@ -6,6 +6,8 @@ import Day from './day'
 
 import Chrono from 'chrono-node';
 
+import DailyCalendar from './../Daily/index'
+
 
 class RecurringCalender extends React.Component {
   constructor(props) {
@@ -21,8 +23,9 @@ class RecurringCalender extends React.Component {
   selectDay  (day) {
 
     //Open daily calendar
+    this.setState({dailyCalendarOpen: true});
 
-    
+    this.dailyCalender = <DailyCalendar day = {day} />
 
 
   }
