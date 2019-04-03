@@ -89,7 +89,8 @@ class Date_Range(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
-    Date = models.DateField()
+    Begin_Date = models.DateField()
+    End_Date = models.DateField(null = True)
     Begin_Time = models.TimeField()
     End_Time = models.TimeField()
 
