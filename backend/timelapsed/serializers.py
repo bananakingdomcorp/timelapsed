@@ -112,4 +112,4 @@ class EventSerializer(serializers.ModelSerializer):
 class DateRangeSerializer(serializers.ModelSerializer):
   class Meta:
     model = Date_Range
-    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Date', 'Begin_Time', 'End_Time')
+    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time', 'Day')

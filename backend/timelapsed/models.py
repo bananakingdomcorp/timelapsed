@@ -89,6 +89,7 @@ class Date_Range(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
+    Day = models.TextField(max_length=100, default = 'Sunday')
     Begin_Date = models.DateField()
     End_Date = models.DateField(null = True)
     Begin_Time = models.TimeField()
@@ -108,10 +109,13 @@ class Date_Range(models.Model):
         on_delete=models.CASCADE, related_name="dateranges", null=True
     )
     def save(self, *args, **kwargs):
+      days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       if not self.Event_ID and not self.Card_ID:
         raise Exception("You can't leave both fields as null")
       if self.Event_ID and self.Card_ID:
         raise Exception("You have to have one field as null")
+      if self.Day not in days:
+        raise Exception("You are not entering a valid day of the week")
       super().save(*args, **kwargs)
 
     class Meta:
