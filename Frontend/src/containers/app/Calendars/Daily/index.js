@@ -136,6 +136,14 @@ class DailyCalendar extends React.Component {
 
   }
 
+  submitTimes = () => {
+    if (this.state.times.length !== 0) {
+      this.props.addTimes(this.state.times)
+
+    }
+    this.props.closeModal()
+  }
+
 
   render() {
 
@@ -154,7 +162,7 @@ class DailyCalendar extends React.Component {
 
         <Selector addTime = {this.addTime} />
 
-        <button>Finished </button>
+        <button onClick = {this.submitTimes}>Finished </button>
         
       </div>,
       this.el
