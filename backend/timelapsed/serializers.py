@@ -20,15 +20,31 @@ class CreateCardDataSerializer(serializers.Serializer):
   Description: serializers.CharField(source = 'Data_Description')
 
 
+class DateRangeSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Date_Range
+    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time', 'Day')
+
+
+
+class CreateCardTimesListSerializer(serializers.ListField):
+  child = serializers.CharField()
+
+
+
 
 
 class CreateCardSerializer(serializers.ModelSerializer):
 
-  Data = CreateCardDataSerializer(source = '*')
+  Data = CreateCardDataSerializer(source = './Data')
+  Times = CreateCardTimesListSerializer(source = './Cards')
 
   def create(self, validated_data, user):
 
-    Topic.objects.create(Name = validated_data['Name'], Description = validated_data['Description'], Position = Topic.objects.values('Position').filter(Email = user).order_by(-'Position').first(), Email = Users.objects.get(Email = user))
+    n =  Topic.objects.create(Name = validated_data['Name'], Description = validated_data['Description'], Position = Topic.objects.values('Position').filter(Email = user).order_by(-'Position').first(), Email = Users.objects.get(Email = user))
+    
+
+    # return { }
     return
 
 
@@ -36,6 +52,11 @@ class CreateCardSerializer(serializers.ModelSerializer):
     model = Card
     fields = ('Data')
 
+
+class CardSerializer(serializers.ModelSerializer):
+  class Meta:
+    model: Card
+    fields = ('Name', 'Description', 'Position', 'Email', 'Topic')
 
 
 class AddTopicSerializer(serializers.ModelSerializer):
@@ -116,8 +137,3 @@ class EventSerializer(serializers.ModelSerializer):
   class Meta:
     model = Event
     fields = ('id', 'User')
-
-class DateRangeSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Date_Range
-    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time', 'Day')
