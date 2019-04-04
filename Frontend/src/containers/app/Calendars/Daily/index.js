@@ -145,7 +145,7 @@ class DailyCalendar extends React.Component {
       this.props.addTimes(this.state.times)
 
     }
-    this.props.closeModal()
+    this.props.closeModal(this.state.times)
   }
 
 

@@ -16,6 +16,13 @@ class RecurringCalender extends React.Component {
       dailyCalendarOpen: false,
       currentDay : '',
       dailyTimes : {
+        Sunday: [],
+        Monday: [],
+        Tuesday: [],
+        Wednesday: [],
+        Thursday: [],
+        Friday: [],
+        Saturday: []
 
       }
 
@@ -30,9 +37,11 @@ class RecurringCalender extends React.Component {
 
   }
 
-  closeModal = () => {
+  closeModal = (times) => {
+    this.setState({dailyTimes: {currentDay: times}})
 
     this.setState({dailyCalendarOpen: false})
+
  
   }
 
@@ -53,6 +62,9 @@ class RecurringCalender extends React.Component {
 
     }
 
+    //Shows all of our currently selected days. 
+    let dates = Object.keys(this.state.dailyTimes).map((item) => this.state.dailyTimes[item].length ===0? null: this.state.dailyTimes[item].map((time) => <div> {item}, {time.split(',')[0]}--{time.split(',')[1]} </div> ) )
+
 
 
 
@@ -66,6 +78,12 @@ class RecurringCalender extends React.Component {
         )
       })}
       {dailyCalender}
+      {dates}
+
+
+
+
+
       </div>
     )
   }
