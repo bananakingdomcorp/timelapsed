@@ -25,7 +25,11 @@ class CreateCardDataSerializer(serializers.Serializer):
 class CreateCardSerializer(serializers.ModelSerializer):
 
   Data = CreateCardDataSerializer(source = '*')
-  
+
+  def create(self, validated_data, user):
+
+    Topic.objects.create(Name = validated_data['Name'], Description = validated_data['Description'], Position = Topic.objects.values('Position').filter(Email = user).order_by(-'Position').first(), Email = Users.objects.get(Email = user))
+    return
 
 
   class Meta:
