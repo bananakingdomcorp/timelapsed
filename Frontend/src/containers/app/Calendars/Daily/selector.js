@@ -34,8 +34,8 @@ class Selector extends React.Component {
     }
 
     //if the time already exists.
-    if (this.props.addTime(this.state.start + ' , ' + this.state.end) === 'Already Exists!') {
-      this.setState({errorMessage: 'Time already exists!'})
+    if (this.props.addTime(this.state.start + ' , ' + this.state.end) === 'Overlap') {
+      this.setState({errorMessage: 'The times that you entered overlaps with an existing time. The times have been merged'})
       return
     }
 

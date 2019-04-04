@@ -83,6 +83,7 @@ class DailyCalendar extends React.Component {
   resort = () => {
     let merged = [];
 
+
     
   this.state.times.forEach((item) => {
     if(merged.length === 0) {
@@ -113,11 +114,14 @@ class DailyCalendar extends React.Component {
 
   addTime = (time) => {
     //if overlap.
+    let test = this.testOverlap(time);
 
-    if(this.testOverlap(time)) {
+    if(test) {
       //resort, then add ranges. 
-      this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) })}, 
-      () => this.setState({times: this.resort()}) )
+      this.setState({times: test.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) })}, 
+      () =>  {this.setState({times: this.resort()})} )
+
+      return "Overlap"
 
 
     } else {
