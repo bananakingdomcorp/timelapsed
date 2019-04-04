@@ -38,13 +38,19 @@ class DailyCalendar extends React.Component {
     }
   }
 
+  convertTime =(arr) => {
+    return Number(arr[0]) * 60 + Number(arr[1])
+  }
+
 
 
   addTime = (time) => {
-    console.log(this.state.times)
-    console.log(time)
-    if (!this.state.times.includes(time)) this.setState({times: [...this.state.times, time  ]}) 
-    else return false
+  
+    if (!this.state.times.includes(time)) this.setState({times: [...this.state.times, time  ]},
+        () => this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) }) }, 
+          
+        )) 
+    else return 'Already Exists!'
 
   }
 
