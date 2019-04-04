@@ -14,11 +14,23 @@ class UsersSerializer(serializers.ModelSerializer):
   def create(self, validated_data):
     return super().create(validated_data)
 
+class CreateCardDataSerializer(serializers.Serializer):
+  Topic: serializers.IntegerField(source = 'Data_Topic')
+  Name: serializers.CharField(source = 'Data_Name')
+  Description: serializers.CharField(source = 'Data_Description')
 
-class CardSerializer(serializers.ModelSerializer):
+
+
+
+class CreateCardSerializer(serializers.ModelSerializer):
+
+  Data = CreateCardDataSerializer(source = '*')
+  
+
+
   class Meta:
     model = Card
-    fields = ('id','User', 'Topic', 'Name', 'Description', 'Position', 'Expected_Finish')
+    fields = ('Data')
 
 
 
@@ -69,7 +81,6 @@ class EditTopicSerializer(serializers.ModelSerializer):
     #If we are only changing position
     if(not 'Name' in validated_data and 'switchPosition' in validated_data):
 
-      print('HELLO, FIRST', validated_data)
       otherRecord = Topic.objects.get(id = validated_data['switchPosition'])
       temp = record.Position
       record.Position = otherRecord.Position
@@ -80,7 +91,6 @@ class EditTopicSerializer(serializers.ModelSerializer):
 
     #If we are changing both
     if('Name' in validated_data and 'switchPosition' in validated_data):
-      print('bothchange')
       record.Name = validated_data['Name']
       otherRecord = Topic.objects.get(id= validated_data['switchPosition'])
       temp = record.Position
@@ -97,12 +107,6 @@ class EditTopicSerializer(serializers.ModelSerializer):
     extra_kwargs = {'switchPosition': {'write_only': True}}
 
 
-
-
-class SwitchTopicSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Topic
-    fields = ('Name', 'id', 'position')
 
 class EventSerializer(serializers.ModelSerializer):
   class Meta:

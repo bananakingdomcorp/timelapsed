@@ -139,7 +139,6 @@ class Card(models.Model):
     Name = models.TextField()
     Description = models.TextField()
     Position = models.IntegerField()
-    Expected_Finish = models.DateField()
 
     # Relationship Fields
     Email = models.ForeignKey(
