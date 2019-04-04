@@ -42,15 +42,90 @@ class DailyCalendar extends React.Component {
     return Number(arr[0]) * 60 + Number(arr[1])
   }
 
+  testOverlap = (next) => {
+
+    let overlap = false;
+
+    let testOne = this.convertTime(next.split(',')[0].split(':'))
+    let testTwo = this.convertTime(next.split(',')[1].split(':'))
+
+    let fixed = this.state.times.map((item) => {
+      let itemOne = this.convertTime(item.split(',')[0].split(':'))
+      let itemTwo = this.convertTime(item.split(',')[1].split(':'))
+    
+      if(testOne < itemOne && testTwo > itemOne && testTwo < itemTwo) {
+        //replace the first time.
+        item.split(',')[0] = next.split(',')[0]
+        overlap = true;
+        return `${next.split(',')[0]} , ${item.split(',')[1]}`
+      }
+      if(testOne < itemOne && testTwo > itemTwo) {
+        overlap = true;
+        item.split(',')[0] = next.split(',')[0]
+        item.split(',')[1] = next.split(',')[1]
+        return `${next.split(',')[0]},${next.split(',')[1]}`    
+      }
+    
+      if(testOne > itemOne && testOne < itemTwo && testTwo > itemTwo ) {
+        //Replace the last time.
+        overlap = true;
+        item.split(',')[1] = next.split(',')[1]
+        return `${item.split(',')[0]},${next.split(',')[1]}`    
+      }
+      return item
+    
+    })
+
+    return overlap? fixed: false;
+
+  }
+
+  resort = () => {
+    let merged = [];
+
+    
+  this.state.times.forEach((item) => {
+    if(merged.length === 0) {
+      merged.push(item)
+    } else {
+      let current = merged.pop()
+      let temp =this.convertTime(current.split(',')[1].split(':'))
+
+      let itemFirst = this.convertTime(item.split(',')[0].split(':'))
+      let itemSecond = this.convertTime(item.split(',')[1].split(':'))
+
+      if(temp > itemFirst && temp < itemSecond  ) {
+        merged.push(`${current.split(',')[0]},${item.split(',')[1]}`)
+      } 
+      if(temp > itemFirst && temp > itemSecond ) {
+        merged.push(current)
+      } else {
+        merged.push(current, item)
+      }
+    }
+  })
+
+  return merged
+
+  }
+
 
 
   addTime = (time) => {
-  
-    if (!this.state.times.includes(time)) this.setState({times: [...this.state.times, time  ]},
+    //if overlap.
+
+    if(this.testOverlap(time)) {
+      //resort, then add ranges. 
+      this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) })}, 
+      () => this.setState({times: this.resort()}) )
+
+
+    } else {
+      //Add and sort
+      this.setState({times: [...this.state.times, time  ]}, 
         () => this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) }) }, 
-          
-        )) 
-    else return 'Already Exists!'
+      ))
+    }
 
   }
 
