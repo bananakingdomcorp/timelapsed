@@ -41,11 +41,19 @@ class DailyCalendar extends React.Component {
 
 
   addTime = (time) => {
-
-    this.setState({times: [...this.state.times, time  ]})
+    console.log(this.state.times)
+    console.log(time)
+    if (!this.state.times.includes(time)) this.setState({times: [...this.state.times, time  ]}) 
+    else return false
 
   }
 
+  deleteTime = (time) => {
+
+    this.setState({times: this.state.times.filter((item) => item !== time)})
+
+
+  }
 
 
   render() {
@@ -57,14 +65,15 @@ class DailyCalendar extends React.Component {
         Existing Times for {this.props.day}:
 
         {this.state.times.map((time) => {
-          return <div> Time Start: {time[0]} ---- Time End: {time[1]} </div>
+          let split = time.split(',')
+          return <div> Time Start: {split[0]} --- Time End: {split[1]} <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
         })}
 
         Add a time:
 
         <Selector addTime = {this.addTime} />
 
-        <button>Exit </button>
+        <button>Finished </button>
         
       </div>,
       this.el

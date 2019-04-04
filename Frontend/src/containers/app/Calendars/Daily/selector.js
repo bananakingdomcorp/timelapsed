@@ -28,10 +28,13 @@ class Selector extends React.Component {
       this.setState({errorMessage: 'Please make sure that your end time is after your start time'})
       return 
     }
-
+    if (this.props.addTime(this.state.start + ' , ' + this.state.end) === false) {
+      this.setState({errorMessage: 'Time already exists!'})
+      return
+      
+    }
     this.setState({errorMessage: 'Time Saved!!', start: '', end: ''}, () =>  setTimeout(() => this.setState({errorMessage: ''}), 3000))
 
-    this.props.addTime([this.state.start, this.state.end])
 
   }
 
