@@ -51,10 +51,14 @@ class AddCardModal extends React.Component {
     }
   }
 
+  getCalendarState = (childState) => {
+
+    return childState;
+  }
+
   addCard = () =>  {
     console.log('cardAddTesting')
 
-    
 
 
 
@@ -208,12 +212,12 @@ class AddCardModal extends React.Component {
     let secondCalendar = null;
 
     if(this.state.selectedOption == 'Recurring') {
-      firstCalendar = <RecurringCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader}/>
+      firstCalendar = <RecurringCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader}/>
     }
 
     if(this.state.selectedOption === 'Timed') {
-      firstCalendar = <RecurringCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
-      secondCalendar = <MonthlyCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
+      firstCalendar = <RecurringCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
+      secondCalendar = <MonthlyCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
     }
 
 
