@@ -23,6 +23,12 @@ class DailyCalendar extends React.Component {
     ModalRoot.appendChild(this.el)
     this.props.listenerUnLoader()
     document.addEventListener("mousedown", this.handleClickOutside)
+
+    //Check for existing times for this date. 
+
+    if (this.props.times[this.props.day]) {
+      this.setState({times: this.props.times[this.props.day] })
+    }
   }
 
   componentWillUnmount() {
@@ -181,6 +187,7 @@ class DailyCalendar extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    times: state.card.times
 
   }
 }

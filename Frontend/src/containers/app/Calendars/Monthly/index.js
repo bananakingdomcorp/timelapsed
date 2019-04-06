@@ -1,8 +1,6 @@
 //This component primarially holds everything in our calendar. 
 
 
-//Our Calendar will use Chrono for date language processing. 
-
 //Since this may take a while to load, try react.lazy to load this with the modal.
 
 import React from 'react';

@@ -8,6 +8,8 @@ import RecurringCalender from './../../Calendars/Recurring/index';
 
 import MonthlyCalender from './../../Calendars/Monthly/index';
 
+import clearTimes from './../../../../modules/card'
+
 
 
 
@@ -59,10 +61,14 @@ class AddCardModal extends React.Component {
   addCard = () =>  {
     console.log('cardAddTesting')
 
+    //first write to our backend.
 
+    //Then clear our times in Redux.
 
+    //Then add the card to the topic.
 
-    //Here we are going to simply add to our redux store one card.
+    //Then close the modal.
+
 
   }
 
@@ -78,6 +84,10 @@ class AddCardModal extends React.Component {
   }
 
   optionChange = (e) => {
+    if(e.target.value !== this.state.selectedOption) {
+      //Every time the option changes, clear the times. This may need to be changed at a later date. 
+      this.props.clearTimes()
+    }
     this.setState({selectedOption: e.target.value})
 
   }
@@ -254,6 +264,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
+  clearTimes
+
 }
 
 
