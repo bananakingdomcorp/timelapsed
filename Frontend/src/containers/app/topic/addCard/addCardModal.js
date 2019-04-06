@@ -244,4 +244,18 @@ class AddCardModal extends React.Component {
   }
 }
 
-export default connect(null, null) (AddCardModal);
+
+function mapStateToProps(state) {
+  return {
+    times: state.card.times
+
+
+  }
+}
+
+const mapDispatchToProps = {
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (AddCardModal);

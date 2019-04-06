@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Selector from './selector'
 import ReactDOM from 'react-dom'
+import {addTimes} from './../../../../modules/card'
 
 
 const ModalRoot = document.querySelector('#modal-root-two')
@@ -60,6 +61,7 @@ class DailyCalendar extends React.Component {
         return `${next.split(',')[0]} , ${item.split(',')[1]}`
       }
       if(testOne < itemOne && testTwo > itemTwo) {
+        //Replace both times
         overlap = true;
         item.split(',')[0] = next.split(',')[0]
         item.split(',')[1] = next.split(',')[1]
@@ -142,7 +144,9 @@ class DailyCalendar extends React.Component {
 
   submitTimes = () => {
     if (this.state.times.length !== 0) {
-      this.props.addTimes(this.state.times)
+      this.props.addTimes(this.props.day, this.state.times)
+
+
 
     }
     this.props.closeModal(this.state.times)
@@ -175,4 +179,16 @@ class DailyCalendar extends React.Component {
   }
 }
 
-export default connect(null, null) (DailyCalendar)
+function mapStateToProps(state) {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = {
+  addTimes
+
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (DailyCalendar)

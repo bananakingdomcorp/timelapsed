@@ -3,7 +3,7 @@ export const CLEAR_TIMES = 'card/CLEAR_TIMES'
 
 
 const initialState = {
-  times : null
+  times : {}
 
 }
 
@@ -11,7 +11,15 @@ export default (state = initialState, action) => {
   switch(action.type) {
     case ADD_TIMES:
       return {
-        times: action.times
+        times: {
+          ...state.times,
+          [action.day] : action.times
+
+        }
+      }
+    case CLEAR_TIMES:
+      return {
+        times: {}
       }
 
 
@@ -21,9 +29,10 @@ export default (state = initialState, action) => {
 }
 
 
-export const addTimes = (times) => {
+export const addTimes = (day, times) => {
   return {
     type: ADD_TIMES,
+    day,
     times
   }
 }

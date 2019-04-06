@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 
 import Day from './day'
 
-import Chrono from 'chrono-node';
-
 import DailyCalendar from './../Daily/index'
 
 
@@ -15,16 +13,6 @@ class RecurringCalender extends React.Component {
     this.state = {
       dailyCalendarOpen: false,
       currentDay : '',
-      dailyTimes : {
-        Sunday: [],
-        Monday: [],
-        Tuesday: [],
-        Wednesday: [],
-        Thursday: [],
-        Friday: [],
-        Saturday: []
-
-      }
 
     }
   }
@@ -38,17 +26,13 @@ class RecurringCalender extends React.Component {
   }
 
   closeModal = (times) => {
-    this.setState({dailyTimes: {currentDay: times}})
 
     this.setState({dailyCalendarOpen: false})
 
  
   }
 
-  addTimes = (times) => {
-    this.setState({dailyTimes: {...this.state.dailyTimes,  currentDay: times }  })
 
-  }
 
   render() {
 
@@ -58,12 +42,12 @@ class RecurringCalender extends React.Component {
 
     if (this.state.dailyCalendarOpen === true) {
 
-      dailyCalender = <DailyCalendar addTimes = {this.addTimes} closeModal = {this.closeModal} day = {this.state.currentDay} listenerLoader = {this.props.listenerLoader} listenerUnLoader = {this.props.listenerUnLoader} />
+      dailyCalender = <DailyCalendar closeModal = {this.closeModal} day = {this.state.currentDay} listenerLoader = {this.props.listenerLoader} listenerUnLoader = {this.props.listenerUnLoader} />
 
     }
 
     //Shows all of our currently selected days. 
-    let dates = Object.keys(this.state.dailyTimes).map((item) => this.state.dailyTimes[item].length ===0? null: this.state.dailyTimes[item].map((time) => <div> {item}, {time.split(',')[0]}--{time.split(',')[1]} </div> ) )
+    let dates = Object.keys(this.props.times).map((item) => this.props.times[item].map((time) => <div> {item}, {time.split(',')[0]}--{time.split(',')[1]} </div> ) )
 
 
 
@@ -80,14 +64,21 @@ class RecurringCalender extends React.Component {
       {dailyCalender}
       {dates}
 
-
-
-
-
       </div>
     )
   }
 
 }
 
-export default connect(null, null) (RecurringCalender);
+function mapStateToProps(state) {
+  return {
+    times: state.card.times
+
+  }
+}
+
+const mapDispatchToProps = {
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (RecurringCalender);
