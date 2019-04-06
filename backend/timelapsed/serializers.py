@@ -45,8 +45,8 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
 
 class CreateCardSerializer(serializers.ModelSerializer):
 
-  Data = CreateCardDataSerializer(many = True,)
-  Times = CreateCardTimesListSerializer(many = True, required = False)
+  Data = CreateCardDataSerializer(many = True, read_only=True)
+  Times = CreateCardTimesListSerializer(many = True, required = False, read_only=True)
 
   def create(self, validated_data, user):
 
