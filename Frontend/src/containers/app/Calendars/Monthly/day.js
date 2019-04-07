@@ -11,7 +11,7 @@ class Day extends React.Component {
 
     return (
       <div className = 'monthlyCalenderDay' onClick = {() => this.props.selectDay(this.props.date)}>
-      {this.props.name}
+      {this.props.date}
       </div>
 
     )

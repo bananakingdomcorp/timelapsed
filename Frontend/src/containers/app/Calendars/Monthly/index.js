@@ -11,13 +11,34 @@ import {getDaysInMonth} from 'date-fns/get_days_in_month';
 
 import {getDate} from 'date-fns/get_date'
 
+import Day from './day'
+
+import DailyCalendar from './../Daily/index'
+
 class MonthlyCalender extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      numdays: 0,
+      dailyCalendarOpen: false,
+      currentDay: ''
+
+    }
   }
 
   componentWillMount() {
-    let numDays = getDaysInMonth(new Date());
+    this.setState({ numDays : getDaysInMonth(new Date())})
+
+  }
+
+  selectDay(day) {
+    //Once a day has been selected, open the daily calendar. 
+    
+    this.setState({dailyCalendarOpen: true})
+    
+    //Get the full date of this day, add to state. 
+
+
 
   }
 
@@ -26,6 +47,10 @@ class MonthlyCalender extends React.Component {
   render () {
 
     let days= [];
+
+    for(let i = 1; i <= this.state.numDays; i++) {
+      days.push(<Day date = {i} />)
+    }
 
 
 
