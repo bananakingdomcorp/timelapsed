@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux'
 import AddTopic from './addTopic/addATopic'
 import Topic from './topic/topic'
-import { GoogleLogin } from 'react-google-login';
 import {setAuthToken} from '../../modules/token';
 import Axios from 'axios';
 import {clientId, clientSecret} from '../../djangoSecrets';

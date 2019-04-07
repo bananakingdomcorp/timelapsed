@@ -10,9 +10,6 @@ def get_user_information(data):
   arr = []
 
   arr.append
-  # print(test)
-
-  #Using an ordered Dictionary lets you get more from having a positional element. 
 
 
   for i in test:
