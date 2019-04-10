@@ -53,18 +53,24 @@ class RecurringCalender extends React.Component {
 
 
     return (
-      <div className = 'recurringCalendar'>
+      <div>
+        <div className = 'recurringCalendar'>
 
-      {theWeek.map((date) => {
-        return (
-          <Day name = {date} selectDay = {this.selectDay} /> 
-          // <div>{date}</div>
-        )
-      })}
-      {dailyCalender}
-      {dates}
+          {theWeek.map((date) => {
+            return (
+              <Day name = {date} selectDay = {this.selectDay} /> 
+              // <div>{date}</div>
+            )
+          })}
+          {dailyCalender}
 
-      </div>
+        </div>
+        <div className = 'recurringCalendarSelectedDates'>
+        Curent Times:
+          {dates}
+
+        </div>
+      </div>      
     )
   }
 

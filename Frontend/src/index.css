@@ -245,6 +245,12 @@ body {
 
 }
 
+.addCardModalButtons {
+  position:absolute;
+  right: 0%;
+  bottom: 0%; 
+}
+
 .recurringCalendar {
   margin-top: 8%;
   display: grid;

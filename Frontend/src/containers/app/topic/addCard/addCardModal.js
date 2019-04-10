@@ -8,7 +8,7 @@ import RecurringCalender from './../../Calendars/Recurring/index';
 
 import MonthlyCalender from './../../Calendars/Monthly/index';
 
-import clearTimes from './../../../../modules/card'
+import {clearTimes} from './../../../../modules/card'
 
 
 
@@ -245,9 +245,11 @@ class AddCardModal extends React.Component {
         {secondCalendar}
 
 
+        <div className = 'addCardModalButtons'>
+          <button type= 'submit' className = "saveButton" onClick = {this.addCard}> Save </button>
+          <button className = "cancelButton" onClick = {this.props.closeModal} > Cancel </button>
+        </div>
 
-        <button type= 'submit' className = "saveButton" onClick = {this.addCard}> Save </button>
-        <button className = "cancelButton" onClick = {this.props.closeModal} > Cancel </button>
       </div>, 
       this.el
     )

@@ -27,7 +27,7 @@ class MonthlyCalender extends React.Component {
   }
 
   componentWillMount() {
-    this.setState({ numDays : getDaysInMonth(new Date())})
+    // this.setState({ numDays : getDaysInMonth(new Date())})
 
   }
 
