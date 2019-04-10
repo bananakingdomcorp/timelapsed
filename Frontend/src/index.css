@@ -314,3 +314,29 @@ body {
   border-color: grey;
   border-width: 5px;
 }
+
+.monthlyCalendar {
+  margin-top: 8%;
+  display: grid;
+  grid-template-columns: repeat(7, 14%);
+  grid-template-rows: repeate(5, 10);
+  width: 95%;
+  height: 8%;
+  font-size: 1vw;
+  grid-column-start: auto;
+
+}
+.monthlyCalendar > .monthlyCalenderDay {
+  border:groove 2px dodgerblue;
+  margin: 1%;
+  text-align: center;
+
+}
+
+.monthlyCalendar > .monthlyCalenderPast {
+  border:groove 2px dodgerblue;
+  background: black;
+  margin: 1%;
+  text-align: center;
+
+}

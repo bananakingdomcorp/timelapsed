@@ -9,6 +9,8 @@ import {connect} from 'react-redux';
 
 import Day from './day'
 
+import DayInvalid from './dayInvalid'
+
 import DailyCalendar from './../Daily/index'
 
 class MonthlyCalender extends React.Component {
@@ -17,7 +19,10 @@ class MonthlyCalender extends React.Component {
     this.state = {
       numdays: 0,
       dailyCalendarOpen: false,
-      currentDay: ''
+      selectedDay: '',
+      spaceDays: 0,
+      currentDate: 0,
+
 
     }
   }
@@ -25,8 +30,10 @@ class MonthlyCalender extends React.Component {
   componentWillMount() {
     let d = new Date();
     let r = new Date(d.getFullYear(), d.getMonth() +1, 0).getDate()
+    let s = d.getDay()
+    let t = d.getDate()
 
-    this.setState({ numDays : r})
+    this.setState({ numDays : r, spaceDays: s, currentDate: t})
 
   }
 
@@ -37,8 +44,6 @@ class MonthlyCalender extends React.Component {
     
     //Get the full date of this day, add to state. 
 
-
-
   }
 
 
@@ -47,8 +52,20 @@ class MonthlyCalender extends React.Component {
 
     let days= [];
 
+    //First, we are going to fill in our space days, which do nothing...
+
+    for (let i = 0; i < this.state.spaceDays; i++) {
+      days.push(<DayInvalid date = {''} /> )
+    }
+
+
+
     for(let i = 1; i <= this.state.numDays; i++) {
-      days.push(<Day date = {i} />)
+      if(i < this.state.currentDate) {
+        days.push(<DayInvalid date = {i} />)
+      } else {
+        days.push(<Day date = {i} />)
+      }
     }
 
 

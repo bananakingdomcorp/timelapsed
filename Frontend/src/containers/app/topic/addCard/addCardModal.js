@@ -226,7 +226,6 @@ class AddCardModal extends React.Component {
     }
 
     if(this.state.selectedOption === 'Timed') {
-      firstCalendar = <RecurringCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
       secondCalendar = <MonthlyCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
     }
 

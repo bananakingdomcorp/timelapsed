@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Day extends React.Component {
+class DayInvalid extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -8,7 +8,7 @@ class Day extends React.Component {
   render() {
 
     return (
-      <div className = 'monthlyCalenderDay' onClick = {() => this.props.selectDay(this.props.date)}>
+      <div className = 'monthlyCalenderPast' >
       {this.props.date}
       </div>
 
@@ -19,4 +19,4 @@ class Day extends React.Component {
 }
 
 
-export default Day;
+export default DayInvalid;
