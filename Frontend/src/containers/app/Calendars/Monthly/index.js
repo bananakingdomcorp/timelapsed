@@ -7,10 +7,6 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 
-import {getDaysInMonth} from 'date-fns/get_days_in_month';
-
-import {getDate} from 'date-fns/get_date'
-
 import Day from './day'
 
 import DailyCalendar from './../Daily/index'
@@ -27,7 +23,10 @@ class MonthlyCalender extends React.Component {
   }
 
   componentWillMount() {
-    // this.setState({ numDays : getDaysInMonth(new Date())})
+    let d = new Date();
+    let r = new Date(d.getFullYear(), d.getMonth() +1, 0).getDate()
+
+    this.setState({ numDays : r})
 
   }
 
