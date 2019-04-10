@@ -22,18 +22,18 @@ class MonthlyCalender extends React.Component {
       selectedDay: '',
       spaceDays: 0,
       currentDate: 0,
-
+      currentMonth: 0,
+      currentYear: 0,
 
     }
+    this.months = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   }
 
   componentWillMount() {
     let d = new Date();
     let r = new Date(d.getFullYear(), d.getMonth() +1, 0).getDate()
-    let s = d.getDay()
-    let t = d.getDate()
 
-    this.setState({ numDays : r, spaceDays: s, currentDate: t})
+    this.setState({ numDays : r, spaceDays: d.getDay(), currentDate: d.getDate(), currentMonth: d.getMonth(), currentYear: d.getFullYear()})
 
   }
 
@@ -44,8 +44,25 @@ class MonthlyCalender extends React.Component {
     
     //Get the full date of this day, add to state. 
 
+    let selected = new Date()
+
   }
 
+  increaseMonth() {
+
+  }
+
+  decreaseMonth() {
+
+  }
+
+  increaseYear() {
+
+  }
+
+  decreaseYear() {
+
+  }
 
 
   render () {
@@ -64,7 +81,7 @@ class MonthlyCalender extends React.Component {
       if(i < this.state.currentDate) {
         days.push(<DayInvalid date = {i} />)
       } else {
-        days.push(<Day date = {i} />)
+        days.push(<Day date = {i} selectDay = {this.selectDay} />)
       }
     }
 
@@ -73,8 +90,9 @@ class MonthlyCalender extends React.Component {
     return (
       <div className = 'monthlyCalendar'>
 
-      {days}
 
+
+      {days}
         
       </div>
     )

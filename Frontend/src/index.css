@@ -335,7 +335,7 @@ body {
 
 .monthlyCalendar > .monthlyCalenderPast {
   border:groove 2px dodgerblue;
-  background: black;
+  background: grey;
   margin: 1%;
   text-align: center;
 
