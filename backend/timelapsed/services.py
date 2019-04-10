@@ -13,7 +13,7 @@ def get_user_information(data):
 
 
   for i in test:
-    cards = [i for i in Card.objects.values('Name', 'Description', 'Expected_Finish', 'id' ).filter(Topic = i['id']).order_by('Position')]
+    cards = [i for i in Card.objects.values('Name', 'Description', 'id' ).filter(Topic = i['id']).order_by('Position')]
     arr.append( {'Data' : {'id': i['id'], 'Name': i['Name'], 'Cards': cards}} )
     
 

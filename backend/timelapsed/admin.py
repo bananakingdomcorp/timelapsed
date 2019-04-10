@@ -6,7 +6,7 @@ from django.contrib import admin
 from .models import Users, Topic, Event, Date_Range, Card
 
 class CardAdmin(admin.ModelAdmin):
-  fields = ['Email', 'Topic', 'Name', 'Description', 'Position', 'Expected_Finish']
+  fields = ['Email', 'Topic', 'Name', 'Description', 'Position',]
 
 class UsersAdmin(admin.ModelAdmin):
   fields= ['Email']
