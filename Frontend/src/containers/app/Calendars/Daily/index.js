@@ -27,9 +27,10 @@ class DailyCalendar extends React.Component {
 
     //Check for existing times for this date. 
 
-    if (this.props.times[this.props.day]) {
-      this.setState({times: this.props.times[this.props.day] })
-    }
+  //   if (this.props.times[this.props.day]) {
+  //     this.setState({times: this.props.times[this.props.day] })
+  //   }
+    this.findTimes()
   }
 
   componentWillUnmount() {
@@ -38,6 +39,29 @@ class DailyCalendar extends React.Component {
     document.removeEventListener("mousedown", this.handleClickOutside)
   }
   //Show existing times for this date. 
+
+  findTimes = () => {
+    //If we are on the monthly calendar, we may have recurring times that overlap with our current day.
+    if(new Date(this.props.times[Object.keys(this.props.times)[0]]) === 'Invalid Date' ) {
+      if (this.props.times[this.props.day]) {
+        this.setState({times: this.props.times[this.props.day] })
+      }
+      return;
+    }
+
+
+    let today = new Date(this.props.day)
+
+    let found =  Object.keys(this.props.times).map((item) => {
+      if(new Date(this.props.times[item][0]).getDay() === today.getDay()) {
+        return item;
+      } else {
+        //We need to do some work to see if our times match up. 
+        
+      }
+    })
+
+  }
 
   handleClickOutside = (e) =>  {
     if (!this.dailyCalendarModalRef.current.contains(e.target)) {
@@ -170,6 +194,12 @@ class DailyCalendar extends React.Component {
 
         {this.state.times.map((time) => {
           let split = time[0].split(',')
+          if(time[1] !== 0 && time[2] ===0) {
+            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+          }
+          if(time[1] !== 0 && time[2] !==0) {
+            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times, every {time[2]} weeks <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+          }
           return <div> Time Start: {split[0]} --- Time End: {split[1]} <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
         })}
 
