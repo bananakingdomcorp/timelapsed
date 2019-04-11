@@ -8,7 +8,9 @@ class Selector extends React.Component {
     this.state = {
       start: '',
       end: '',
-      errorMessage: ''
+      errorMessage: '',
+      numWeeks: 0,
+      weeksSkipped: 0,
     }
 
   }
@@ -33,17 +35,11 @@ class Selector extends React.Component {
       return 
     }
 
-    //if the time already exists.
+    //If the time overlaps with previous times. 
     if (this.props.addTime(this.state.start + ' , ' + this.state.end) === 'Overlap') {
       this.setState({errorMessage: 'The times that you entered overlaps with an existing time. The times have been merged'})
       return
     }
-
-    //If the time overlaps with previous times. 
-
-    
-
-
 
     this.setState({errorMessage: 'Time Saved!!', start: '', end: ''}, () =>  setTimeout(() => this.setState({errorMessage: ''}), 3000))
 
@@ -61,6 +57,15 @@ class Selector extends React.Component {
         Enter an end time
 
         <input type = 'time' onChange={(e) => {this.setState({end:e.target.value})}} value = {this.state.end} />
+
+        Enter how many weeks you would like this task to repeat for, leave at zero for this to only happen once.
+
+        <input type = 'number' min = '0' max = '52' onChange = {(e) => {this.setState({numWeeks: e.target.value})}} value = {this.state.numWeeks} /> 
+
+        Enter how many weeks you would like this task to skip between events? Zero will be every week, one will be every other week, two every third week, ect ect ect..
+
+        <input type = 'number' min = '0' max = '52' onChange = {(e) => {this.setState({weeksSkipped: e.target.value})}} value = {this.state.weeksSkipped} />
+
 
         <div className = 'selectorErrorMessage'> {this.state.errorMessage} </div>
 

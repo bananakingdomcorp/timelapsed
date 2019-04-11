@@ -120,7 +120,7 @@ class DailyCalendar extends React.Component {
 
 
 
-  addTime = (time) => {
+  addTime = (time, weeks) => {
     //if overlap.
     let test = this.testOverlap(time);
 
