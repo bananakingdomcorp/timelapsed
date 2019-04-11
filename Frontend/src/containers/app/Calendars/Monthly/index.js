@@ -142,7 +142,7 @@ class MonthlyCalender extends React.Component {
     }
 
     //Shows all of our currently selected days. 
-    let dates = Object.keys(this.props.times).map((item) => this.props.times[item].map((time) => <div> {item}, {time.split(',')[0]}--{time.split(',')[1]} </div> ) )
+    let dates = Object.keys(this.props.times).map((item) => this.props.times[item].map((time) => <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]} </div> ) )
 
 
 
