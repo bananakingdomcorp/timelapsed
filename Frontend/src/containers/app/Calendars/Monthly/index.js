@@ -52,19 +52,21 @@ class MonthlyCalender extends React.Component {
   }
 
   increaseMonth() {
+    console.log('MONTH INCREASE')
 
     if (this.state.currentMonth === 11) {
       //Advance the year. 
       this.increaseYear()
-      this.setState({currentMonth: 0})
+      this.setState({currentMonth: 0}, () => this.calculateDays)
 
     } else {
-      this.setState({currentMonth: this.state.currentMonth + 1});
+      this.setState({currentMonth: this.state.currentMonth + 1}, () => this.calculateDays);
     }
 
   }
 
   decreaseMonth() {
+    console.log('MONTH DECREASE')
     if(this.state.currentMonth <= this.state.startDate.getMonth() && this.state.currentYear <= this.state.startDate.getFullYear() ) {
       return 
       //We can not go to previous months. 
@@ -73,22 +75,30 @@ class MonthlyCalender extends React.Component {
 
     if (this.state.currentMonth === 0) {
       this.decreaseYear()
-      this.setState({currentMonth: 11})
+      this.setState({currentMonth: 11}, () => this.calculateDays)
     } else {
-      this.setState({currentMonth: this.state.currentMonth -1})
+      this.setState({currentMonth: this.state.currentMonth -1}, () => this.calculateDays)
     }
 
   }
 
   increaseYear() {
-
-    this.setState({currentYear: this.state.currentYear +1})
+    console.log('YEAR INCREASE')
+    this.setState({currentYear: this.state.currentYear +1}, () => this.calculateDays)
 
   }
 
   decreaseYear() {
+    console.log('YEAR DECREASE')
+    this.setState({currentYear: this.state.currentYear -1}, () => this.calculateDays)
 
-    this.setState({currentYear: this.state.currentYear -1})
+  }
+
+  calculateDays() {
+    let r =  new Date(this.state.currentYear, this.state.currentMonth, 0).getDate()
+    let p =  new Date(this.state.currentYear, this.state.currentMonth, 1).getDay()
+
+    this.setState({numDays :r, spaceDays: p}, () => this.renderCalendar())
 
   }
 
@@ -119,9 +129,9 @@ class MonthlyCalender extends React.Component {
     return (
       <div>
         <div className = 'monthlyCalendarHeader'> 
-          <button onclick = {this.decreaseMonth}> <i className = 'arrowLeft'></i> </button>  
+          <button onClick = {this.decreaseMonth}> <i className = 'arrowLeft'></i> </button>  
           {this.months[this.state.currentMonth]}, {this.state.currentYear}  
-          <button onclick = {this.increaseMonth}> <i className = 'arrowRight'></i> </button>          
+          <button onClick = {this.increaseMonth}> <i className = 'arrowRight'></i> </button>          
         </div>
         <div className = 'monthlyCalendar'>
 
