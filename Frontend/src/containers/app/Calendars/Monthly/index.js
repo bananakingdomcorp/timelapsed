@@ -40,7 +40,7 @@ class MonthlyCalender extends React.Component {
 
   }
 
-  selectDay(day) {
+  selectDay =(day) =>  {
     //Once a day has been selected, open the daily calendar. 
     
     this.setState({dailyCalendarOpen: true})
@@ -51,22 +51,21 @@ class MonthlyCalender extends React.Component {
 
   }
 
-  increaseMonth() {
-    console.log('MONTH INCREASE')
+  increaseMonth = () =>  {
 
     if (this.state.currentMonth === 11) {
       //Advance the year. 
       this.increaseYear()
-      this.setState({currentMonth: 0}, () => this.calculateDays)
+      this.setState({currentMonth: 0}, () => this.calculateDays())
 
     } else {
-      this.setState({currentMonth: this.state.currentMonth + 1}, () => this.calculateDays);
+      this.setState({currentMonth: this.state.currentMonth + 1}, () => this.calculateDays());
     }
 
   }
 
-  decreaseMonth() {
-    console.log('MONTH DECREASE')
+  decreaseMonth =() =>  {
+
     if(this.state.currentMonth <= this.state.startDate.getMonth() && this.state.currentYear <= this.state.startDate.getFullYear() ) {
       return 
       //We can not go to previous months. 
@@ -75,26 +74,24 @@ class MonthlyCalender extends React.Component {
 
     if (this.state.currentMonth === 0) {
       this.decreaseYear()
-      this.setState({currentMonth: 11}, () => this.calculateDays)
+      this.setState({currentMonth: 11}, () => this.calculateDays())
     } else {
-      this.setState({currentMonth: this.state.currentMonth -1}, () => this.calculateDays)
+      this.setState({currentMonth: this.state.currentMonth -1}, () => this.calculateDays())
     }
 
   }
 
-  increaseYear() {
-    console.log('YEAR INCREASE')
-    this.setState({currentYear: this.state.currentYear +1}, () => this.calculateDays)
+  increaseYear=() =>  {
+    this.setState({currentYear: this.state.currentYear +1}, () => this.calculateDays())
 
   }
 
-  decreaseYear() {
-    console.log('YEAR DECREASE')
-    this.setState({currentYear: this.state.currentYear -1}, () => this.calculateDays)
+  decreaseYear=() => {
+    this.setState({currentYear: this.state.currentYear -1}, () => this.calculateDays())
 
   }
 
-  calculateDays() {
+  calculateDays=() => {
     let r =  new Date(this.state.currentYear, this.state.currentMonth, 0).getDate()
     let p =  new Date(this.state.currentYear, this.state.currentMonth, 1).getDay()
 
@@ -102,7 +99,7 @@ class MonthlyCalender extends React.Component {
 
   }
 
-  renderCalendar() {
+  renderCalendar=() => {
     let arr = []
 
     for (let i = 0; i < this.state.spaceDays; i++) {
