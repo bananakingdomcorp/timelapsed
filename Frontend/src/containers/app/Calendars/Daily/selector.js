@@ -36,7 +36,7 @@ class Selector extends React.Component {
     }
 
     //If the time overlaps with previous times. 
-    if (this.props.addTime(this.state.start + ' , ' + this.state.end) === 'Overlap') {
+    if (this.props.addTime(this.state.start + ' , ' + this.state.end, this.state.numWeeks, this.state.weeksSkipped) === 'Overlap') {
       this.setState({errorMessage: 'The times that you entered overlaps with an existing time. The times have been merged'})
       return
     }

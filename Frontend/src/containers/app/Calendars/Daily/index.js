@@ -17,7 +17,8 @@ class DailyCalendar extends React.Component {
     this.dailyCalendarModalRef = React.createRef();
   }
 
-  //When this page loads, we unload our previous modal listeners, and put some here. The ones here simply close the page if click off of.
+  //state.times organized in the following way: [times, numweeks, weeksskipped]
+
 
   componentWillMount() {
     ModalRoot.appendChild(this.el)
@@ -49,7 +50,7 @@ class DailyCalendar extends React.Component {
     return Number(arr[0]) * 60 + Number(arr[1])
   }
 
-  testOverlap = (next) => {
+  testOverlap = (next, numweeks, skipped) => {
 
     let overlap = false;
 
@@ -57,28 +58,28 @@ class DailyCalendar extends React.Component {
     let testTwo = this.convertTime(next.split(',')[1].split(':'))
 
     let fixed = this.state.times.map((item) => {
-      let itemOne = this.convertTime(item.split(',')[0].split(':'))
-      let itemTwo = this.convertTime(item.split(',')[1].split(':'))
+      let itemOne = this.convertTime(item[0].split(',')[0].split(':'))
+      let itemTwo = this.convertTime(item[0].split(',')[1].split(':'))
     
       if(testOne < itemOne && testTwo > itemOne && testTwo < itemTwo) {
         //replace the first time.
-        item.split(',')[0] = next.split(',')[0]
+        item[0].split(',')[0] = next.split(',')[0]
         overlap = true;
-        return `${next.split(',')[0]} , ${item.split(',')[1]}`
+        return [`${next.split(',')[0]} , ${item[0].split(',')[1]}`, numweeks, skipped]
       }
       if(testOne < itemOne && testTwo > itemTwo) {
         //Replace both times
         overlap = true;
-        item.split(',')[0] = next.split(',')[0]
-        item.split(',')[1] = next.split(',')[1]
-        return `${next.split(',')[0]},${next.split(',')[1]}`    
+        item[0].split(',')[0] = next.split(',')[0]
+        item[0].split(',')[1] = next.split(',')[1]
+        return [`${next.split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
       }
     
       if(testOne > itemOne && testOne < itemTwo && testTwo > itemTwo ) {
         //Replace the last time.
         overlap = true;
-        item.split(',')[1] = next.split(',')[1]
-        return `${item.split(',')[0]},${next.split(',')[1]}`    
+        item[0].split(',')[1] = next.split(',')[1]
+        return [`${item[0].split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
       }
       return item
     
@@ -98,13 +99,13 @@ class DailyCalendar extends React.Component {
       merged.push(item)
     } else {
       let current = merged.pop()
-      let temp =this.convertTime(current.split(',')[1].split(':'))
+      let temp =this.convertTime(current[0].split(',')[1].split(':'))
 
-      let itemFirst = this.convertTime(item.split(',')[0].split(':'))
-      let itemSecond = this.convertTime(item.split(',')[1].split(':'))
+      let itemFirst = this.convertTime(item[0].split(',')[0].split(':'))
+      let itemSecond = this.convertTime(item[0].split(',')[1].split(':'))
 
       if(temp > itemFirst && temp < itemSecond  ) {
-        merged.push(`${current.split(',')[0]},${item.split(',')[1]}`)
+        merged.push([`${current[0].split(',')[0]},${item[0].split(',')[1]}`, item[1], item[2] ])
       } 
       if(temp > itemFirst && temp > itemSecond ) {
         merged.push(current)
@@ -120,13 +121,13 @@ class DailyCalendar extends React.Component {
 
 
 
-  addTime = (time, weeks) => {
+  addTime = (time, weeks, skipped) => {
     //if overlap.
-    let test = this.testOverlap(time);
+    let test = this.testOverlap(time, weeks, skipped);
 
     if(test) {
-      //resort, then add ranges. 
-      this.setState({times: test.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) })}, 
+      //Why do we sort twice here? First, we add in any overlap, resort those times (we may have added more overlap at this point), then resort again to fix any added overlap. 
+      this.setState({times: test.sort((a, b) => {return  this.convertTime(a[0].split(',')[0].split(':') ) - this.convertTime(b[0].split(',')[0].split(':') ) })}, 
       () =>  {this.setState({times: this.resort()})} )
 
       return "Overlap"
@@ -134,8 +135,8 @@ class DailyCalendar extends React.Component {
 
     } else {
       //Add and sort
-      this.setState({times: [...this.state.times, time  ]}, 
-        () => this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a.split(',')[0].split(':') ) - this.convertTime(b.split(',')[0].split(':') ) }) }, 
+      this.setState({times: [...this.state.times, [time, weeks, skipped]  ]}, 
+        () => this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a[0].split(',')[0].split(':') ) - this.convertTime(b[0].split(',')[0].split(':') ) }) }, 
       ))
     }
 
@@ -143,7 +144,7 @@ class DailyCalendar extends React.Component {
 
   deleteTime = (time) => {
 
-    this.setState({times: this.state.times.filter((item) => item !== time)})
+    this.setState({times: this.state.times.filter((item) => item[0] !== time)})
 
 
   }
@@ -168,7 +169,7 @@ class DailyCalendar extends React.Component {
         Existing Times for {this.props.day}:
 
         {this.state.times.map((time) => {
-          let split = time.split(',')
+          let split = time[0].split(',')
           return <div> Time Start: {split[0]} --- Time End: {split[1]} <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
         })}
 
