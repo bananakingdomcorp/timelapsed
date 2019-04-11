@@ -19,7 +19,7 @@ class MonthlyCalender extends React.Component {
     this.state = {
       numdays: 0,
       dailyCalendarOpen: false,
-      selectedDay: '',
+      currentDay: '',
       startDate: '',
       spaceDays: 0,
       currentDate: 0,
@@ -33,7 +33,7 @@ class MonthlyCalender extends React.Component {
 
   componentWillMount() {
     let d = new Date();
-    let r = new Date(d.getFullYear(), d.getMonth(), 0).getDate()
+    let r = new Date(d.getFullYear(), d.getMonth() +1, 0).getDate()
     let p = new Date(d.getFullYear(), d.getMonth(), 1).getDay()
 
     this.setState({startDate: d, numDays : r, spaceDays: p, currentDate: d.getDate(), currentMonth: d.getMonth(), currentYear: d.getFullYear()}, ()=> this.renderCalendar())
@@ -47,7 +47,15 @@ class MonthlyCalender extends React.Component {
     
     //Get the full date of this day, add to state. 
 
-    let selected = new Date()
+    let selected = new Date(this.state.currentYear, this.state.currentMonth, day).toDateString();
+
+    this.setState({currentDay: selected});
+
+
+
+
+
+
 
   }
 
@@ -92,7 +100,7 @@ class MonthlyCalender extends React.Component {
   }
 
   calculateDays=() => {
-    let r =  new Date(this.state.currentYear, this.state.currentMonth, 0).getDate()
+    let r =  new Date(this.state.currentYear, this.state.currentMonth +1, 0).getDate()
     let p =  new Date(this.state.currentYear, this.state.currentMonth, 1).getDay()
 
     this.setState({numDays :r, spaceDays: p}, () => this.renderCalendar())
@@ -118,8 +126,24 @@ class MonthlyCalender extends React.Component {
 
   }
 
+  closeModal = () => {
+    this.setState({dailyCalendarOpen: false})
+  }
+
 
   render () {
+    let dailyCalender = null;
+
+
+    if (this.state.dailyCalendarOpen === true) {
+
+      dailyCalender = <DailyCalendar closeModal = {this.closeModal} day = {this.state.currentDay} listenerLoader = {this.props.listenerLoader} listenerUnLoader = {this.props.listenerUnLoader} />
+
+    }
+
+    //Shows all of our currently selected days. 
+    let dates = Object.keys(this.props.times).map((item) => this.props.times[item].map((time) => <div> {item}, {time.split(',')[0]}--{time.split(',')[1]} </div> ) )
+
 
 
 
@@ -137,10 +161,24 @@ class MonthlyCalender extends React.Component {
           {this.state.days}
           
         </div>
+
+        {dailyCalender}
+        {dates}
       </div>
     )
   }
 
 }
 
-export default connect(null, null) (MonthlyCalender);
+function mapStateToProps(state) {
+  return {
+    times: state.card.times
+
+  }
+}
+
+const mapDispatchToProps = {
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (MonthlyCalender);
