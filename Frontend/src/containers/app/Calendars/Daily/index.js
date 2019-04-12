@@ -52,12 +52,28 @@ class DailyCalendar extends React.Component {
 
     let today = new Date(this.props.day)
 
-    let found =  Object.keys(this.props.times).map((item) => {
-      if(new Date(this.props.times[item][0]).getDay() === today.getDay()) {
-        return item;
+    Object.keys(this.props.times).forEach((item) => {
+      let temp = new Date(this.props.times[item][0]);
+      if(temp.getDay() !== today.getDay()) {
+        //Do nothing
       } else {
         //We need to do some work to see if our times match up. 
-        
+
+        //If our date is before the date we are looking at...
+        if(today < temp) {
+          //Do nothing.
+        } else {
+          while(temp <= today && item[1] > 0 ) {
+            //We need to cycle through our times...
+            //Adds one week. 
+            temp.setDate(temp.getDate()+(7* (item[2] +1)));
+            if(temp === today) {
+              this.setState({times: [...this.state.times, item] })
+              break;
+            }
+          }
+        }
+
       }
     })
 
