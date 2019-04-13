@@ -24,12 +24,6 @@ class DailyCalendar extends React.Component {
     ModalRoot.appendChild(this.el)
     this.props.listenerUnLoader()
     document.addEventListener("mousedown", this.handleClickOutside)
-
-    //Check for existing times for this date. 
-
-  //   if (this.props.times[this.props.day]) {
-  //     this.setState({times: this.props.times[this.props.day] })
-  //   }
     this.findTimes()
   }
 
@@ -41,19 +35,19 @@ class DailyCalendar extends React.Component {
   //Show existing times for this date. 
 
   findTimes = () => {
+
     //If we are on the monthly calendar, we may have recurring times that overlap with our current day.
-    if(new Date(this.props.times[Object.keys(this.props.times)[0]]) === 'Invalid Date' ) {
+
+    if(this.props.times[Object.keys(this.props.times)[0]] === undefined ) {
       if (this.props.times[this.props.day]) {
         this.setState({times: this.props.times[this.props.day] })
       }
       return;
     }
-
-
     let today = new Date(this.props.day)
 
     Object.keys(this.props.times).forEach((item) => {
-      let temp = new Date(this.props.times[item][0]);
+      let temp = new Date(item);
       if(temp.getDay() !== today.getDay()) {
         //Do nothing
       } else {
@@ -63,14 +57,17 @@ class DailyCalendar extends React.Component {
         if(today < temp) {
           //Do nothing.
         } else {
-          while(temp <= today && item[1] > 0 ) {
+          let times = this.props.times[item][0][1] 
+          while(temp < today && times > 0 ) {
             //We need to cycle through our times...
             //Adds one week. 
-            temp.setDate(temp.getDate()+(7* (item[2] +1)));
-            if(temp === today) {
-              this.setState({times: [...this.state.times, item] })
+            temp.setDate(temp.getDate()+(7* (this.props.times[item][0][2] +1)));
+            
+            if(temp.getTime() === today.getTime()) {
+              this.setState({times: [...this.state.times, this.props.times[item][0]] })
               break;
             }
+            times--
           }
         }
 
