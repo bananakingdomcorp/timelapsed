@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Selector from './selector'
 import ReactDOM from 'react-dom'
-import {addTimes} from './../../../../modules/card'
+import {addTimes, removeTimes} from './../../../../modules/card'
 
 
 const ModalRoot = document.querySelector('#modal-root-two')
@@ -64,7 +64,7 @@ class DailyCalendar extends React.Component {
             temp.setDate(temp.getDate()+(7* (this.props.times[item][0][2] +1)));
             
             if(temp.getTime() === today.getTime()) {
-              this.setState({times: [...this.state.times, this.props.times[item][0]] })
+              this.setState({times: [...this.state.times, this.props.times[item][0]] }, () => this.props.removeTimes(item, this.props.times[item][0]) )
               break;
             }
             times--
@@ -237,7 +237,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addTimes
+  addTimes,
+  removeTimes
 
 }
 

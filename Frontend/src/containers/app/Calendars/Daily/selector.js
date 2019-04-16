@@ -69,6 +69,8 @@ class Selector extends React.Component {
 
         <div className = 'selectorErrorMessage'> {this.state.errorMessage} </div>
 
+        Note: If you overlap a time with a time from a previously day, the previous time will be removed and the new time will start on this day. 
+
         <button onClick = {this.handleSave} >Save Time</button>
 
 
