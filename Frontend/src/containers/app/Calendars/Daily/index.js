@@ -11,6 +11,7 @@ class DailyCalendar extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      recurringTimes: [],
       times: []
     }
     this.el = document.createElement('div');
@@ -56,6 +57,10 @@ class DailyCalendar extends React.Component {
         //If our date is before the date we are looking at...
         if(today < temp) {
           //Do nothing.
+        } else if(temp.getTime() === today.getTime()) {
+          //We are on the first date that this recurring date was created, we can edit. 
+          this.setState({times: [...this.state.times, this.props.times[item][0]] })
+          
         } else {
           let times = this.props.times[item][0][1] 
           while(temp < today && times > 0 ) {
@@ -64,7 +69,7 @@ class DailyCalendar extends React.Component {
             temp.setDate(temp.getDate()+(7* (this.props.times[item][0][2] +1)));
             
             if(temp.getTime() === today.getTime()) {
-              this.setState({times: [...this.state.times, this.props.times[item][0]] }, () => this.props.removeTimes(item, this.props.times[item][0]) )
+              this.setState({recurringTimes: [...this.state.recurringTimes, this.props.times[item][0]] })
               break;
             }
             times--
@@ -203,6 +208,20 @@ class DailyCalendar extends React.Component {
 
     return ReactDOM.createPortal(
       <div className = 'dailyCalendarModal' ref = {this.dailyCalendarModalRef}>
+
+        Recurring Times for {this.props.day}:
+        {this.state.recurringTimes.map((time) => {
+          let split = time[0].split(',')
+          if(time[1] !== 0 && time[2] ===0) {
+            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+          }
+          if(time[1] !== 0 && time[2] !==0) {
+            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times, every {time[2]} weeks <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+          }
+          return <div> Time Start: {split[0]} --- Time End: {split[1]} <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+        })}
+
+
         Existing Times for {this.props.day}:
 
         {this.state.times.map((time) => {
