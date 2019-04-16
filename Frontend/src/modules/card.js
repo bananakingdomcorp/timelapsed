@@ -11,10 +11,16 @@ const initialState = {
 export default (state = initialState, action) => {
   switch(action.type) {
     case ADD_TIMES:
+      let ourTimes
+      if(state.times[action.day] === undefined ) {
+        ourTimes = [action.times];          
+      } else {
+        ourTimes = [...state.times[action.day], action.times]
+      }
       return {
         times: {
           ...state.times,
-          [action.day] : [ ...state.times[action.day], action.times]
+          [action.day] : ourTimes
 
         }
       }
