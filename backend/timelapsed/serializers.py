@@ -35,11 +35,11 @@ class CreateCardTimesListSerializer(serializers.ModelSerializer):
 
 
 class CreateCardDataSerializer(serializers.ModelSerializer):
-  # Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
+  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
 
   class Meta: 
     model = Card
-    fields = ('Name', 'Description', )
+    fields = ('Name', 'Description', 'Topic' )
 
 
 
@@ -50,13 +50,23 @@ class CreateCardSerializer(serializers.Serializer):
   Times = CreateCardTimesListSerializer( required = False, )
 
   def create(self, validated_data, user):
-    print(validated_data)
-    n =  Topic.objects.create(Name = validated_data['Name'], Description = validated_data['Description'], Position = Topic.objects.values('Position').filter(Email = user).order_by(-'Position').first() +1 , Email = Users.objects.get(Email = user))
+    info = validated_data['Data']
+    # print(info, user)
+    # print(info['Name'])
+    pos =  Card.objects.values('Position').filter(Email = user).order_by('-Position').first()
+    print(pos)
     
-    if(validated_data['Times']) : 
+    if pos == None:
+      pos = 0
+    else :
+      pos = pos['Position']
+    n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
+    
+    if validated_data['Times'] : 
       print('Times!')
 
-    return ({'Data': {'id': n.id} })
+    # return ({'Data': {'id': n.id} })
+    return
 
   class Meta:
     model = Card

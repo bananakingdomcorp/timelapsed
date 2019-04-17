@@ -66,7 +66,7 @@ class AddCardModal extends React.Component {
 
     //Just doing it with the data right now, will add in times once this works. 
     Api().post('/card/', {
-      Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.id},
+      Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
     })
     .then((res) => {
       console.log(res)
@@ -268,7 +268,8 @@ class AddCardModal extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    times: state.card.times
+    times: state.card.times,
+    board: state.board.board
 
 
   }
