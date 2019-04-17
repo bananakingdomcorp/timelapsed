@@ -3,7 +3,7 @@ export const SET_BOARD = 'board/SET_BOARD'
 export const DELETE_TOPIC = 'board/DELETE_TOPIC'
 export const CHANGE_TOPIC_NAME = 'board/CHANGE_TOPIC_NAME'
 export const CHANGE_TOPIC_POSITIONS = 'board/CHANGE_TOPIC_POSITIONS'
-
+export const ADD_CARD = 'board/ADD_CARD'
 
 
 const initialState = {
@@ -12,14 +12,26 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case ADD_CARD: 
+      return {
+        board: [
+          ...state.board,
+          action.index= {
+            ...state.board[action.index],
+            Data : {
+              ...state.board[action.index].Data,
+              Cards: [...state.board[action.index].Data.Cards, ...action.card]
+            }
+          } 
+        ]
+      }
+
     case ADD_TOPIC:
       return {
         board: [
           ...state.board,
           action.name
         ]
-          
-        
       }
     case SET_BOARD:
       return{
@@ -56,7 +68,6 @@ export default (state = initialState, action) => {
         }
         return item;
       })
-
       return {
         ...state,
         board: fixedPosition
@@ -114,4 +125,12 @@ export const changeTopicAndPosition = (name, id, topic1, topic2) => {
     dispatch(changeTopicPositions(topic1,topic2))
 }
 
+}
+
+export const addCard = (index, card) => {
+  return {
+    type: ADD_CARD,
+    index,
+    card
+  }
 }

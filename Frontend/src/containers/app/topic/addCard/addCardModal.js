@@ -10,6 +10,8 @@ import MonthlyCalender from './../../Calendars/Monthly/index';
 
 import {clearTimes} from './../../../../modules/card'
 
+import {addCard} from './../../../../modules/board'
+
 import {Api} from './../../../../djangoApi';
 
 
@@ -64,14 +66,32 @@ class AddCardModal extends React.Component {
 
     //first write to our backend.
 
-    //Just doing it with the data right now, will add in times once this works. 
-    Api().post('/card/', {
-      Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
-    })
-    .then((res) => {
-      console.log(res)
-    })
-    
+    if(Object.keys(this.props.times).length === 0) {
+      //if no times. 
+      Api().post('/card/', {
+        Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
+      })
+      .then((res) => {
+        if(res.status === 201) {
+          //Add to our redux. 
+        }
+      })
+      
+
+
+    } else {
+      //If we have times. 
+      Api().post('/card/', {
+        Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
+        Times: this.props.times
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      
+
+    }
+
 
     //Then clear our times in Redux.
 
@@ -269,14 +289,15 @@ class AddCardModal extends React.Component {
 function mapStateToProps(state) {
   return {
     times: state.card.times,
-    board: state.board.board
+    board: state.board.board,
 
 
   }
 }
 
 const mapDispatchToProps = {
-  clearTimes
+  clearTimes,
+  addCard
 
 }
 

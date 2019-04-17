@@ -30,7 +30,6 @@ class UsersView(viewsets.ModelViewSet):
       info = services.get_user_information(serializer.data)
       #Returning information about an exising record.
 
-      # return Response(json.dumps(info, cls=DjangoJSONEncoder), 200)
       return Response(info, 200)
 
       #We created a new record
@@ -106,7 +105,7 @@ class CardView(viewsets.ModelViewSet):
     if(serializer.is_valid()):
       print(serializer.data, 'DATA YO')
       created =  serializer.create(serializer.data, request.user.email)
-      return Response( created , 200)
+      return Response(created , 201)
     else:
       print(serializer.errors)
 

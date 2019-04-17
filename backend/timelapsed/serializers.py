@@ -51,8 +51,6 @@ class CreateCardSerializer(serializers.Serializer):
 
   def create(self, validated_data, user):
     info = validated_data['Data']
-    # print(info, user)
-    # print(info['Name'])
     pos =  Card.objects.values('Position').filter(Email = user).order_by('-Position').first()
     print(pos)
     
@@ -65,8 +63,7 @@ class CreateCardSerializer(serializers.Serializer):
     if validated_data['Times'] : 
       print('Times!')
 
-    # return ({'Data': {'id': n.id} })
-    return
+    return ({'Data': {'id': n.id} })
 
   class Meta:
     model = Card
