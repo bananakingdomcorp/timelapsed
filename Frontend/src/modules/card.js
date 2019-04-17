@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
     case ADD_TIMES:
       let ourTimes
       if(state.times[action.day] === undefined ) {
-        ourTimes = [action.times];          
+        ourTimes = action.times;          
       } else {
         ourTimes = [...state.times[action.day], action.times]
       }
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
       return {
         times: {
           ...state.times,
-          [action.day] : action.times.filter((item) => item !== action.time)
+          [action.day] : state.times[action.day].filter((item) => item !== action.time)
         }
       }
     case CLEAR_TIMES:

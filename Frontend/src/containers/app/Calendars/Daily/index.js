@@ -213,12 +213,12 @@ class DailyCalendar extends React.Component {
         {this.state.recurringTimes.map((time) => {
           let split = time[0].split(',')
           if(time[1] !== 0 && time[2] ===0) {
-            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} </div>
           }
           if(time[1] !== 0 && time[2] !==0) {
-            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times, every {time[2]} weeks <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+            return <div> Time Start: {split[0]} --- Time End: {split[1]} Repeating for {time[1]} times, every {time[2]} weeks </div>
           }
-          return <div> Time Start: {split[0]} --- Time End: {split[1]} <span onClick = {() => this.deleteTime(time)}>Delete Time</span> </div>
+          return <div> Time Start: {split[0]} --- Time End: {split[1]}  </div>
         })}
 
 

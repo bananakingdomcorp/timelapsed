@@ -13,6 +13,8 @@ import DayInvalid from './dayInvalid'
 
 import DailyCalendar from './../Daily/index'
 
+import {removeTimes} from './../../../../modules/card'
+
 class MonthlyCalender extends React.Component {
   constructor(props) {
     super(props)
@@ -130,6 +132,11 @@ class MonthlyCalender extends React.Component {
     this.setState({dailyCalendarOpen: false})
   }
 
+  deleteTime = (day, time) => {
+    this.props.removeTimes(day, time)
+
+  }
+
 
   render () {
     let dailyCalender = null;
@@ -144,12 +151,12 @@ class MonthlyCalender extends React.Component {
     //Shows all of our currently selected days. 
     let dates = Object.keys(this.props.times).map((item) => this.props.times[item].map((time) => {
       if (time[1] !== 0 && time[2] ===0) {
-        return <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times </div>
+        return <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span> </div>
       }
       if (time[1] !== 0 && time[2] !==0 ) {
-        return <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times every {time[2]} weeks </div>
+        return <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times every {time[2]} weeks <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span>  </div>
       }
-      return <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]} </div> 
+      return <div> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]} <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span>  </div> 
       }   
     ))
 
@@ -187,6 +194,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
+  removeTimes,
 }
 
 
