@@ -102,13 +102,14 @@ class CardView(viewsets.ModelViewSet):
   http_method_names = ['post', ]
 
   def create(self, request):
-
     serializer = CreateCardSerializer(data= request.data)
     if(serializer.is_valid()):
+      print(serializer.data, 'DATA YO')
       created =  serializer.create(serializer.data, request.user.email)
       return Response( created , 200)
+    else:
+      print(serializer.errors)
 
     return Response('INVALID', 200)
-
 
 

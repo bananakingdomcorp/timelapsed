@@ -16,7 +16,7 @@ const ModalRoot = document.querySelector('#modal-root')
 
 //A lot of the modal boilerplate code is the same as in our other modals. I wonder if there would be a way to fix this??
 
-//Perhaps we could have a Modal class that modals we want to make can inherit from. Not sure if subclassing like that is frowned upon in React.
+//Perhaps we could have a Modal class that modals we want to make can inherit from.
 
 
 

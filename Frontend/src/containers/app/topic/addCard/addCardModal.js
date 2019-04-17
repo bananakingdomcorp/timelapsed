@@ -10,6 +10,7 @@ import MonthlyCalender from './../../Calendars/Monthly/index';
 
 import {clearTimes} from './../../../../modules/card'
 
+import {Api} from './../../../../djangoApi';
 
 
 
@@ -62,6 +63,15 @@ class AddCardModal extends React.Component {
     console.log('cardAddTesting')
 
     //first write to our backend.
+
+    //Just doing it with the data right now, will add in times once this works. 
+    Api().post('/card/', {
+      Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.id},
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    
 
     //Then clear our times in Redux.
 

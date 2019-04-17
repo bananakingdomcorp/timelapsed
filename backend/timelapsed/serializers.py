@@ -35,29 +35,28 @@ class CreateCardTimesListSerializer(serializers.ModelSerializer):
 
 
 class CreateCardDataSerializer(serializers.ModelSerializer):
+  # Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
 
   class Meta: 
     model = Card
-    fields = ('Name', 'Description', 'Position', 'Topic' )
+    fields = ('Name', 'Description', )
 
 
 
 
-class CreateCardSerializer(serializers.ModelSerializer):
+class CreateCardSerializer(serializers.Serializer):
 
-  Data = CreateCardDataSerializer(many = True, read_only=True)
-  Times = CreateCardTimesListSerializer(many = True, required = False, read_only=True)
+  Data = CreateCardDataSerializer()
+  Times = CreateCardTimesListSerializer( required = False, )
 
   def create(self, validated_data, user):
-
-    n =  Topic.objects.create(Name = validated_data['Name'], Description = validated_data['Description'], Position = Topic.objects.values('Position').filter(Email = user).order_by(-'Position').first(), Email = Users.objects.get(Email = user))
+    print(validated_data)
+    n =  Topic.objects.create(Name = validated_data['Name'], Description = validated_data['Description'], Position = Topic.objects.values('Position').filter(Email = user).order_by(-'Position').first() +1 , Email = Users.objects.get(Email = user))
     
     if(validated_data['Times']) : 
       print('Times!')
 
-    # return { }
-    return
-
+    return ({'Data': {'id': n.id} })
 
   class Meta:
     model = Card
@@ -100,8 +99,6 @@ class DeleteTopicSerializer(serializers.ModelSerializer):
 class EditTopicSerializer(serializers.ModelSerializer):
   switchPosition= serializers.IntegerField(required = False)
   Name = serializers.CharField(required = False)
-
-  #clean this up into services or multiple serializers. 
 
   
   def update(self, validated_data, pk):
