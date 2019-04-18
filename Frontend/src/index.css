@@ -21,11 +21,11 @@ body {
 }
 
 
-.card {
+.whiteCard {
   background-image: linear-gradient(to right, white, white), radial-gradient(circle at top left, grey, dodgerblue);
   background-origin: border-box;
   background-clip: content-box, border-box;
-  width: 80%;
+  width: 90%;
   height: 10rem;
   margin-bottom: 100%, 2cm;
   word-wrap: normal;
@@ -101,7 +101,7 @@ body {
   margin-left: 1vw;
   width: 15rem;
   height: auto;
-  max-height: 80vh;
+  max-height: 87vh;
   overflow-y: auto;
   vertical-align: top;
   display: inline-block;
@@ -357,4 +357,30 @@ body {
   padding: 3px;
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
+}
+
+
+.card {
+  background-image: linear-gradient(to right, white, white), radial-gradient(circle at top left, grey, dodgerblue);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  width: 90%;
+  height: 10rem;
+  margin-bottom: 1vh;
+  word-wrap: normal;
+  white-space: normal;
+  border: double 2px transparent;
+  border-top-right-radius: 5%;
+  border-bottom-left-radius: 5%;
+  border-top-left-radius: 20%;
+  border-bottom-right-radius: 20%;
+  position: relative; 
+  left : 50%;
+  transform: translateX(-50%);
+  padding: 0;
+
+}
+
+.card > .title {
+  
 }

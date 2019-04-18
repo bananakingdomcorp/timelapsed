@@ -42,7 +42,7 @@ class  AddATopic extends React.Component {
     //Add more validation below. 
 
     return (
-      <div className = 'card'>
+      <div className = 'whiteCard'>
         <form  className = 'addCard'>
           <input className = 'addButton' type = 'submit' value = 'Add a topic!' onClick = {this.submitTopic} />
           <input className = 'addCardTitle' placeholder = 'Enter topic name' value = {this.state.title} onChange = {(e) =>  this.changeTitleValue(e.target.value)}  required /> 
