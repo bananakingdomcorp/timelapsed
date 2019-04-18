@@ -6,10 +6,12 @@ class Card extends React.Component {
     super(props)
   }
 
+
   render() {
     return (
       <div className = 'card'>
-        <p className = 'title' > {this.props.data.Name} </p>
+        <div className = 'cardEdit' > ... </div>      
+        <p className = 'cardTitle' > {this.props.data.Name} </p>
 
         {this.props.data.Description}
 

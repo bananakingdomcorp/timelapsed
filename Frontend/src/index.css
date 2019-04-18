@@ -102,7 +102,7 @@ body {
   width: 15rem;
   height: auto;
   max-height: 87vh;
-  overflow-y: auto;
+  overflow-y: scroll;
   vertical-align: top;
   display: inline-block;
   background-image: linear-gradient(to right, white, white), radial-gradient(circle at top left,lightblue, grey);
@@ -114,6 +114,11 @@ body {
   border-top-left-radius: 5vh;
   border-bottom-right-radius: 5vh;
 
+} 
+
+.topic::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; 
 }
 
 .nameplate {
@@ -381,6 +386,26 @@ body {
 
 }
 
-.card > .title {
-  
+.cardTitle {
+  margin-top: 0;
+  border: none;
+  text-align: center;
+  width: 65%;
+  outline: none;
+  font-weight: bold;
+  font-size: 25px;
+  color: dodgerblue;
+}
+
+.cardEdit {
+  font-size: 28px;
+  text-align: right;
+  margin-left: 75%;
+  display: inline-block;
+}
+
+.cardEdit:hover {
+  text-decoration: underline;
+  color: black;
+  font-weight: bold;  
 }
