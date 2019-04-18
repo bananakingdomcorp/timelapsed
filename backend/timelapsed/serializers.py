@@ -59,9 +59,6 @@ class CreateCardSerializer(serializers.Serializer):
     else :
       pos = pos['Position']
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
-    
-    if validated_data['Times'] : 
-      print('Times!')
 
     return ({'Data': {'id': n.id} })
 

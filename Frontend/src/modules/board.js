@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
             ...state.board[action.index],
             Data : {
               ...state.board[action.index].Data,
-              Cards: [...state.board[action.index].Data.Cards, ...action.card]
+              Cards: [...state.board[action.index].Data.Cards, action.card]
             }
           } 
         ]

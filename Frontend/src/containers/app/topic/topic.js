@@ -4,6 +4,7 @@ import React from 'react';
 import {connect} from  'react-redux';
 import AddCardModal from './addCard/addCardModal';
 import EditPanelModal from './editPanel/editPanelModal';
+import Card from './card/card'
 
 
 
@@ -59,6 +60,10 @@ class Topic extends React.Component {
         <div className =  'topicAddCard' onClick= {this.openAddCardModal}>
           Add a task
         </div>
+        {this.props.board[this.props.id].Data.Cards.map((info) => {
+          return <Card data = {info} />
+        }) }
+
         {modalView}
         {editView}
       </div>

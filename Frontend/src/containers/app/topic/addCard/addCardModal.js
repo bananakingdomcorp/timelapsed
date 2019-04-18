@@ -74,6 +74,15 @@ class AddCardModal extends React.Component {
       .then((res) => {
         if(res.status === 201) {
           //Add to our redux. 
+          console.log(res.data)
+          let card = {
+            id: res.data.Data.id,
+            Name: this.state.title,
+            Description: this.state.description,
+            times : [],
+          }
+
+          this.props.addCard(this.props.id, card)
         }
       })
       
@@ -81,13 +90,16 @@ class AddCardModal extends React.Component {
 
     } else {
       //If we have times. 
-      Api().post('/card/', {
-        Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
-        Times: this.props.times
-      })
-      .then((res) => {
-        console.log(res)
-      })
+
+      //Add this functionality. 
+
+      // Api().post('/card/', {
+      //   Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
+      //   Times: this.props.times
+      // })
+      // .then((res) => {
+      //   console.log(res)
+      // })
       
 
     }
