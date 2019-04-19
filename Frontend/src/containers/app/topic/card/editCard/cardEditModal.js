@@ -13,7 +13,10 @@ class CardEditModal extends React.Component {
       description: this.props.data.Description,
       selectionOpen: false,
       switchPosition : -Infinity,
-      times : []
+      times : [],
+      topic: this.props.topic,
+      topicSelectionOpen: false,
+
       
 
     }
@@ -42,12 +45,12 @@ class CardEditModal extends React.Component {
     }
   }
 
-  openSelections = () => {
+  openPositionSelection = () => {
     this.setState({selectionOpen: true})
 
   } 
   
-  closeSelections = () => {
+  closePositionSelection = () => {
     this.setState({selectionOpen: false})
 
   }
@@ -61,8 +64,22 @@ class CardEditModal extends React.Component {
   }
 
   switchPositions = (e) => {
-    this.setState({switchPosition: e}, () => this.closeSelections())
+    this.setState({switchPosition: e}, () => this.closePositionSelection())
 
+  }
+
+  openTopicSelection = () => {
+    this.setState({topicSelectionOpen: true})
+  }
+
+  closeTopicSelection = () => {
+    this.setState({topicSelectionOpen: false})
+
+  }
+
+  switchTopic = (e) => {
+
+    this.setState({topic: e}, () => this.closeTopicSelection())
   }
 
   saveEdit = () => {
@@ -70,12 +87,12 @@ class CardEditModal extends React.Component {
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
 
-    Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos} } )
-    .then((res) => {
-      if (res.status === 200) {
-        
-      }
-    })
+    // Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos} } )
+    // .then((res) => {
+    //   if (res.status === 200) {
+
+    //   }
+    // })
 
     //This doesn't fix cards/times. That still needs to be added. 
 
@@ -83,7 +100,7 @@ class CardEditModal extends React.Component {
 
 
   render() {
-    let selections =  <option onClick = {this.openSelections} > Select Topic  </option>
+    let selections =  <option onClick = {this.openPositionSelection} > Switch Positions with another card  </option>
     if(this.state.selectionOpen) {
       selections = [] 
 
@@ -95,7 +112,13 @@ class CardEditModal extends React.Component {
     }
 
     if(this.state.selectionOpen === false && this.state.switchPosition !== -Infinity) {
-      selections = <option onClick = {this.openSelections} > {this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].Name}  </option>
+      selections = <option onClick = {this.openPositionSelection} > {this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].Name}  </option>
+    }
+
+    let topicSelector =  <option onClick = {this.openTopicSelection} > Change Topic  </option>
+
+    if(this.state.topicSelectionOpen) {
+      
     }
 
     let times = null;
