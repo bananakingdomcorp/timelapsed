@@ -98,17 +98,23 @@ class CardView(viewsets.ModelViewSet):
   serializer_class= CardSerializer
   queryset= Card.objects.all()
   permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', ]
+  http_method_names = ['post', 'put' ]
 
   def create(self, request):
     serializer = CreateCardSerializer(data= request.data)
     if(serializer.is_valid()):
-      print(serializer.data, 'DATA YO')
       created =  serializer.create(serializer.data, request.user.email)
       return Response(created , 201)
     else:
       print(serializer.errors)
 
     return Response('INVALID', 200)
+
+  def update(self, request):
+    serializer = CreateCardSerializer(data = request.data)
+    if(serializer.is_valid()):
+      #serializer update here. 
+      return Response(200)
+    return Response(400)
 
 

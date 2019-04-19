@@ -11,6 +11,9 @@ class CardEditModal extends React.Component {
       title: this.props.data.Name,
       description: this.props.data.Description,
       selectionOpen: false,
+      switchPosition : -Infinity,
+      
+
     }
 
     
@@ -55,18 +58,42 @@ class CardEditModal extends React.Component {
     this.setState({description: e})
   }
 
+  switchPositions = (e) => {
+    this.setState({switchPosition: e}, () => this.closeSelections())
+
+  }
+
 
   render() {
-    let selections =  <div onClick = {this.openSelections} > Change position </div>
+    let selections =  <option onClick = {this.openSelections} > Select Topic  </option>
     if(this.state.selectionOpen) {
-      
+      selections = [] 
+      this.props.board[this.props.topic].data.cards.forEach((item, index) => {
+        if(this.props.data.id !== item.id)
+        selections.push(<ul onClick = {() => this.switchPositions(index) } > {item.Name}</ul> )
+      })
 
     }
+
+    if(this.state.selectionOpen === false && this.state.switchPosition !== -Infinity) {
+      selections = <option onClick = {this.openSelections} > {this.props.board[this.props.topic].data.cards[this.state.switchPosition].Name}  </option>
+    }
+
+    let times = null;
+
+
+
     return ReactDOM.createPortal(
       <div>
         <input onChange = {(e) => this.titleChange(e.target.value)} value = {this.state.title} className = 'addCardModalTitle'  />
 
         <input onChange = {(e) => this.descriptionChange(e.target.value)} value = {this.state.description} className = 'addCardModalDescription' />        
+
+        Times for this card:
+        {times}
+
+        <div>Edit times </div>
+
         {selections}
 
       </div>, 

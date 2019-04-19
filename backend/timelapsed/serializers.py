@@ -19,6 +19,8 @@ class UsersSerializer(serializers.ModelSerializer):
 
 
 class DateRangeSerializer(serializers.ModelSerializer):
+# For date time ranges, do the following. If the id is not None, then update the time, if it is none, create it. 
+
   class Meta:
     model = Date_Range
     fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time', 'Day')
@@ -60,7 +62,13 @@ class CreateCardSerializer(serializers.Serializer):
       pos = pos['Position']
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
 
+    #daterangeserializer post here. 
     return ({'Data': {'id': n.id} })
+
+  def update(self, validated_data, user):
+
+    #daterangeserializer post here. 
+    return
 
   class Meta:
     model = Card
