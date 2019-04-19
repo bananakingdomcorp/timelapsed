@@ -7,6 +7,11 @@ const ModalRoot = document.querySelector('#modal-root')
 class CardEditModal extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      title: this.props.data.Name,
+      description: this.props.data.Description,
+      selectionOpen: false,
+    }
 
     
     this.el = document.createElement('div');
@@ -32,10 +37,37 @@ class CardEditModal extends React.Component {
     }
   }
 
+  openSelections = () => {
+    this.setState({selectionOpen: true})
+
+  } 
+  
+  closeSelections = () => {
+    this.setState({selectionOpen: false})
+
+  }
+
+  titleChange = (e) => {
+    this.setState({title:e })
+  }
+
+  descriptionChange = (e) => {
+    this.setState({description: e})
+  }
+
 
   render() {
+    let selections =  <div onClick = {this.openSelections} > Change position </div>
+    if(this.state.selectionOpen) {
+      
+
+    }
     return ReactDOM.createPortal(
       <div>
+        <input onChange = {(e) => this.titleChange(e.target.value)} value = {this.state.title} className = 'addCardModalTitle'  />
+
+        <input onChange = {(e) => this.descriptionChange(e.target.value)} value = {this.state.description} className = 'addCardModalDescription' />        
+        {selections}
 
       </div>, 
       this.el
@@ -44,7 +76,16 @@ class CardEditModal extends React.Component {
   }
 
 }
+function mapStateToProps(state) {
+  return {
+    board: state.board.board
 
 
+  }
+}
 
-export default connect(null, null) (CardEditModal);
+const mapDispatchToProps = {
+}
+
+
+export default connect(mapStateToProps, null) (CardEditModal);

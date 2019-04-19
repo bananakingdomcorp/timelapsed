@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import CardEditModal from './editCard/cardEditModal';
 
 
 
@@ -12,13 +13,27 @@ class Card extends React.Component {
     }
   }
 
+  openModal = () => {
+    this.setState({editModalOpen: true})
+  }
+  closeModal = () => {
+    this.setState({editModalOpen: false})
+  }
+
 
   render() {
+
+    let modal = null;
+
+    if(this.state.editModalOpen) {
+      modal = <CardEditModal closeModal = {this.closeModal} data = {this.props.data} />
+    }
+
     return (
       <div className = 'card'>
         <div className = 'cardEdit' > ... </div>      
         <p className = 'cardTitle' > {this.props.data.Name} </p>
-        
+        View relationships. 
       </div>
     )
   }
