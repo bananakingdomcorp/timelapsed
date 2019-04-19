@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ReactDOM from 'react-dom'
+import {Api} from './../../../../../djangoApi'
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -12,6 +13,7 @@ class CardEditModal extends React.Component {
       description: this.props.data.Description,
       selectionOpen: false,
       switchPosition : -Infinity,
+      times : []
       
 
     }
@@ -65,6 +67,18 @@ class CardEditModal extends React.Component {
 
   saveEdit = () => {
 
+    //Send everything to the backend. 
+    let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
+
+    Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos} } )
+    .then((res) => {
+      if (res.status === 200) {
+        
+      }
+    })
+
+    //This doesn't fix cards/times. That still needs to be added. 
+
   }
 
 
@@ -72,7 +86,7 @@ class CardEditModal extends React.Component {
     let selections =  <option onClick = {this.openSelections} > Select Topic  </option>
     if(this.state.selectionOpen) {
       selections = [] 
-      // console.log(this.props.board[this.props.topic])
+
       this.props.board[this.props.topic].Data.Cards.forEach((item, index) => {
         if(this.props.data.id !== item.id)
         selections.push(<ul onClick = {() => this.switchPositions(index) } > {item.Name}</ul> )
@@ -104,6 +118,9 @@ class CardEditModal extends React.Component {
         {selections}
         </div>
 
+
+        <button onClick = {this.saveEdit} >Save </button>
+        <button>Cancel </button>
       </div>, 
       this.el
 

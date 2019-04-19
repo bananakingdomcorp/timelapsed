@@ -62,12 +62,16 @@ class CreateCardSerializer(serializers.Serializer):
       pos = pos['Position']
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
 
+    if 'Topic' in validated_data:
+
+      print('topic exists')
     #daterangeserializer post here. 
     return ({'Data': {'id': n.id} })
 
-  def update(self, validated_data, user):
-
-    #daterangeserializer post here. 
+  def update(self, validated_data, pk, user):
+    info = validated_data['Data']
+    Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = info['Position'], Topic = info['Topic'])
+    #daterangeserializer post here. This does not currently update dates. 
     return
 
   class Meta:

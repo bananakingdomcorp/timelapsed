@@ -27,7 +27,7 @@ class Card extends React.Component {
     let modal = null;
 
     if(this.state.editModalOpen) {
-      modal = <CardEditModal topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} />
+      modal = <CardEditModal topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} />
     }
 
     return (

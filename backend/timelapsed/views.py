@@ -110,9 +110,10 @@ class CardView(viewsets.ModelViewSet):
 
     return Response('INVALID', 200)
 
-  def update(self, request):
+  def update(self, request, pk):
     serializer = CreateCardSerializer(data = request.data)
     if(serializer.is_valid()):
+      created = serializer.create(serializer.data, pk, request.user.email)
       #serializer update here. 
       return Response(200)
     return Response(400)
