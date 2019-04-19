@@ -72,7 +72,8 @@ class CardEditModal extends React.Component {
     let selections =  <option onClick = {this.openSelections} > Select Topic  </option>
     if(this.state.selectionOpen) {
       selections = [] 
-      this.props.board[this.props.topic].data.cards.forEach((item, index) => {
+      // console.log(this.props.board[this.props.topic])
+      this.props.board[this.props.topic].Data.Cards.forEach((item, index) => {
         if(this.props.data.id !== item.id)
         selections.push(<ul onClick = {() => this.switchPositions(index) } > {item.Name}</ul> )
       })
@@ -80,7 +81,7 @@ class CardEditModal extends React.Component {
     }
 
     if(this.state.selectionOpen === false && this.state.switchPosition !== -Infinity) {
-      selections = <option onClick = {this.openSelections} > {this.props.board[this.props.topic].data.cards[this.state.switchPosition].Name}  </option>
+      selections = <option onClick = {this.openSelections} > {this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].Name}  </option>
     }
 
     let times = null;
@@ -98,7 +99,10 @@ class CardEditModal extends React.Component {
 
         <div>Edit times </div>
 
+        Change position with:
+        <div className = 'cardEditSelectionDropdown'>
         {selections}
+        </div>
 
       </div>, 
       this.el
