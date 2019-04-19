@@ -275,7 +275,8 @@ body {
 
 }
 
-.editPanelModal {
+
+.genericModal {
   background-color: white;
   height: 80vh;
   width: 50vw;

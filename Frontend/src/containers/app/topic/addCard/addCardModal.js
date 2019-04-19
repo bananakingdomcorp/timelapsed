@@ -274,7 +274,7 @@ class AddCardModal extends React.Component {
 
     return ReactDOM.createPortal(
 
-      <div className = 'addCardModal' ref = {this.cardModalRef}>
+      <div className = 'genericModal' ref = {this.cardModalRef}>
       
         <input onChange = {(e) => this.titleChange(e.target.value)} placeholder = 'Title' className = 'addCardModalTitle'  />
 

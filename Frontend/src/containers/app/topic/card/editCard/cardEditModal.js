@@ -18,7 +18,7 @@ class CardEditModal extends React.Component {
 
     
     this.el = document.createElement('div');
-    this.cardModalRef = React.createRef();
+    this.editCardModalRef = React.createRef();
   }
 
 
@@ -34,7 +34,7 @@ class CardEditModal extends React.Component {
   }
 
   handleClickOutside = (e) =>  {
-    if (!this.cardModalRef.current.contains(e.target)) {
+    if (!this.editCardModalRef.current.contains(e.target)) {
       this.props.closeModal();
 
     }
@@ -63,6 +63,10 @@ class CardEditModal extends React.Component {
 
   }
 
+  saveEdit = () => {
+
+  }
+
 
   render() {
     let selections =  <option onClick = {this.openSelections} > Select Topic  </option>
@@ -84,7 +88,7 @@ class CardEditModal extends React.Component {
 
 
     return ReactDOM.createPortal(
-      <div>
+      <div ref = {this.editCardModalRef} className= "genericModal">
         <input onChange = {(e) => this.titleChange(e.target.value)} value = {this.state.title} className = 'addCardModalTitle'  />
 
         <input onChange = {(e) => this.descriptionChange(e.target.value)} value = {this.state.description} className = 'addCardModalDescription' />        

@@ -14,6 +14,7 @@ class Card extends React.Component {
   }
 
   openModal = () => {
+    console.log('openmodal')
     this.setState({editModalOpen: true})
   }
   closeModal = () => {
@@ -31,9 +32,10 @@ class Card extends React.Component {
 
     return (
       <div className = 'card'>
-        <div className = 'cardEdit' > ... </div>      
+        <div className = 'cardEdit' onClick = {this.openModal} > ... </div>      
         <p className = 'cardTitle' > {this.props.data.Name} </p>
         View relationships. 
+        {modal}
       </div>
     )
   }

@@ -223,7 +223,7 @@ class EditPanelModal extends React.Component{
 
   
     return ReactDOM.createPortal(
-      <div className = 'editPanelModal' ref = {this.editPanelModalRef}> 
+      <div className = 'genericModal' ref = {this.editPanelModalRef}> 
         <input className = 'editPanelNameChange' onChange = {(e) => this.nameChange(e)} value = {this.state.name} />
 
         <p>Change Position with another Topic</p>
