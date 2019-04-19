@@ -118,7 +118,16 @@ class CardEditModal extends React.Component {
     let topicSelector =  <option onClick = {this.openTopicSelection} > Change Topic  </option>
 
     if(this.state.topicSelectionOpen) {
-      
+      let topicSelector = [];
+      Object.keys(this.props.board).forEach((item, index) => {
+        if(index !== this.props.topic) {
+          topicSelector.push(<ul onClick = {() => this.switchTopic(index)}> {item.Data.Name} </ul>)
+        }
+      })
+    }
+
+    if(this.state.topicSelectionOpen === false && this.state.topic !== this.props.data.Name) {
+      topicSelector = <option onClick = {this.openTopicSelection}> {this.props.board[this.state.topic].Data.Name} </option>
     }
 
     let times = null;
@@ -138,10 +147,13 @@ class CardEditModal extends React.Component {
 
         Change position with:
         <div className = 'cardEditSelectionDropdown'>
-        {selections}
+          {selections}
         </div>
 
-
+        Change Topic:
+        <div>
+          {topicSelector}
+        </div>
         <button onClick = {this.saveEdit} >Save </button>
         <button>Cancel </button>
       </div>, 
