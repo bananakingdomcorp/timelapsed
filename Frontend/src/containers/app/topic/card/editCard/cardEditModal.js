@@ -86,13 +86,17 @@ class CardEditModal extends React.Component {
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
+    //How do we handle the position when the topic has been switched? 
+    
 
-    // Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos} } )
-    // .then((res) => {
-    //   if (res.status === 200) {
+    Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos, Topic: this.state.topic} } )
+    .then((res) => {
+      if (res.status === 200) {
+        //Call redux. 
 
-    //   }
-    // })
+        //If we are just changing the. 
+      }
+    })
 
     //This doesn't fix cards/times. That still needs to be added. 
 
@@ -118,10 +122,11 @@ class CardEditModal extends React.Component {
     let topicSelector =  <option onClick = {this.openTopicSelection} > Change Topic  </option>
 
     if(this.state.topicSelectionOpen) {
-      let topicSelector = [];
-      Object.keys(this.props.board).forEach((item, index) => {
-        if(index !== this.props.topic) {
-          topicSelector.push(<ul onClick = {() => this.switchTopic(index)}> {item.Data.Name} </ul>)
+      topicSelector = [];
+      Object.keys(this.props.board).forEach((item) => {
+        if(Number(item) !== this.props.topic) {
+          console.log(this.props.board[item].Data.Name)
+          topicSelector.push(<ul onClick = {() => this.switchTopic(item)}> {this.props.board[item].Data.Name} </ul>)
         }
       })
     }
@@ -150,7 +155,6 @@ class CardEditModal extends React.Component {
           {selections}
         </div>
 
-        Change Topic:
         <div>
           {topicSelector}
         </div>

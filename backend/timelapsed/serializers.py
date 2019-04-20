@@ -72,7 +72,7 @@ class CreateCardSerializer(serializers.Serializer):
     info = validated_data['Data']
     Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = info['Position'], Topic = info['Topic'])
     #daterangeserializer post here. This does not currently update dates. 
-    return
+    return 
 
   class Meta:
     model = Card
