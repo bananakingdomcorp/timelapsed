@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import ReactDOM from 'react-dom'
 import {Api} from './../../../../../djangoApi'
 
+import {changeCardInfo} from './../../../../../modules/board'
+
 const ModalRoot = document.querySelector('#modal-root')
 
 class CardEditModal extends React.Component {
@@ -16,8 +18,6 @@ class CardEditModal extends React.Component {
       times : [],
       topic: this.props.topic,
       topicSelectionOpen: false,
-
-      
 
     }
 
@@ -98,8 +98,18 @@ class CardEditModal extends React.Component {
     .then((res) => {
       if (res.status === 200) {
         //Call redux. 
+        
+        //If we are just changing the information about the card...
 
-        //If we are just changing the. 
+        this.props.changeCardInfo(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Cards : this.state.times })
+
+
+        //if we are changing the topic that the card is in.
+
+        
+
+
+        //if we are changing the position of the card. 
       }
     })
 
@@ -184,6 +194,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
+  changeCardInfo,
 }
 
 

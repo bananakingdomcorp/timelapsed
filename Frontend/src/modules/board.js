@@ -4,6 +4,10 @@ export const DELETE_TOPIC = 'board/DELETE_TOPIC'
 export const CHANGE_TOPIC_NAME = 'board/CHANGE_TOPIC_NAME'
 export const CHANGE_TOPIC_POSITIONS = 'board/CHANGE_TOPIC_POSITIONS'
 export const ADD_CARD = 'board/ADD_CARD'
+export const CHANGE_CARD_INFO = 'board/CHANGE_CARD_TOPIC'
+export const CHANGE_CARD_POSITION = 'board/CHANGE_CARD_POSITION'
+export const CHANGE_CARD_TOPIC = 'board/CHANGE_CARD_TOPIC'
+
 
 
 const initialState = {
@@ -53,6 +57,28 @@ export default (state = initialState, action) => {
       return {
         ...state,
         board: fixedName
+      }
+    
+    case CHANGE_CARD_INFO:
+      return {
+        ...state,
+        board: [
+          ...state.board,
+          action.topic = {
+            ...state.board[action.topic], 
+            Cards : [
+              ...state.board[action.topic].Cards,
+              action.info.position = {
+                ...state.board[action.topic].Cards[action.info.position],
+                Name: action.info.Name,
+                Description: action.info.Description,
+                Times: action.info.Cards
+              }
+
+            ]
+
+          }
+        ]
       }
 
     case CHANGE_TOPIC_POSITIONS:
@@ -134,3 +160,22 @@ export const addCard = (index, card) => {
     card
   }
 }
+
+
+export const changeCardInfo = (topic, info) => {
+  return {
+    type: CHANGE_CARD_INFO,
+    topic,
+    info
+  }
+
+}
+
+export const changeCardPosition =() => {
+
+}
+
+export const changeCardTopic = () => {
+
+}
+

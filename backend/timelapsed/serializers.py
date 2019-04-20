@@ -85,11 +85,11 @@ class CreateCardSerializer(serializers.Serializer):
         Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = tempPos)
         return 'Changed position'    
       else:
-        Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = info['Position'])      
+        Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'])      
     else :
       #The topic has changed. 
       pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-    
+      #If there are no cards in the topic. 
       if pos == None:
         pos = 0
       else :
