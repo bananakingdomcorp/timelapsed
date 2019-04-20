@@ -82,13 +82,19 @@ class CardEditModal extends React.Component {
     this.setState({topic: e}, () => this.closeTopicSelection())
   }
 
+  deleteCard = () => {
+    //Deletes our card.
+    Api().delete(`/card/${this.props.board[this.props.topic].Data.id}/`)
+
+  }
+
   saveEdit = () => {
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
 
 
-    Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos, Topic: this.state.topic} } )
+    Api().put(`/card/${this.props.board[this.props.topic].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos, Topic: this.state.topic} } )
     .then((res) => {
       if (res.status === 200) {
         //Call redux. 
@@ -157,6 +163,9 @@ class CardEditModal extends React.Component {
         <div>
           {topicSelector}
         </div>
+
+        <div onClick = {this.deleteCard}> DELETE THIS CARD </div>
+
         <button onClick = {this.saveEdit} >Save </button>
         <button>Cancel </button>
       </div>, 
