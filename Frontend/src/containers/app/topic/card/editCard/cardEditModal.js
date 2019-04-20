@@ -102,7 +102,7 @@ class CardEditModal extends React.Component {
         //if we are changing the topic that the card is in.
 
         if(this.state.topic !== this.props.topic) {
-          this.props.changeCardTopic(this.props.topic, this.state.topic,  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Cards : this.state.times } )
+          this.props.changeCardTopic(this.props.topic, this.state.topic,  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Cards : this.state.times, id: this.props.data.id } )
         }
 
         //If we are just changing the information about the card...

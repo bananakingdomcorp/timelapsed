@@ -66,19 +66,52 @@ export default (state = initialState, action) => {
           ...state.board,
           action.topic = {
             ...state.board[action.topic], 
-            Cards : [
+            Data: {
               ...state.board[action.topic].Cards,
-              action.info.position = {
-                ...state.board[action.topic].Cards[action.info.position],
-                Name: action.info.Name,
-                Description: action.info.Description,
-                Times: action.info.Cards
-              }
-
-            ]
-
+              Cards : [
+                ...state.board[action.topic].Data.Cards,
+                action.info.position = {
+                  ...state.board[action.topic].Data.Cards[action.info.position],
+                  Name: action.info.Name,
+                  Description: action.info.Description,
+                  Times: action.info.Cards
+                }
+  
+              ]
+            }
           }
         ]
+      }
+
+    case CHANGE_CARD_TOPIC:
+      let last = state.board[action.oldTopic].Data.Cards[action.info.position]
+      last.Name = action.info.Name;
+      last.Description = action.info.Description;
+      last.Times = action.info.Times;
+
+      return {
+        ...state,
+        board : [
+          ...state.board,
+          action.newTopic = {
+            ...state.board[action.newTopic],
+            Data: {
+              ...state.board[action.newTopic].Data,
+              Cards: [
+                ...state.board[action.newTopic].Data.Cards,
+                ...last
+              ]
+            }
+          },
+          action.oldTopic = {
+            ...state.board[action.oldTopic],
+            Data: {
+              ...state.board[action.oldTopic].Data,
+              Cards: state.board[action.oldTopic].Data.Cards.filter((item) => action.info.id !== item.id)
+            }
+          }
+        ]
+
       }
 
     case CHANGE_TOPIC_POSITIONS:
@@ -171,10 +204,6 @@ export const changeCardInfo = (topic, info) => {
 
 }
 
-export const changeCardPosition =() => {
-
-}
-
 export const changeCardTopic = (oldTopic, newTopic, info) => {
   return {
     type: CHANGE_CARD_TOPIC,
@@ -182,6 +211,9 @@ export const changeCardTopic = (oldTopic, newTopic, info) => {
     newTopic,
     info
   }
-
 }
 
+export const changeCardPosition =() => {
+
+
+}
