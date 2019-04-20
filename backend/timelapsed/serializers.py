@@ -53,7 +53,7 @@ class CreateCardSerializer(serializers.Serializer):
 
   def create(self, validated_data, user):
     info = validated_data['Data']
-    pos =  Card.objects.values('Position').filter(Email = user).order_by('-Position').first()
+    pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
     print(pos)
     
     if pos == None:
@@ -70,7 +70,18 @@ class CreateCardSerializer(serializers.Serializer):
 
   def update(self, validated_data, pk, user):
     info = validated_data['Data']
-    Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = info['Position'], Topic = info['Topic'])
+    if Card.object.filter(id = pk)['Topic'] == validated_data['Topic'] :
+         Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = info['Position'])      
+    else :
+      #The topic has changed. 
+      pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
+    
+      if pos == None:
+        pos = 0
+      else :
+        pos = pos['Position']
+    
+    Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
     #daterangeserializer post here. This does not currently update dates. 
     return 
 

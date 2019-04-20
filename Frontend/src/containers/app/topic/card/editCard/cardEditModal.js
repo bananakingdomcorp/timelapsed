@@ -86,8 +86,7 @@ class CardEditModal extends React.Component {
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
-    //How do we handle the position when the topic has been switched? 
-    
+
 
     Api().put(`/card/${this.props.board[this.props.id].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos, Topic: this.state.topic} } )
     .then((res) => {
