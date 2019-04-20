@@ -175,7 +175,13 @@ export const changeCardPosition =() => {
 
 }
 
-export const changeCardTopic = () => {
+export const changeCardTopic = (oldTopic, newTopic, info) => {
+  return {
+    type: CHANGE_CARD_TOPIC,
+    oldTopic,
+    newTopic,
+    info
+  }
 
 }
 
