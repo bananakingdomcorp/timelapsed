@@ -4,7 +4,7 @@ export const DELETE_TOPIC = 'board/DELETE_TOPIC'
 export const CHANGE_TOPIC_NAME = 'board/CHANGE_TOPIC_NAME'
 export const CHANGE_TOPIC_POSITIONS = 'board/CHANGE_TOPIC_POSITIONS'
 export const ADD_CARD = 'board/ADD_CARD'
-export const CHANGE_CARD_INFO = 'board/CHANGE_CARD_TOPIC'
+export const CHANGE_CARD_INFO = 'board/CHANGE_CARD_INFO'
 export const CHANGE_CARD_POSITION = 'board/CHANGE_CARD_POSITION'
 export const CHANGE_CARD_TOPIC = 'board/CHANGE_CARD_TOPIC'
 
@@ -75,7 +75,7 @@ export default (state = initialState, action) => {
                 Cards: state.board[action.topic].Data.Cards.map((card, pos) => {
                   if (pos === action.info.Position ) {
                     return {
-                      ...state.board[action.topic].Data.Cards[action.info.position],
+                      ...state.board[action.topic].Data.Cards.card,
                       Name: action.info.Name,
                       Description: action.info.Description,
                       Times: action.info.Times                  
@@ -93,33 +93,33 @@ export default (state = initialState, action) => {
       }
 
     case CHANGE_CARD_TOPIC:
-      let last = state.board[action.oldTopic].Data.Cards[action.info.position]
-      last.Name = action.info.Name;
-      last.Description = action.info.Description;
-      last.Times = action.info.Times;
-
+      let last = state.board[action.oldTopic].Data.Cards[action.info.Position]
+      console.log(last)
       return {
         ...state,
-        board : [
-          ...state.board,
-          action.newTopic = {
-            ...state.board[action.newTopic],
-            Data: {
-              ...state.board[action.newTopic].Data,
-              Cards: [
-                ...state.board[action.newTopic].Data.Cards,
-                ...last
-              ]
+        board : state.board.map((item, index) => {
+          if(index === action.oldTopic) {
+            //Delete from here
+            return {
+              ...state.board[action.oldTopic],
+              Data:{
+                ...state.board[action.oldTopic].Data,
+                Cards: state.board[action.oldTopic].Data.Cards.filter(item => item.id !== last.id)
+              }
             }
-          },
-          action.oldTopic = {
-            ...state.board[action.oldTopic],
-            Data: {
-              ...state.board[action.oldTopic].Data,
-              Cards: state.board[action.oldTopic].Data.Cards.filter((item) => action.info.id !== item.id)
+          } else if (index === action.newTopic) {
+            return {
+              ...state.board[action.newTopic],
+              Data: {
+                ...state.board[action.newTopic].Data,
+                Cards: [...state.board[action.newTopic].Data.Cards, last ]
+              }
             }
-          }
-        ]
+          } else {
+            return item;
+          } 
+
+        })
 
       }
 
@@ -213,6 +213,7 @@ export const changeCardInfo = (topic, info) => {
 }
 
 export const changeCardTopic = (oldTopic, newTopic, info) => {
+  console.log('in redux')
   return {
     type: CHANGE_CARD_TOPIC,
     oldTopic,
