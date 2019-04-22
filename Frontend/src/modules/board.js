@@ -65,25 +65,31 @@ export default (state = initialState, action) => {
     
     case CHANGE_CARD_INFO:
       return {
-        board: [
-          ...state.board,
-          action.topic = {
-            ...state.board[action.topic], 
-            Data: {
-              ...state.board[action.topic].Data,
-              Cards : [
-                ...state.board[action.topic].Data.Cards,
-                action.info.position = {
-                  ...state.board[action.topic].Data.Cards[action.info.position],
-                  Name: action.info.Name,
-                  Description: action.info.Description,
-                  Times: action.info.Cards
-                }
-  
-              ]
+        ...state,
+        board: state.board.map((item, index) => {
+          if(index === action.topic) {
+            return {
+              ...state.board[action.topic],
+              Data: {
+                ...state.board[action.topic].Data,
+                Cards: state.board[action.topic].Data.Cards.map((card, pos) => {
+                  if (pos === action.info.Position ) {
+                    return {
+                      ...state.board[action.topic].Data.Cards[action.info.position],
+                      Name: action.info.Name,
+                      Description: action.info.Description,
+                      Times: action.info.Times                  
+                    }
+                  } else {
+                    return card;
+                  }
+                })
+              }
             }
+          } else {
+            return item;
           }
-        ]
+        })
       }
 
     case CHANGE_CARD_TOPIC:
