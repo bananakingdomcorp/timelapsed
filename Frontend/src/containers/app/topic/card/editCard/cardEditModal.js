@@ -110,7 +110,7 @@ class CardEditModal extends React.Component {
 
 
         this.props.changeCardInfo(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Cards : this.state.times })
-
+        // this.props.changeCardInfo()
 
 
 
@@ -202,7 +202,9 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   changeCardInfo,
+  changeCardTopic,
+
 }
 
 
-export default connect(mapStateToProps, null) (CardEditModal);
+export default connect(mapStateToProps, mapDispatchToProps) (CardEditModal);

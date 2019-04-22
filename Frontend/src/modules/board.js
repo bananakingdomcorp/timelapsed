@@ -18,16 +18,20 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_CARD: 
       return {
-        board: [
-          ...state.board,
-          action.index= {
-            ...state.board[action.index],
-            Data : {
-              ...state.board[action.index].Data,
-              Cards: [...state.board[action.index].Data.Cards, action.card]
+        ...state,
+        board: state.board.map((item, index) =>  {
+          if(index === action.index) {
+            return {
+              ...state.board.index,
+              Data : {
+                ...state.board[action.index].Data,
+                Cards: [...state.board[action.index].Data.Cards, action.card]
+              }                
             }
-          } 
-        ]
+          } else {
+            return item;
+          }
+        })
       }
 
     case ADD_TOPIC:
@@ -61,13 +65,12 @@ export default (state = initialState, action) => {
     
     case CHANGE_CARD_INFO:
       return {
-        ...state,
         board: [
           ...state.board,
           action.topic = {
             ...state.board[action.topic], 
             Data: {
-              ...state.board[action.topic].Cards,
+              ...state.board[action.topic].Data,
               Cards : [
                 ...state.board[action.topic].Data.Cards,
                 action.info.position = {
