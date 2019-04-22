@@ -6,7 +6,7 @@ export const CHANGE_TOPIC_POSITIONS = 'board/CHANGE_TOPIC_POSITIONS'
 export const ADD_CARD = 'board/ADD_CARD'
 export const CHANGE_CARD_INFO = 'board/CHANGE_CARD_INFO'
 export const CHANGE_CARD_POSITION = 'board/CHANGE_CARD_POSITION'
-export const CHANGE_CARD_TOPIC = 'board/CHANGE_CARD_TOPIC'
+export const CARD_TOPIC_MOVE = 'board/CARD_TOPIC_MOVE'
 
 
 
@@ -72,8 +72,8 @@ export default (state = initialState, action) => {
               ...state.board[action.topic],
               Data: {
                 ...state.board[action.topic].Data,
-                Cards: state.board[action.topic].Data.Cards.map((card, pos) => {
-                  if (pos === action.info.Position ) {
+                Cards: state.board[action.topic].Data.Cards.map((card) => {
+                  if (card.id === action.info.id ) {
                     return {
                       ...state.board[action.topic].Data.Cards.card,
                       Name: action.info.Name,
@@ -92,7 +92,7 @@ export default (state = initialState, action) => {
         })
       }
 
-    case CHANGE_CARD_TOPIC:
+    case CARD_TOPIC_MOVE:
       let last = state.board[action.oldTopic].Data.Cards[action.info.Position]
       console.log(last)
       return {
@@ -160,7 +160,6 @@ export const addTopic = (name) => {
       name
   }
 }
-//Maybe this should be for every board reset?
 
 export const deleteTopic = (id) => {
   return {
@@ -209,31 +208,28 @@ export const changeCardInfo = (topic, info) => {
     topic,
     info
   }
-
 }
 
-export const changeCardTopic = (oldTopic, newTopic, info) => {
-  console.log('in redux')
+export const cardTopicMove = (oldTopic, newTopic, info) => {
   return {
-    type: CHANGE_CARD_TOPIC,
+    type: CARD_TOPIC_MOVE,
     oldTopic,
     newTopic,
     info
   }
 }
 
-export const changeCardPosition =(topic, info, newPosition) => {
-  return dispatch=> {
-    dispatch(changeCardInfo)
-    .then(() => {
-      return {
-        type : CHANGE_CARD_POSITION,
-        topic,
-        info, 
-        newPosition,
-      }
-    } )    
+export const changeCardTopic = (oldTopic, newTopic, info) => {
+  return dispatch => {
+    dispatch(cardTopicMove(oldTopic, newTopic, info))
+    dispatch(changeCardInfo(newTopic, info))
   }
+}
+
+
+
+export const changeCardPosition =(topic, info, newPosition) => {
+
 
 
 }
