@@ -151,7 +151,6 @@ export const addTopic = (name) => {
       name
   }
 }
-
 //Maybe this should be for every board reset?
 
 export const deleteTopic = (id) => {
@@ -213,7 +212,18 @@ export const changeCardTopic = (oldTopic, newTopic, info) => {
   }
 }
 
-export const changeCardPosition =() => {
+export const changeCardPosition =(topic, info, newPosition) => {
+  return dispatch=> {
+    dispatch(changeCardInfo)
+    .then(() => {
+      return {
+        type : CHANGE_CARD_POSITION,
+        topic,
+        info, 
+        newPosition,
+      }
+    } )    
+  }
 
 
 }
