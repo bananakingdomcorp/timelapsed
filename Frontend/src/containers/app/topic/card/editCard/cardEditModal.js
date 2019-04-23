@@ -85,6 +85,12 @@ class CardEditModal extends React.Component {
   deleteCard = () => {
     //Deletes our card.
     Api().delete(`/card/${this.props.board[this.props.topic].Data.id}/`)
+    .then((res) => {
+      if (res.status === 200) {
+        //call redux.
+        
+      }
+    })
 
   }
 
@@ -105,23 +111,15 @@ class CardEditModal extends React.Component {
         } else if ( this.state.switchPosition !== -Infinity ) {
           this.props.changeCardPosition(this.props.topic, temp, pos )
           //We have changed the position of the card. 
-
-
-
         }else {
        //If we are just changing the information about the card...
 
-
-
-       this.props.changeCardInfo(this.props.topic, temp)
+          this.props.changeCardInfo(this.props.topic, temp)
         }
-
-
-
-
-
-
       }
+    })
+    .then(() => {
+      this.props.closeModal();
     })
 
   }
@@ -185,7 +183,7 @@ class CardEditModal extends React.Component {
         <div onClick = {this.deleteCard}> DELETE THIS CARD </div>
 
         <button onClick = {this.saveEdit} >Save </button>
-        <button>Cancel </button>
+        <button onClick = {() => this.props.closeModal() }>Cancel </button>
       </div>, 
       this.el
 

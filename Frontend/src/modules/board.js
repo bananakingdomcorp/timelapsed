@@ -7,7 +7,7 @@ export const ADD_CARD = 'board/ADD_CARD'
 export const CHANGE_CARD_INFO = 'board/CHANGE_CARD_INFO'
 export const CARD_POSITION_CHANGE = 'board/CARD_POSITION_CHANGE'
 export const CARD_TOPIC_MOVE = 'board/CARD_TOPIC_MOVE'
-
+export const DELETE_CARD = 'board/DELETE_CARD'
 
 
 const initialState = {
@@ -136,8 +136,10 @@ export default (state = initialState, action) => {
                 Cards: state.board[index].Data.Cards.map((card, pos) => {
                   if(pos === action.newPosition) {
                     return oldCard;
+                  
                   } else if (pos === action.info.Position) {
                     return newCard;
+                  
                   } else {
                     return card;
                   }
@@ -149,6 +151,24 @@ export default (state = initialState, action) => {
           }
         })
 
+      }
+
+    case DELETE_CARD:
+      return {
+        ...state,
+        board: state.board.map((item, index) => {
+          if (index === action.topic) {
+            return {
+              ...state.board[action.topic],
+              Data: {
+                ...state.board[action.topic].Data,
+                Cards: state.board[action.topic].Data.Card.filter(item => item.id !== action.info.id)
+              }
+            }
+          } else {
+            return item;
+          }
+        })
       }
 
     case CHANGE_TOPIC_POSITIONS:
@@ -271,4 +291,12 @@ export const changeCardPosition =(topic, info, newPosition) => {
     dispatch(changeCardInfo(topic, info))
   }
 
+}
+
+export const deleteCard = (topic, info) => {
+  return {
+    type: DELETE_CARD,
+    topic,
+    info,
+  }
 }
