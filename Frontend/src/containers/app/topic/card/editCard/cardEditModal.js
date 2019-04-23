@@ -102,9 +102,9 @@ class CardEditModal extends React.Component {
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
+    console.log(typeof(this.props))
 
-
-    Api().put(`/card/${this.props.board[this.props.topic].Data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos, Topic: this.state.topic} } )
+    Api().put(`/card/${this.props.data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: pos, Topic: this.props.board[this.props.topic].Data.id} } )
     .then((res) => {
       if (res.status === 200) {
         //Call redux. 

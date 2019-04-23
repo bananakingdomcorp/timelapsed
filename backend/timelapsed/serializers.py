@@ -69,6 +69,9 @@ class CreateCardSerializer(serializers.Serializer):
     return ({'Data': {'id': n.id} })
 
   def update(self, validated_data, pk, user):
+
+    print('HELLO UPDATE!!!!')
+    print(validated_data)
     info = validated_data['Data']
 
     #If topic has changed. 

@@ -111,13 +111,14 @@ class CardView(viewsets.ModelViewSet):
     return Response('INVALID', 200)
 
   def update(self, request, pk):
-    print('at update')
     serializer = CreateCardSerializer(data = request.data)
     if(serializer.is_valid()):
+      print('valid')
       created = serializer.update(serializer.data, pk, request.user.email)
       #serializer update here. 
-      return Response(200)
-    return Response(400)
+      return Response('updated', 200)
+    print(serializer.errors)
+    return Response('failed',400)
 
   def destroy(self, request, pk):
     serializer = DeleteCardSerializer(data = {id:pk})
