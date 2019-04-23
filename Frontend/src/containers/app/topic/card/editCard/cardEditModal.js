@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ReactDOM from 'react-dom'
 import {Api} from './../../../../../djangoApi'
 
-import {changeCardInfo, changeCardTopic} from './../../../../../modules/board'
+import {changeCardInfo, changeCardTopic, changeCardPosition} from './../../../../../modules/board'
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -98,16 +98,22 @@ class CardEditModal extends React.Component {
     .then((res) => {
       if (res.status === 200) {
         //Call redux. 
-
+        let temp =  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id } 
         //if we are changing the topic that the card is in.
         if(this.state.topic !== this.props.topic) {
-          this.props.changeCardTopic(this.props.topic, Number(this.state.topic),  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id } )
-        } else {
+          this.props.changeCardTopic(this.props.topic, Number(this.state.topic), temp )
+        } else if ( this.state.switchPosition !== -Infinity ) {
+          this.props.changeCardPosition(this.props.topic, temp, pos )
+          //We have changed the position of the card. 
+
+
+
+        }else {
        //If we are just changing the information about the card...
 
 
 
-       this.props.changeCardInfo(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id  })
+       this.props.changeCardInfo(this.props.topic, temp)
         }
 
 
@@ -115,11 +121,8 @@ class CardEditModal extends React.Component {
 
 
 
-        //if we are changing the position of the card. 
       }
     })
-
-    //This doesn't fix cards/times. That still needs to be added. 
 
   }
 
@@ -201,6 +204,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   changeCardInfo,
   changeCardTopic,
+  changeCardPosition,
 
 }
 

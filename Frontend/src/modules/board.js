@@ -122,7 +122,32 @@ export default (state = initialState, action) => {
 
       }
     case CARD_POSITION_CHANGE:
+      let newCard = state.board[action.topic].Data.Cards[action.newPosition]
+      let oldCard = state.board[action.topic].Data.Cards[action.info.Position]
+
       return {
+        ...state,
+        board: state.board.map((item, index) => {
+          if(index === action.topic) {
+            return {
+              ...state.board[index],
+              Data: {
+                ...state.board[index].Data,
+                Cards: state.board[index].Data.Cards.map((card, pos) => {
+                  if(pos === action.newPosition) {
+                    return oldCard;
+                  } else if (pos === action.info.Position) {
+                    return newCard;
+                  } else {
+                    return card;
+                  }
+                })
+              }
+            }
+          } else {
+            return item;
+          }
+        })
 
       }
 
@@ -240,6 +265,7 @@ export const changeCardTopic = (oldTopic, newTopic, info) => {
 }
 
 export const changeCardPosition =(topic, info, newPosition) => {
+
   return dispatch => {
     dispatch(cardPositionChange(topic, info, newPosition))
     dispatch(changeCardInfo(topic, info))
