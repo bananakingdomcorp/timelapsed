@@ -107,7 +107,7 @@ class CardEditModal extends React.Component {
 
 
 
-       this.props.changeCardInfo(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times })
+       this.props.changeCardInfo(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id  })
         }
 
 

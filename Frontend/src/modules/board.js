@@ -5,7 +5,7 @@ export const CHANGE_TOPIC_NAME = 'board/CHANGE_TOPIC_NAME'
 export const CHANGE_TOPIC_POSITIONS = 'board/CHANGE_TOPIC_POSITIONS'
 export const ADD_CARD = 'board/ADD_CARD'
 export const CHANGE_CARD_INFO = 'board/CHANGE_CARD_INFO'
-export const CHANGE_CARD_POSITION = 'board/CHANGE_CARD_POSITION'
+export const CARD_POSITION_CHANGE = 'board/CARD_POSITION_CHANGE'
 export const CARD_TOPIC_MOVE = 'board/CARD_TOPIC_MOVE'
 
 
@@ -75,7 +75,7 @@ export default (state = initialState, action) => {
                 Cards: state.board[action.topic].Data.Cards.map((card) => {
                   if (card.id === action.info.id ) {
                     return {
-                      ...state.board[action.topic].Data.Cards.card,
+                      ...card,
                       Name: action.info.Name,
                       Description: action.info.Description,
                       Times: action.info.Times                  
@@ -94,7 +94,6 @@ export default (state = initialState, action) => {
 
     case CARD_TOPIC_MOVE:
       let last = state.board[action.oldTopic].Data.Cards[action.info.Position]
-      console.log(last)
       return {
         ...state,
         board : state.board.map((item, index) => {
@@ -120,6 +119,10 @@ export default (state = initialState, action) => {
           } 
 
         })
+
+      }
+    case CARD_POSITION_CHANGE:
+      return {
 
       }
 
@@ -219,6 +222,16 @@ export const cardTopicMove = (oldTopic, newTopic, info) => {
   }
 }
 
+export const cardPositionChange = (topic, info, newPosition) => {
+  return {
+    type: CARD_POSITION_CHANGE,
+    topic,
+    info, 
+    newPosition
+  }
+
+}
+
 export const changeCardTopic = (oldTopic, newTopic, info) => {
   return dispatch => {
     dispatch(cardTopicMove(oldTopic, newTopic, info))
@@ -226,10 +239,10 @@ export const changeCardTopic = (oldTopic, newTopic, info) => {
   }
 }
 
-
-
 export const changeCardPosition =(topic, info, newPosition) => {
-
-
+  return dispatch => {
+    dispatch(cardPositionChange(topic, info, newPosition))
+    dispatch(changeCardInfo(topic, info))
+  }
 
 }
