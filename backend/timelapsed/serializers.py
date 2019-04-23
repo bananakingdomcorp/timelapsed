@@ -70,7 +70,6 @@ class CreateCardSerializer(serializers.Serializer):
 
   def update(self, validated_data, pk, user):
 
-    print('HELLO UPDATE!!!!')
     print(validated_data)
     info = validated_data['Data']
 
