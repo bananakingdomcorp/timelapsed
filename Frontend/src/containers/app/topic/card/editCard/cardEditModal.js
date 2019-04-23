@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ReactDOM from 'react-dom'
 import {Api} from './../../../../../djangoApi'
 
-import {changeCardInfo, changeCardTopic, changeCardPosition} from './../../../../../modules/board'
+import {changeCardInfo, changeCardTopic, changeCardPosition, deleteCard} from './../../../../../modules/board'
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -84,12 +84,16 @@ class CardEditModal extends React.Component {
 
   deleteCard = () => {
     //Deletes our card.
-    Api().delete(`/card/${this.props.board[this.props.topic].Data.id}/`)
+    Api().delete(`/card/${this.props.data.id}/`)
     .then((res) => {
-      if (res.status === 200) {
+      if (res.status === 204) {
         //call redux.
-        
+        this.props.deleteCard(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id })
+
       }
+    })
+    .then(() => {
+      this.props.closeModal();
     })
 
   }
@@ -203,6 +207,7 @@ const mapDispatchToProps = {
   changeCardInfo,
   changeCardTopic,
   changeCardPosition,
+  deleteCard,
 
 }
 

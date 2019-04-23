@@ -162,7 +162,7 @@ export default (state = initialState, action) => {
               ...state.board[action.topic],
               Data: {
                 ...state.board[action.topic].Data,
-                Cards: state.board[action.topic].Data.Card.filter(item => item.id !== action.info.id)
+                Cards: state.board[action.topic].Data.Cards.filter(item => item.id !== action.info.id)
               }
             }
           } else {

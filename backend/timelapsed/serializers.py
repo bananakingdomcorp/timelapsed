@@ -73,19 +73,19 @@ class CreateCardSerializer(serializers.Serializer):
 
     #If topic has changed. 
 
-    if Card.object.filter(id = pk)['Topic'] == validated_data['Topic'] :
+    if Card.objects.filter(id = pk)['Topic'] == validated_data['Topic'] :
      
       #If Position has changed. 
-      if Card.object.filter(id = pk)['Position'] != info['Position']:
+      if Card.objects.filter(id = pk)['Position'] != info['Position']:
         
-        temp  = Card.object.filter(Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']), Position = info['Position'] ) 
+        temp  = Card.objects.filter(Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']), Position = info['Position'] ) 
         tempPos = temp['Position']
-        temp['Position'] = Card.object.filter(id = pk)['Position']
+        temp['Position'] = Card.objects.filter(id = pk)['Position']
         temp.save()
-        Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = tempPos)
+        Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = tempPos)
         return 'Changed position'    
       else:
-        Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'])      
+        Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])      
     else :
       #The topic has changed. 
       pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
@@ -95,21 +95,25 @@ class CreateCardSerializer(serializers.Serializer):
       else :
         pos = pos['Position']
     
-      Card.object.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
+      Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
     
     
     #daterangeserializer post here. This does not currently update dates. 
     return 
 
-    def destroy(self, pk):
-      Card.object.delete(id = pk)
-      return 'Deleted'
-
-
-
   class Meta:
     model = Card
     fields = ('Data', 'Times')
+
+class DeleteCardSerializer(serializers.ModelSerializer):
+  def destroy(self, pk):
+    print(pk)
+    Card.objects.get(id = pk).delete()
+    return 'Deleted'
+  
+  class Meta: 
+    model = Card
+    fields = ('id',)
 
 
 class CardSerializer(serializers.ModelSerializer):
