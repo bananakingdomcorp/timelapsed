@@ -44,10 +44,45 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
     model = Card
     fields = ('Name', 'Description', 'Topic', 'Position' )
 
+class UpdateCardSerializer(serializers.ModelSerializer):
+  Data = CreateCardDataSerializer()
+  Times = CreateCardTimesListSerializer( required = False, )
+
+  def update(self, validated_data, pk, user):
+
+    info = validated_data['Data']
+    temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
+
+    #If topic is the same. 
+    if temp['Topic'] == info['Topic'] :
+      #If Position has changed. 
+      if info['Position'] != -1:
+        #Find the position of the card to switch with. 
+        pos = Card.objects.values('Position').filter(id = info['Position']).first()
+        Card.objects.filter(id = info['Position']).update(Position = temp['Position'])
+        
+        Card.objects.filter(id = pk).update(Position = pos['Position'])
+    else :
+      #The topic has changed. 
+      pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
+      #If there are no cards in the topic. 
+      if pos == None:
+        pos = 0
+      else :
+        pos = pos['Position']
+
+      Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
+    
+    Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])     
+    #daterangeserializer post here. This does not currently update dates. 
+    return 
+
+  class Meta:
+    model = Card
+    fields = ('Data', 'Times')
 
 
-
-class CreateCardSerializer(serializers.Serializer):
+class CreateCardSerializer(serializers.ModelSerializer):
 
   Data = CreateCardDataSerializer()
   Times = CreateCardTimesListSerializer( required = False, )
@@ -67,38 +102,6 @@ class CreateCardSerializer(serializers.Serializer):
       print('topic exists')
     #daterangeserializer post here. 
     return ({'Data': {'id': n.id} })
-
-  def update(self, validated_data, pk, user):
-
-    info = validated_data['Data']
-    temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
-
-    #If topic is the same. 
-    if temp['Topic'] == info['Topic'] :
-      #If Position has changed. 
-      if info['Position'] != -1:
-        #Find the position of the card to switch with. 
-        pos = Card.objects.values('Position').filter(id = info['Position']).first()
-        print(pos, 'POS POSITION')
-        print(temp['Position'], 'TEMP POSITION')
-        Card.objects.filter(id = info['Position']).update(Position = temp['Position'])
-        
-        Card.objects.filter(id = pk).update(Position = pos['Position'])
-    else :
-      print('TOPIC CHANGED')
-      #The topic has changed. 
-      pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-      #If there are no cards in the topic. 
-      if pos == None:
-        pos = 0
-      else :
-        pos = pos['Position']
-
-      Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
-    
-    Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])     
-    #daterangeserializer post here. This does not currently update dates. 
-    return 
 
   class Meta:
     model = Card
