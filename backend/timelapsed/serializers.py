@@ -41,7 +41,7 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
 
   class Meta: 
     model = Card
-    fields = ('Name', 'Description', 'Topic' )
+    fields = ('Name', 'Description', 'Topic', 'Position' )
 
 
 
@@ -54,7 +54,6 @@ class CreateCardSerializer(serializers.Serializer):
   def create(self, validated_data, user):
     info = validated_data['Data']
     pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-    print(pos)
     
     if pos == None:
       pos = 0
@@ -72,14 +71,14 @@ class CreateCardSerializer(serializers.Serializer):
 
     print(validated_data)
     info = validated_data['Data']
-
-    #If topic has changed. 
-
-    if Card.objects.filter(id = pk)['Topic'] == validated_data['Topic'] :
-     
+    temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
+    print(temp, 'temp')
+    #If topic is the same. 
+    if temp['Topic'] == info['Topic'] :
+      print('TOPIC SAME')
       #If Position has changed. 
-      if Card.objects.filter(id = pk)['Position'] != info['Position']:
-        
+      if temp['Position'] != info['Position']:
+        print('POSITION CHANGED')  
         temp  = Card.objects.filter(Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']), Position = info['Position'] ) 
         tempPos = temp['Position']
         temp['Position'] = Card.objects.filter(id = pk)['Position']
@@ -87,8 +86,10 @@ class CreateCardSerializer(serializers.Serializer):
         Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = tempPos)
         return 'Changed position'    
       else:
+        print('Position same')
         Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])      
     else :
+      print('TOPIC CHANGED')
       #The topic has changed. 
       pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
       #If there are no cards in the topic. 
