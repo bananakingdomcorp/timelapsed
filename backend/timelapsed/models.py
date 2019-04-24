@@ -90,8 +90,8 @@ class Date_Range(models.Model):
     # Fields
     id = models.BigAutoField(primary_key=True)
     Day = models.TextField(max_length=100, default = 'Sunday')
-    Begin_Date = models.DateField()
-    End_Date = models.DateField(null = True)
+    Num_Weeks = models.IntegerField(default = 0)
+    Weeks_Skipped = models.IntegerField(default = 0)
     Begin_Time = models.TimeField()
     End_Time = models.TimeField()
 

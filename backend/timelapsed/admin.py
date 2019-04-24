@@ -18,7 +18,7 @@ class EventAdmin(admin.ModelAdmin):
   fields = ['Email'] 
 
 class DateRangeAdmin(admin.ModelAdmin):
-  fields = ['Email', 'Event_ID', 'Card_ID', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time' 'Day']
+  fields = ['Email', 'Event_ID', 'Card_ID', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped' 'Begin_Time', 'End_Time' 'Day']
 
 
 admin.site.register(Users, UsersAdmin)

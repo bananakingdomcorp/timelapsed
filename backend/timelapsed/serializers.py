@@ -23,7 +23,7 @@ class DateRangeSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Date_Range
-    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time', 'Day')
+    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', 'Day')
 
 
 
@@ -97,10 +97,11 @@ class CreateCardSerializer(serializers.ModelSerializer):
       pos = pos['Position']
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
 
-    if 'Topic' in validated_data:
+    if info.get('Times'):
+      #WE have times to add.
+      #daterangeserializer post here. 
+      return
 
-      print('topic exists')
-    #daterangeserializer post here. 
     return ({'Data': {'id': n.id} })
 
   class Meta:
