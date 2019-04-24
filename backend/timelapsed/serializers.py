@@ -38,6 +38,7 @@ class CreateCardTimesListSerializer(serializers.ModelSerializer):
 
 class CreateCardDataSerializer(serializers.ModelSerializer):
   Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
+  Position = serializers.IntegerField(required = False,)
 
   class Meta: 
     model = Card
@@ -69,25 +70,20 @@ class CreateCardSerializer(serializers.Serializer):
 
   def update(self, validated_data, pk, user):
 
-    print(validated_data)
     info = validated_data['Data']
     temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
-    print(temp, 'temp')
+
     #If topic is the same. 
     if temp['Topic'] == info['Topic'] :
-      print('TOPIC SAME')
       #If Position has changed. 
-      if temp['Position'] != info['Position']:
-        print('POSITION CHANGED')  
-        temp  = Card.objects.filter(Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']), Position = info['Position'] ) 
-        tempPos = temp['Position']
-        temp['Position'] = Card.objects.filter(id = pk)['Position']
-        temp.save()
-        Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = tempPos)
-        return 'Changed position'    
-      else:
-        print('Position same')
-        Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])      
+      if info['Position'] != -1:
+        #Find the position of the card to switch with. 
+        pos = Card.objects.values('Position').filter(id = info['Position']).first()
+        print(pos, 'POS POSITION')
+        print(temp['Position'], 'TEMP POSITION')
+        Card.objects.filter(id = info['Position']).update(Position = temp['Position'])
+        
+        Card.objects.filter(id = pk).update(Position = pos['Position'])
     else :
       print('TOPIC CHANGED')
       #The topic has changed. 
@@ -97,10 +93,10 @@ class CreateCardSerializer(serializers.Serializer):
         pos = 0
       else :
         pos = pos['Position']
-    
+
       Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
     
-    
+    Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])     
     #daterangeserializer post here. This does not currently update dates. 
     return 
 
