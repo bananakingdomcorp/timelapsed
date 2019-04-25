@@ -92,7 +92,7 @@ class CreateCardSerializer(serializers.ModelSerializer):
       for times in validated_data['Times']:
         ids = []
         a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
-        ids.append(a)
+        ids.append(a.id)
       return ({'Data': {'ids' : ids}})
 
     return ({'Data': {'id': n.id} })
