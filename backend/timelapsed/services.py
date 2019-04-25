@@ -14,6 +14,12 @@ def get_user_information(data):
 
   for i in test:
     cards = [i for i in Card.objects.values('Name', 'Description', 'id' ).filter(Topic = i['id']).order_by('Position')]
+    for j in cards:
+      print(j)
+      times = [j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped').filter(Card_ID = Card.objects.get(id = i['id'])) ]
+      print(times)
+      cards[j]['Times'] = times
+
     arr.append( {'Data' : {'id': i['id'], 'Name': i['Name'], 'Cards': cards}} )
     
 
