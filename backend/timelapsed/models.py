@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from django.contrib.auth import models as auth_models
 from django.db import models as models
+from django.utils.timezone import now
 
 
 class Users(models.Model):
@@ -90,6 +91,7 @@ class Date_Range(models.Model):
     # Fields
     id = models.BigAutoField(primary_key=True)
     Day = models.TextField(max_length=100, default = 'Sunday')
+    Begin_Date = models.DateTimeField(default = now)
     Num_Weeks = models.IntegerField(default = 0)
     Weeks_Skipped = models.IntegerField(default = 0)
     Begin_Time = models.TimeField()

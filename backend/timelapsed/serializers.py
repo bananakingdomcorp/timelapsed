@@ -4,6 +4,8 @@ from rest_framework import serializers
 
 from .models import Users, Topic, Event, Date_Range, Card
 
+from datetime import datetime
+
 
 class UsersSerializer(serializers.ModelSerializer):
 
@@ -17,7 +19,8 @@ class UsersSerializer(serializers.ModelSerializer):
 
 
 class CreateCardTimesSerializer(serializers.ModelSerializer):
-  
+  Begin_Date = serializers.DateField()
+
   class Meta:
     model = Date_Range
     fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
