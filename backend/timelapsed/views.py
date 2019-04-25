@@ -95,6 +95,7 @@ class CardView(viewsets.ModelViewSet):
   def create(self, request):
     serializer = CreateCardSerializer(data= request.data)
     if(serializer.is_valid()):
+      print('Valid?')
       created =  serializer.create(serializer.data, request.user.email)
       return Response(created , 201)
     else:

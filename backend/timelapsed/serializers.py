@@ -21,6 +21,7 @@ class UsersSerializer(serializers.ModelSerializer):
 class CreateCardTimesSerializer(serializers.ModelSerializer):
   Begin_Date = serializers.DateField()
 
+
   class Meta:
     model = Date_Range
     fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
@@ -80,7 +81,7 @@ class CreateCardSerializer(serializers.ModelSerializer):
   def create(self, validated_data, user):
     info = validated_data['Data']
     pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-    
+    print(validated_data, 'DATA')
     if pos == None:
       pos = 0
     else :

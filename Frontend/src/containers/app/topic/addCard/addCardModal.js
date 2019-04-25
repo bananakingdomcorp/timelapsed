@@ -102,12 +102,13 @@ class AddCardModal extends React.Component {
         this.props.times[key].forEach((item) => {
           let time = item[0].split(',')
           test['Begin_Time'] = time[0]
-          test['End_Time'] = time[1]
+          test['End_Time'] = time[1].trim()
           test['Num_Weeks'] = item[1]
           test['Weeks_Skipped'] = item[2]
         })
         times.push(test)
-        console.log(test['Begin_Date'])
+        console.log(test['Begin_Time'])
+        console.log(test['End_Time'])
       }
 
       Api().post('/card/', {
