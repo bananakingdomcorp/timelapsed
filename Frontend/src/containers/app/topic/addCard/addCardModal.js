@@ -90,12 +90,24 @@ class AddCardModal extends React.Component {
 
     } else {
       //If we have times. 
+      let test = {};
+      this.props.times.map((item) => {
+        let split = item.split(" ")
+        console.log(split)
+        test['Day'] = split[0];
+        test['Begin_Date'] = split[1] + split[2] + split[3]
+        // test['Begin_Time'] = split[4]
+        // test['End_Time'] = split
+      })
 
+      console.log(test)
       //Add this functionality. 
 
       // Api().post('/card/', {
       //   Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
-      //   Times: this.props.times
+      //   Times: this.props.times.map((item) => {
+      //   let split = item.split(" ")
+      // })
       // })
       // .then((res) => {
       //   console.log(res)

@@ -16,23 +16,13 @@ class UsersSerializer(serializers.ModelSerializer):
 
 
 
-
-
-class DateRangeSerializer(serializers.ModelSerializer):
-# For date time ranges, do the following. If the id is not None, then update the time, if it is none, create it. 
-
-  class Meta:
-    model = Date_Range
-    fields = ('id', 'User', 'Event_ID', 'Card_ID', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', 'Day')
-
-
-
-class CreateCardTimesListSerializer(serializers.ModelSerializer):
-  child = serializers.CharField()
+class CreateCardTimesSerializer(serializers.ModelSerializer):
+  #Figure out how to serialize this as a list. 
+  
 
   class Meta:
     model = Date_Range
-    fields = ('Day', 'Begin_Date', 'End_Date', 'Begin_Time', 'End_Time', )
+    fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
 
 
 
@@ -46,7 +36,7 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
 
 class UpdateCardSerializer(serializers.ModelSerializer):
   Data = CreateCardDataSerializer()
-  Times = CreateCardTimesListSerializer( required = False, )
+  Times = CreateCardTimesSerializer( required = False, )
 
   def update(self, validated_data, pk, user):
 
@@ -85,7 +75,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 class CreateCardSerializer(serializers.ModelSerializer):
 
   Data = CreateCardDataSerializer()
-  Times = CreateCardTimesListSerializer( required = False, )
+  Times = CreateCardTimesSerializer( required = False, )
 
   def create(self, validated_data, user):
     info = validated_data['Data']
