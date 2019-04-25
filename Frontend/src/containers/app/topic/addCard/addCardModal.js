@@ -90,28 +90,31 @@ class AddCardModal extends React.Component {
 
     } else {
       //If we have times. 
-      let test = {};
-      this.props.times.map((item) => {
-        let split = item.split(" ")
-        console.log(split)
-        test['Day'] = split[0];
-        test['Begin_Date'] = split[1] + split[2] + split[3]
-        // test['Begin_Time'] = split[4]
-        // test['End_Time'] = split
+      let times = [];
+
+      for (let key in this.props.times) {
+        let test = {}
+        let split = key.split(' ')
+        test['Day'] = split[0]
+        test['Begin_Date'] = split[1] + ' ' + split[2] + ' ' + split[3]
+
+        this.props.times[key].forEach((item) => {
+          let time = item[0].split(',')
+          test['Begin_Time'] = time[0]
+          test['End_Time'] = time[1]
+          test['Num_Weeks'] = item[1]
+          test['Weeks_Skipped'] = item[2]
+        })
+        times.push(test)
+      }
+      
+      Api().post('/card/', {
+        Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
+        Times: times
       })
-
-      console.log(test)
-      //Add this functionality. 
-
-      // Api().post('/card/', {
-      //   Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
-      //   Times: this.props.times.map((item) => {
-      //   let split = item.split(" ")
-      // })
-      // })
-      // .then((res) => {
-      //   console.log(res)
-      // })
+      .then((res) => {
+        console.log(res)
+      })
       
 
     }

@@ -18,12 +18,9 @@ class UsersSerializer(serializers.ModelSerializer):
 
 class CreateCardTimesSerializer(serializers.ModelSerializer):
   #Figure out how to serialize this as a list. 
-  
-
   class Meta:
     model = Date_Range
     fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
-
 
 
 class CreateCardDataSerializer(serializers.ModelSerializer):
@@ -36,7 +33,7 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
 
 class UpdateCardSerializer(serializers.ModelSerializer):
   Data = CreateCardDataSerializer()
-  Times = CreateCardTimesSerializer( required = False, )
+  Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False)
 
   def update(self, validated_data, pk, user):
 
@@ -75,7 +72,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 class CreateCardSerializer(serializers.ModelSerializer):
 
   Data = CreateCardDataSerializer()
-  Times = CreateCardTimesSerializer( required = False, )
+  Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False)
 
   def create(self, validated_data, user):
     info = validated_data['Data']
