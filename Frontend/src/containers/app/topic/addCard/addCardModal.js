@@ -95,7 +95,7 @@ class AddCardModal extends React.Component {
       for (let key in this.props.times) {
         let test = {}
         let split = key.split(' ')
-        test['Day'] = split[0]
+        test['Day'] = new Date(key).toLocaleDateString('en-US',{weekday: 'long'})
         test['Begin_Date'] = split[1] + ' ' + split[2] + ' ' + split[3]
 
         this.props.times[key].forEach((item) => {
@@ -107,7 +107,7 @@ class AddCardModal extends React.Component {
         })
         times.push(test)
       }
-      
+
       Api().post('/card/', {
         Data: {Name: this.state.title, Description: this.state.description, Topic: this.props.board[this.props.id]['Data']['id']},
         Times: times

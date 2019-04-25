@@ -17,7 +17,7 @@ class UsersSerializer(serializers.ModelSerializer):
 
 
 class CreateCardTimesSerializer(serializers.ModelSerializer):
-  #Figure out how to serialize this as a list. 
+  
   class Meta:
     model = Date_Range
     fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
@@ -85,6 +85,7 @@ class CreateCardSerializer(serializers.ModelSerializer):
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
 
     if info.get('Times'):
+      print(info['Times'], 'WE HAVE TIMES@')
       #WE have times to add.
       #daterangeserializer post here. 
       return

@@ -55,10 +55,6 @@ class MonthlyCalender extends React.Component {
 
 
 
-
-
-
-
   }
 
   increaseMonth = () =>  {
