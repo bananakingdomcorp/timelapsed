@@ -88,11 +88,12 @@ class CreateCardSerializer(serializers.ModelSerializer):
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
 
     if validated_data.get('Times'):
-      times = validated_data['Times']
-      Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = ['Begin_Time'], End_Time = ['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
-      #WE have times to add.
-      #daterangeserializer post here. 
-      return
+      
+      for times in validated_data['Times']:
+        ids = []
+        a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
+        ids.append(a)
+      return ({'Data': {'ids' : ids}})
 
     return ({'Data': {'id': n.id} })
 

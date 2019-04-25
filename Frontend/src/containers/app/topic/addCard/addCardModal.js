@@ -107,8 +107,6 @@ class AddCardModal extends React.Component {
           test['Weeks_Skipped'] = item[2]
         })
         times.push(test)
-        console.log(test['Begin_Time'])
-        console.log(test['End_Time'])
       }
 
       Api().post('/card/', {
@@ -116,7 +114,33 @@ class AddCardModal extends React.Component {
         Times: times
       })
       .then((res) => {
-        console.log(res)
+        if(res.status ===201) {
+          let temp = this.props.times
+          temp.map((item, index) => {
+            return {
+              'Begin_Time': times[index]['Begin_Time'],
+              'End_Time': times[index]['End_Time'],
+              'Num_Weeks': times[index]['Num_Weeks'],
+              'Weeks_Skipped': times[index]['Weeks_Skipped'],
+              'id' : res.data.Data.ids[index],
+            }
+          })
+
+          let card = {
+            id: res.data.Data.id,
+            Name: this.state.title,
+            Description: this.state.description,
+            Times: temp,
+          }
+
+          this.props.addCard(this.props.id, card)
+          .then(() => {
+            this.props.clearTimes()
+          })
+        }
+      })
+      .then(() => {
+        this.props.closeModal()
       })
       
 
