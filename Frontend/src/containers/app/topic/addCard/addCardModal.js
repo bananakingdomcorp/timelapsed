@@ -141,13 +141,6 @@ class AddCardModal extends React.Component {
     }
 
 
-    //Then clear our times in Redux.
-
-    //Then add the card to the topic.
-
-    //Then close the modal.
-
-
   }
 
   titleChange = (e) => {
