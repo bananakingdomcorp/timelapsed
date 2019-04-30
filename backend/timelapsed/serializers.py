@@ -103,7 +103,10 @@ class CreateCardSerializer(serializers.ModelSerializer):
 
 class DeleteCardSerializer(serializers.ModelSerializer):
   def destroy(self, pk):
-    print(pk)
+    #Delete any times associated with said card. 
+
+    Date_Range.objects.filter(Card_ID = Card.objects.get(id = pk)).delete()
+
     Card.objects.get(id = pk).delete()
     return 'Deleted'
   
