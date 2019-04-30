@@ -62,7 +62,6 @@ class AddCardModal extends React.Component {
   }
 
   addCard = () =>  {
-    console.log('cardAddTesting')
 
     //first write to our backend.
 
@@ -74,7 +73,6 @@ class AddCardModal extends React.Component {
       .then((res) => {
         if(res.status === 201) {
           //Add to our redux. 
-          console.log(res.data)
           let card = {
             id: res.data.Data.id,
             Name: this.state.title,
@@ -292,7 +290,7 @@ class AddCardModal extends React.Component {
 
     let secondCalendar = null;
 
-    if(this.state.selectedOption == 'Recurring') {
+    if(this.state.selectedOption === 'Recurring') {
       firstCalendar = <RecurringCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader}/>
     }
 

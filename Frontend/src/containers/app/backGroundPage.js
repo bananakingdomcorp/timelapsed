@@ -12,6 +12,9 @@ import LoginPage from './loginPage';
 class BackGroundPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      
+    }
   }
  
   responseGoogle = (response) => {

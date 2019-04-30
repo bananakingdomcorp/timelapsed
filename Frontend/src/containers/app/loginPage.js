@@ -4,10 +4,6 @@ import { GoogleLogin } from 'react-google-login';
 
 
 class Login extends React.Component {
-  constructor(props){
-    super(props)
-
-  }
 
 
   render() {

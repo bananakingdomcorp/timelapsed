@@ -1,9 +1,6 @@
 import React from 'react';
 
 class DayInvalid extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
 
