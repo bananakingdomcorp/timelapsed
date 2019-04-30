@@ -162,6 +162,16 @@ class CardEditModal extends React.Component {
 
     let times = null;
 
+    times = this.props.data.Times.map((item, index) => {
+      let date = new Date(item.Begin_Date)
+      return <div key = {index} > {item.Day}, {date.getMonth()}-{date.getDate()}-{date.getFullYear()} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
+    })
+
+    let nextTime = null;
+
+    
+
+
 
 
     return ReactDOM.createPortal(
@@ -172,6 +182,10 @@ class CardEditModal extends React.Component {
 
         Times for this card:
         {times}
+
+        Next time for this card:
+
+
 
         <div>Edit times </div>
 

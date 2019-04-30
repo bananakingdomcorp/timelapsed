@@ -24,7 +24,6 @@ class AddCardModal extends React.Component {
       description: '',
       optionOpen : false,
       selectedOption: 'Untimed',
-      tooltipRecurring: false,
       tooltipTimed: false,
       tooltipUntimed: false
 
@@ -210,8 +209,6 @@ class AddCardModal extends React.Component {
 
     let timedDiv = null;
 
-    let recurringDiv = null;
-
     let untimedDiv = null;
 
     if(this.state.tooltipTimed) {
@@ -220,13 +217,6 @@ class AddCardModal extends React.Component {
         to your schedule. For example, if you estimate that it will take four hours for you to read a book, this option will estimate a completion date 
         based on your schedule. 
 
-      </div>
-    }
-
-    if(this.state.tooltipRecurring) {
-      recurringDiv = <div className ='addCardModalInstructions' >
-        A recurring task is one that you would like to repeat at certain intervals. For example, let's say that you want to read for an hour a day
-        after work. Other tasks that you calculate after work will take this into account. 
       </div>
     }
 

@@ -61,7 +61,7 @@ class Topic extends React.Component {
           Add a task
         </div>
         {this.props.board[this.props.id].Data.Cards.map((info, index) => {
-          return <Card topic = {this.props.id} data = {info} position ={index} />
+          return <Card topic = {this.props.id} data = {info} position ={index} key = {index} />
         }) }
 
         {modalView}
