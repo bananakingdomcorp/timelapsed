@@ -17,8 +17,8 @@ def get_user_information(data):
     for j in cards:
       print(j)
       times = [j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped').filter(Card_ID = Card.objects.get(id = j['id'])) ]
-      print(times)
-      # cards[j]['Times'] = times
+      # print(times)
+      j['Times'] = times
 
     arr.append( {'Data' : {'id': i['id'], 'Name': i['Name'], 'Cards': cards}} )
     
