@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 
 import ReactDOM from 'react-dom'
 
-import RecurringCalender from './../../Calendars/Recurring/index';
-
 import MonthlyCalender from './../../Calendars/Monthly/index';
 
 import {clearTimes} from './../../../../modules/card'
@@ -83,8 +81,6 @@ class AddCardModal extends React.Component {
           this.props.addCard(this.props.id, card)
         }
       })
-      
-
 
     } else {
       //If we have times. 
@@ -247,16 +243,10 @@ class AddCardModal extends React.Component {
 
     let timedButton =   <button className = 'addCardModalTimedUnclicked' value = 'Timed' onClick = {this.optionChange} onMouseOver = {this.timedMouseOver} onMouseOut = {this.timedMouseOut} > Timed</button> 
 
-    let recurringButton =  <button className = 'addCardModalRecurringUnclicked' value = 'Recurring' onClick = {this.optionChange} onMouseOver = {this.recurringMouseOver} onMouseOut = {this.recurringMouseOut}> Recurring</button>
-
     let untimedButton = <button className = 'addCardModalRecurringUnclicked' value = 'Untimed' onClick = {this.optionChange} onMouseOver = {this.untimedMouseOver} onMouseOut = {this.untimedMouseOut} />
 
     if(this.state.selectedOption === 'Timed') {
       timedButton =  <button className = 'addCardModalTimedClicked' value = 'Timed' onClick = {this.optionChange} onMouseOver = {this.timedMouseOver} onMouseOut = {this.timedMouseOut} > Timed Clicked</button> 
-    }
-
-    if(this.state.selectedOption === 'Recurring') {
-      recurringButton = <button className = 'addCardModalRecurringClicked' value = 'Recurring' onClick = {this.optionChange} onMouseOver = {this.recurringMouseOver} onMouseOut = {this.recurringMouseOut}> Recurring clicked</button>
     }
 
 
@@ -265,7 +255,6 @@ class AddCardModal extends React.Component {
       <div className = 'addCardModalOptionsOpen'>
         is it....
         {timedButton}
-        {recurringButton}
         {untimedButton}
       </div>
 
@@ -280,7 +269,6 @@ class AddCardModal extends React.Component {
         <br></br>
         {optionsOpen}
         {timedDiv}
-        {recurringDiv}
         {untimedDiv}
 
       </div>
@@ -289,10 +277,6 @@ class AddCardModal extends React.Component {
     let firstCalendar = null ;
 
     let secondCalendar = null;
-
-    if(this.state.selectedOption === 'Recurring') {
-      firstCalendar = <RecurringCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader}/>
-    }
 
     if(this.state.selectedOption === 'Timed') {
       secondCalendar = <MonthlyCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
