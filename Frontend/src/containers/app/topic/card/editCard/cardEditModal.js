@@ -128,6 +128,10 @@ class CardEditModal extends React.Component {
 
   }
 
+  editTimes = () => {
+    
+  }
+
 
   render() {
     let selections =  <option onClick = {this.openPositionSelection} > Switch Positions with another card  </option>
@@ -173,7 +177,7 @@ class CardEditModal extends React.Component {
 
 
 
-        <div>Edit times </div>
+        <div onClick = {this.editTimes}>Edit times </div>
 
         Change position with:
         <div className = 'cardEditSelectionDropdown'>

@@ -30,6 +30,8 @@ class Card extends React.Component {
 
     let days = Infinity;
 
+    let editable = {};
+
     let times = this.props.data.Times.map((item, index) => {
 
       //Python's Date model is one day off from that of Javascript. 
@@ -38,6 +40,7 @@ class Card extends React.Component {
 
       let beginSplit = item.Begin_Time.split(":")
       let endSplit = item.End_Time.split(":")
+
       let temp = new Date(date.getTime());
       if(temp < today) {
         //Our date is before today. 
@@ -54,6 +57,7 @@ class Card extends React.Component {
           nextTime = <div>{temp.getMonth()}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
         }
       }
+      editable[date.toDateString()] = [`${beginSplit[0]}:${beginSplit[1]} ,${endSplit[0]}:${endSplit[1]}`, item.Num_Weeks, item.Weeks_Skipped]
       //some formatting.
       return <div key = {index} > {date.getMonth()}-{date.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
     })
@@ -62,7 +66,7 @@ class Card extends React.Component {
     let modal = null;
 
     if(this.state.editModalOpen) {
-      modal = <CardEditModal times = {times} topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} />
+      modal = <CardEditModal times = {times} topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} editable = {editable} />
     }
 
     return (
