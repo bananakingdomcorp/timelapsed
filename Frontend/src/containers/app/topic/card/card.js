@@ -24,17 +24,53 @@ class Card extends React.Component {
 
   render() {
 
+    let nextTime =  <p> No Future Dates </p>
+
+    let today = new Date();
+
+    let days = Infinity;
+
+    let times = this.props.data.Times.map((item, index) => {
+
+      //Python's Date model is one day off from that of Javascript. 
+      let date = new Date(item.Begin_Date)
+      date.setDate(date.getDate() + 1)
+
+      let beginSplit = item.Begin_Time.split(":")
+      let endSplit = item.End_Time.split(":")
+      let temp = new Date(date.getTime());
+      if(temp < today) {
+        //Our date is before today. 
+        let numWeeks = item.Num_Weeks;
+
+        while(temp <today && numWeeks > 0) {
+          temp.setDate(temp.getDate() + 7 * (item.Weeks_Skipped + 1))
+          numWeeks--;
+        }
+
+        let diff  = Math.round((today-date)/(1000*60*60*24))
+        if(diff < days) {
+          days = diff;
+          nextTime = <div>{temp.getMonth()}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
+        }
+      }
+      //some formatting.
+      return <div key = {index} > {date.getMonth()}-{date.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
+    })
+
+
     let modal = null;
 
     if(this.state.editModalOpen) {
-      modal = <CardEditModal topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} />
+      modal = <CardEditModal times = {times} topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} />
     }
 
     return (
       <div className = 'card'>
         <div className = 'cardEdit' onClick = {this.openModal} > ... </div>      
         <p className = 'cardTitle' > {this.props.data.Name} </p>
-        View relationships. 
+        Next Time:
+        {nextTime} 
         {modal}
       </div>
     )
