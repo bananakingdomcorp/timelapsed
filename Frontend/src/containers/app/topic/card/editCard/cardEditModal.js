@@ -17,7 +17,6 @@ class CardEditModal extends React.Component {
       description: this.props.data.Description,
       selectionOpen: false,
       switchPosition : -Infinity,
-      times : [],
       topic: this.props.topic,
       topicSelectionOpen: false,
       editTimesModalOpen: false,
@@ -102,6 +101,10 @@ class CardEditModal extends React.Component {
   }
 
   saveEdit = () => {
+
+    //First, lets think about handling all of our times...
+
+
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;

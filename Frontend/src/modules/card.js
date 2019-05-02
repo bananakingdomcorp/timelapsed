@@ -71,7 +71,6 @@ export const clearTimes = () => {
 }
 
 export const setBoard = (board) => {
-  console.log(board, 'in SetBoard')
   return{
     type: SET_BOARD,
     board

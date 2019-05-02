@@ -60,7 +60,11 @@ class Card extends React.Component {
       //Our editable prebuilds the potential redux state that we would use if we choos to edit the times on this card.
 
       //We do this now simply because we don't want to have to keep going through the times. This allows this to be done a single time. 
-      editable[date.toDateString()] = [`${beginSplit[0]}:${beginSplit[1]} ,${endSplit[0]}:${endSplit[1]}`, item.Num_Weeks, item.Weeks_Skipped, item.id]
+
+      if (editable[date.toDateString()] === undefined) {
+        editable[date.toDateString()] = [];
+      }
+      editable[date.toDateString()].push([`${beginSplit[0]}:${beginSplit[1]} , ${endSplit[0]}:${endSplit[1]}`, item.Num_Weeks, item.Weeks_Skipped, item.id])
       //some formatting.
       return <div key = {index} > {date.getMonth()}-{date.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
     })
