@@ -160,16 +160,41 @@ class CardEditModal extends React.Component {
       topicSelector = <option onClick = {this.openTopicSelection}> {this.props.board[this.state.topic].Data.Name} </option>
     }
 
-    let times = null;
 
-    times = this.props.data.Times.map((item, index) => {
-      let date = new Date(item.Begin_Date)
-      return <div key = {index} > {item.Day}, {date.getMonth()}-{date.getDate()}-{date.getFullYear()} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
-    })
+
+    //Below code is going to have to go outside in the card eventually. Reason for this is so that the next time can display from the main board. 
+
+    let times = null;
 
     let nextTime = null;
 
-    
+    let today = new Date();
+
+    let days = Infinity;
+
+    times = this.props.data.Times.map((item, index) => {
+
+      //Python's Date model is one day off from that of Javascript. 
+      let date = new Date(item.Begin_Date)
+      date.setDate(date.getDate() + 1)
+      let temp = date;
+      if(temp < today) {
+        //Our date is before today. 
+        let numWeeks = item.Num_Weeks;
+
+        while(temp <today && numWeeks > 0) {
+          temp.setDate(temp.getDate() + 7 * (item.Weeks_Skipped + 1))
+          numWeeks--;
+        }
+
+        console.log(Math.round((today-date)/(1000*60*60*24)))
+      }
+
+      return <div key = {index} > {item.Day}, {date.getMonth()}-{date.getDate()}-{date.getFullYear()} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
+    })
+
+
+
 
 
 
