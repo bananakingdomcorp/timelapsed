@@ -1,7 +1,7 @@
 export const ADD_TIMES = 'card/ADD_TIMES'
 export const CLEAR_TIMES = 'card/CLEAR_TIMES'
 export const REMOVE_TIMES = 'card/REMOVE_TIMES'
-
+export const SET_BOARD = 'card/SET_BOARD'
 
 const initialState = {
   times : {}
@@ -23,6 +23,10 @@ export default (state = initialState, action) => {
           [action.day] : ourTimes
 
         }
+      }
+    case SET_BOARD:
+      return {
+        times: action.board
       }
     case REMOVE_TIMES:
       return {
@@ -63,5 +67,12 @@ export const removeTimes = (day, time) => {
 export const clearTimes = () => {
   return {
     type: CLEAR_TIMES,
+  }
+}
+
+export const setBoard = (board) => {
+  return{
+    type: setBoard,
+    board
   }
 }

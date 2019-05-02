@@ -53,10 +53,6 @@ class AddCardModal extends React.Component {
     }
   }
 
-  getCalendarState = (childState) => {
-
-    return childState;
-  }
 
   addCard = () =>  {
 
@@ -269,7 +265,7 @@ class AddCardModal extends React.Component {
     let secondCalendar = null;
 
     if(this.state.selectedOption === 'Timed') {
-      secondCalendar = <MonthlyCalender getCalendarState = {this.getCalendarState} listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
+      secondCalendar = <MonthlyCalender listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
     }
 
 

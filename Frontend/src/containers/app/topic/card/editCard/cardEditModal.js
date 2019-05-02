@@ -2,8 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ReactDOM from 'react-dom'
 import {Api} from './../../../../../djangoApi'
+import MonthlyCalendar from './../../../Calendars/Monthly/index'
 
 import {changeCardInfo, changeCardTopic, changeCardPosition, deleteCard} from './../../../../../modules/board'
+import {setBoard} from './../../../../../modules/card'
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -18,6 +20,7 @@ class CardEditModal extends React.Component {
       times : [],
       topic: this.props.topic,
       topicSelectionOpen: false,
+      editTimesModalOpen: false,
 
     }
 
@@ -102,7 +105,6 @@ class CardEditModal extends React.Component {
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
-    console.log(typeof(this.props))
 
     Api().put(`/card/${this.props.data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: this.state.switchPosition === -Infinity? -1: this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].id , Topic: this.props.board[this.state.topic].Data.id} } )
     .then((res) => {
@@ -128,8 +130,28 @@ class CardEditModal extends React.Component {
 
   }
 
-  editTimes = () => {
+  listenerLoader = () => {
+    document.addEventListener("mousedown", this.handleClickOutside)
+
+  }
+
+  listenerUnLoader = () => {
+    document.removeEventListener("mousedown", this.handleClickOutside)
     
+  }
+
+  openModal = () => {
+    this.setState({editTimesModalOpen: true})
+  }
+
+  closeModal = () => {
+    this.setState({editTimesModalOpen: false})
+  }
+
+  editTimes = () => {
+    //Add to our redux, then open our daily calendar. 
+    this.props.setBoard(this.props.editable)
+    this.openModal();
   }
 
 
@@ -164,20 +186,18 @@ class CardEditModal extends React.Component {
       topicSelector = <option onClick = {this.openTopicSelection}> {this.props.board[this.state.topic].Data.Name} </option>
     }
 
+    let editTimesModal = null;
+
+    if(this.state.editTimesModalOpen) {
+      editTimesModal = <MonthlyCalendar listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
+    }
+
     return ReactDOM.createPortal(
       <div ref = {this.editCardModalRef} className= "genericModal">
         <input onChange = {(e) => this.titleChange(e.target.value)} value = {this.state.title} className = 'addCardModalTitle'  />
 
         <input onChange = {(e) => this.descriptionChange(e.target.value)} value = {this.state.description} className = 'addCardModalDescription' />        
 
-        Times for this card:
-        {this.props.times.map((item) => {
-          return item;
-        })}
-
-
-
-        <div onClick = {this.editTimes}>Edit times </div>
 
         Change position with:
         <div className = 'cardEditSelectionDropdown'>
@@ -188,8 +208,15 @@ class CardEditModal extends React.Component {
           {topicSelector}
         </div>
 
-        <div onClick = {this.deleteCard}> DELETE THIS CARD </div>
+         Times for this card:
+         {this.props.times.map((item) => {
+           return item;
+         })}
 
+        <div onClick = {this.editTimes}>Edit times </div>
+
+        {editTimesModal}
+         <button onClick = {this.deleteCard}> DELETE </button>
         <button onClick = {this.saveEdit} >Save </button>
         <button onClick = {() => this.props.closeModal() }>Cancel </button>
       </div>, 
@@ -212,6 +239,7 @@ const mapDispatchToProps = {
   changeCardTopic,
   changeCardPosition,
   deleteCard,
+  setBoard,
 
 }
 
