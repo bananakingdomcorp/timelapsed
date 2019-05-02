@@ -186,10 +186,12 @@ class CardEditModal extends React.Component {
       topicSelector = <option onClick = {this.openTopicSelection}> {this.props.board[this.state.topic].Data.Name} </option>
     }
 
-    let editTimesModal = null;
+    let editTimesModal =  <div onClick = {this.editTimes}>Edit times </div>;
 
     if(this.state.editTimesModalOpen) {
-      editTimesModal = <MonthlyCalendar listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} />
+      editTimesModal = <div> <div onClick = {this.closeModal}>Close Calendar </div> <MonthlyCalendar listenerLoader = {this.listenerLoader} listenerUnLoader = {this.listenerUnLoader} /> </div>
+      topicSelector = null;
+      selections = null;
     }
 
     return ReactDOM.createPortal(
@@ -199,22 +201,18 @@ class CardEditModal extends React.Component {
         <input onChange = {(e) => this.descriptionChange(e.target.value)} value = {this.state.description} className = 'addCardModalDescription' />        
 
 
-        Change position with:
-        <div className = 'cardEditSelectionDropdown'>
+        <span className = 'cardEditSelectionDropdown'>
           {selections}
-        </div>
+        </span>
 
-        <div>
+        <span>
           {topicSelector}
-        </div>
+        </span>
 
          Times for this card:
          {this.props.times.map((item) => {
            return item;
          })}
-
-        <div onClick = {this.editTimes}>Edit times </div>
-
         {editTimesModal}
          <button onClick = {this.deleteCard}> DELETE </button>
         <button onClick = {this.saveEdit} >Save </button>
