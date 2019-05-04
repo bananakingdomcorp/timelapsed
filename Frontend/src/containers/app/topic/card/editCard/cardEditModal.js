@@ -34,19 +34,6 @@ class CardEditModal extends React.Component {
     ModalRoot.appendChild(this.el);
     document.addEventListener("mousedown", this.handleClickOutside)
 
-    
-    //Putting some testing here for now. 
-
-    let times = {}
-
-    let test = Object.entries(this.props.times)
-    console.log(test)
-    Object.keys(this.props.times).map((item) => {this.props.times[item].map((time) => {
-      console.log(time)
-
-    })})
-
-
   }
 
   componentWillUnmount() {
@@ -114,7 +101,26 @@ class CardEditModal extends React.Component {
 
   }
 
+  tempTester = () => {
+    //Putting some testing here for now. 
+
+    let times = {}
+
+    let test = Object.entries(this.props.times)
+    console.log(test)
+
+    Object.keys(this.props.times).map((item) => {this.props.times[item].map((time) => {
+      
+
+    })})
+  }
+
   saveEdit = () => {
+
+    if (Object.keys(this.props.times).length !== 0) {
+      //If we have edited our times. 
+
+    }
 
     
 
@@ -160,10 +166,12 @@ class CardEditModal extends React.Component {
   }
 
   closeModal = () => {
+
     this.setState({editTimesModalOpen: false})
   }
 
   editTimes = () => {
+    this.props.setBoard(this.props.editable)
     this.openModal();
   }
 
@@ -227,7 +235,8 @@ class CardEditModal extends React.Component {
            return item;
          })}
         {editTimesModal}
-         <button onClick = {this.deleteCard}> DELETE </button>
+        <button onClick = {this.tempTester}> TEST ME </button>
+        <button onClick = {this.deleteCard}> DELETE </button>
         <button onClick = {this.saveEdit} >Save </button>
         <button onClick = {() => this.props.closeModal() }>Cancel </button>
       </div>, 
