@@ -17,6 +17,7 @@ class CardEditModal extends React.Component {
       description: this.props.data.Description,
       selectionOpen: false,
       switchPosition : -Infinity,
+      times : [],
       topic: this.props.topic,
       topicSelectionOpen: false,
       editTimesModalOpen: false,
@@ -32,6 +33,19 @@ class CardEditModal extends React.Component {
   componentWillMount() {
     ModalRoot.appendChild(this.el);
     document.addEventListener("mousedown", this.handleClickOutside)
+
+    
+    //Putting some testing here for now. 
+
+    let times = {}
+
+    let test = Object.entries(this.props.times)
+    console.log(test)
+    Object.keys(this.props.times).map((item) => {this.props.times[item].map((time) => {
+      console.log(time)
+
+    })})
+
 
   }
 
@@ -102,9 +116,7 @@ class CardEditModal extends React.Component {
 
   saveEdit = () => {
 
-    //First, lets think about handling all of our times...
-
-
+    
 
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
@@ -152,8 +164,6 @@ class CardEditModal extends React.Component {
   }
 
   editTimes = () => {
-    //Add to our redux, then open our daily calendar. 
-    this.props.setBoard(this.props.editable)
     this.openModal();
   }
 
@@ -213,7 +223,7 @@ class CardEditModal extends React.Component {
         </span>
 
          Times for this card:
-         {this.props.times.map((item) => {
+         {this.props.iteratableTimes.map((item) => {
            return item;
          })}
         {editTimesModal}
@@ -229,7 +239,8 @@ class CardEditModal extends React.Component {
 }
 function mapStateToProps(state) {
   return {
-    board: state.board.board
+    board: state.board.board,
+    times: state.card.times
 
 
   }

@@ -14,7 +14,6 @@ class Card extends React.Component {
   }
 
   openModal = () => {
-    console.log('openmodal')
     this.setState({editModalOpen: true})
   }
   closeModal = () => {
@@ -57,7 +56,7 @@ class Card extends React.Component {
           nextTime = <div>{temp.getMonth()}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
         }
       }
-      //Our editable prebuilds the potential redux state that we would use if we choos to edit the times on this card.
+      //Our editable prebuilds the potential redux state that we would use if we choose to edit the times on this card.
 
       //We do this now simply because we don't want to have to keep going through the times. This allows this to be done a single time. 
 
@@ -73,7 +72,7 @@ class Card extends React.Component {
     let modal = null;
 
     if(this.state.editModalOpen) {
-      modal = <CardEditModal times = {times} topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} editable = {editable} />
+      modal = <CardEditModal iteratableTimes = {times} topic = {this.props.topic} closeModal = {this.closeModal} data = {this.props.data} position = {this.props.position} editable = {editable} />
     }
 
     return (
