@@ -12,6 +12,8 @@ import {addCard} from './../../../../modules/board'
 
 import {Api} from './../../../../djangoApi';
 
+import {timeParser} from './../../../../tools/serializerTools'
+
 
 
 const ModalRoot = document.querySelector('#modal-root')
