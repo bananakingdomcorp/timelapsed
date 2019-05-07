@@ -7,6 +7,7 @@ import MonthlyCalendar from './../../../Calendars/Monthly/index'
 import {changeCardInfo, changeCardTopic, changeCardPosition, deleteCard} from './../../../../../modules/board'
 import {setBoard} from './../../../../../modules/card'
 import {timeParser} from './../../../../../tools/serializerTools'
+let array = require('lodash/array');
 
 const ModalRoot = document.querySelector('#modal-root')
 

@@ -84,20 +84,22 @@ class AddCardModal extends React.Component {
       let times = [];
 
       for (let key in this.props.times) {
-        let test = {}
-        let split = key.split(' ')
-        let day = new Date(key)
-        test['Day'] = day.toLocaleDateString('en-US',{weekday: 'long'})
-        test['Begin_Date'] = `${split[3]}-${day.getMonth() +1}-${split[2]}`
 
-        this.props.times[key].forEach((item) => {
-          let time = item[0].split(',')
-          test['Begin_Time'] = time[0]
-          test['End_Time'] = time[1].trim()
-          test['Num_Weeks'] = item[1]
-          test['Weeks_Skipped'] = item[2]
-        })
-        times.push(test)
+        times.push(timeParser(key, this.props.times))
+        // let test = {}
+        // let split = key.split(' ')
+        // let day = new Date(key)
+        // test['Day'] = day.toLocaleDateString('en-US',{weekday: 'long'})
+        // test['Begin_Date'] = `${split[3]}-${day.getMonth() +1}-${split[2]}`
+
+        // this.props.times[key].forEach((item) => {
+        //   let time = item[0].split(',')
+        //   test['Begin_Time'] = time[0]
+        //   test['End_Time'] = time[1].trim()
+        //   test['Num_Weeks'] = item[1]
+        //   test['Weeks_Skipped'] = item[2]
+        // })
+        // times.push(test)
       }
 
       Api().post('/card/', {
