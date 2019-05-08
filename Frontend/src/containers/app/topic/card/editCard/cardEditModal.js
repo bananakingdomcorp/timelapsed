@@ -108,14 +108,21 @@ class CardEditModal extends React.Component {
 
     let times = {'Edit': {}, 'Delete': [], 'Add': [] }
 
+    let temp = Object.entries(this.props.data.Times)
 
-    let test = Object.entries(this.props.data.Times)
+    let test = {};
+
+    temp.forEach((item) => {
+      test[item[2]] = item.slice(0, 2);
+    })
 
     Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
       //If our time has an id. 
       if (time[3] !== undefined) {
-        times['Edit'][time[3]] = time.slice(0, 3);
+        
+        // times['Edit'][time[3]] = time.slice(0, 3);
         //It is an edit. We need to figure out a way to decide if it has or has not changed. 
+
       } else {
         //It is an addition.
         //Create our item here. Use our TimelapsedTools.
@@ -123,16 +130,6 @@ class CardEditModal extends React.Component {
       }
     })})
 
-    //Then check to see if our edit times have changed. 
-    test.forEach((testTime) => {
-      let entry = testTime[1]
-      console.log(entry)
-      let id = entry['id'];
-      //check for equality
-      
-
-
-    })
 
   }
 
