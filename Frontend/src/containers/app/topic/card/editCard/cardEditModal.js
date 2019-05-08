@@ -108,8 +108,8 @@ class CardEditModal extends React.Component {
 
     let times = {'Edit': {}, 'Delete': [], 'Add': [] }
 
+
     let test = Object.entries(this.props.data.Times)
-    console.log(test)
 
     Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
       //If our time has an id. 
@@ -123,7 +123,14 @@ class CardEditModal extends React.Component {
       }
     })})
 
+    //Then check to see if our edit times have changed. 
     test.forEach((testTime) => {
+      let entry = testTime[1]
+      console.log(entry)
+      let id = entry['id'];
+      //check for equality
+      
+
 
     })
 
