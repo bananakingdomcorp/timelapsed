@@ -6,7 +6,7 @@ import MonthlyCalendar from './../../../Calendars/Monthly/index'
 
 import {changeCardInfo, changeCardTopic, changeCardPosition, deleteCard} from './../../../../../modules/board'
 import {setBoard} from './../../../../../modules/card'
-import {timeParser} from './../../../../../tools/serializerTools'
+import {editParser} from './../../../../../tools/serializerTools'
 let array = require('lodash/array');
 
 const ModalRoot = document.querySelector('#modal-root')
@@ -108,7 +108,7 @@ class CardEditModal extends React.Component {
 
     let times = {'Edit': {}, 'Delete': [], 'Add': [] }
 
-    let test = Object.entries(this.props.times)
+    let test = Object.entries(this.props.data.Times)
     console.log(test)
 
     Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
@@ -118,8 +118,8 @@ class CardEditModal extends React.Component {
         //It is an edit. We need to figure out a way to decide if it has or has not changed. 
       } else {
         //It is an addition.
-        let item = '' //Create our item here. Use our TimelapsedTools.
-        times['Add'].push(item)
+        //Create our item here. Use our TimelapsedTools.
+        times['Add'].push(editParser(item, time))
       }
     })})
 
