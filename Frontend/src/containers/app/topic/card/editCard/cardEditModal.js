@@ -6,8 +6,7 @@ import MonthlyCalendar from './../../../Calendars/Monthly/index'
 
 import {changeCardInfo, changeCardTopic, changeCardPosition, deleteCard} from './../../../../../modules/board'
 import {setBoard} from './../../../../../modules/card'
-import {editParser} from './../../../../../tools/serializerTools'
-let array = require('lodash/array');
+import {editParser, parser} from './../../../../../tools/serializerTools'
 
 const ModalRoot = document.querySelector('#modal-root')
 
@@ -110,19 +109,12 @@ class CardEditModal extends React.Component {
 
     let temp = Object.entries(this.props.data.Times)
 
-    let test = {};
 
-    temp.forEach((item) => {
-      test[item[2]] = item.slice(0, 2);
-    })
 
     Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
       //If our time has an id. 
       if (time[3] !== undefined) {
-        
-        // times['Edit'][time[3]] = time.slice(0, 3);
-        //It is an edit. We need to figure out a way to decide if it has or has not changed. 
-
+        times['Edit'][time[3]] = parser(time.slice(0, 3));
       } else {
         //It is an addition.
         //Create our item here. Use our TimelapsedTools.
@@ -130,6 +122,16 @@ class CardEditModal extends React.Component {
       }
     })})
 
+    //Then check for deletions:
+    temp.forEach((item) => {
+      let data = item[1];
+      if(times['Edit'][data].id === undefined ) {
+        //then it has been deleted
+        times['Delete'].push(data.id)
+      }
+    })
+
+    console.log(times)
 
   }
 
