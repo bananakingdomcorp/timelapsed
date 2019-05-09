@@ -33,7 +33,7 @@ class Card extends React.Component {
 
     let times = this.props.data.Times.map((item, index) => {
 
-      //Python's Date model is one day off from that of Javascript. 
+      //Python's Date model is one day off and one month off from that of Javascript. 
       let date = new Date(item.Begin_Date)
       date.setDate(date.getDate() + 1)
 
@@ -41,6 +41,8 @@ class Card extends React.Component {
       let endSplit = item.End_Time.split(":")
 
       let temp = new Date(date.getTime());
+      console.log(temp, today)
+      console.log(temp < today)
       if(temp < today) {
         //Our date is before today. 
         let numWeeks = item.Num_Weeks;
@@ -49,12 +51,12 @@ class Card extends React.Component {
           temp.setDate(temp.getDate() + 7 * (item.Weeks_Skipped + 1))
           numWeeks--;
         }
+      } 
 
-        let diff  = Math.round((today-date)/(1000*60*60*24))
-        if(diff < days) {
-          days = diff;
-          nextTime = <div>{temp.getMonth()}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
-        }
+      let diff  = Math.round((today-temp)/(1000*60*60*24))
+      if(diff < days) {
+        days = diff;
+        nextTime = <div>{temp.getMonth()}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
       }
       //Our editable prebuilds the potential redux state that we would use if we choose to edit the times on this card.
 
