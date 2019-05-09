@@ -41,8 +41,6 @@ class Card extends React.Component {
       let endSplit = item.End_Time.split(":")
 
       let temp = new Date(date.getTime());
-      console.log(temp, today)
-      console.log(temp < today)
       if(temp < today) {
         //Our date is before today. 
         let numWeeks = item.Num_Weeks;
@@ -53,10 +51,11 @@ class Card extends React.Component {
         }
       } 
 
-      let diff  = Math.round((today-temp)/(1000*60*60*24))
+      let diff  = Math.round((temp - today)/(1000*60*60*24))
+
       if(diff < days) {
         days = diff;
-        nextTime = <div>{temp.getMonth()}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
+        nextTime = <div>{temp.getMonth() + 1}-{temp.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} </div>
       }
       //Our editable prebuilds the potential redux state that we would use if we choose to edit the times on this card.
 
@@ -67,7 +66,7 @@ class Card extends React.Component {
       }
       editable[date.toDateString()].push([`${beginSplit[0]}:${beginSplit[1]} , ${endSplit[0]}:${endSplit[1]}`, item.Num_Weeks, item.Weeks_Skipped, item.id])
       //some formatting.
-      return <div key = {index} > {date.getMonth()}-{date.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
+      return <div key = {index} > {date.getMonth() +1}-{date.getDate()}-{date.getFullYear()}  at {beginSplit[0]}:{beginSplit[1]}-{endSplit[0]}:{endSplit[1]} repeating {item.Num_Weeks} times every {item.Weeks_Skipped} weeks </div>
     })
 
 
