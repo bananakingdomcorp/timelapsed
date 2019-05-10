@@ -102,55 +102,47 @@ class CardEditModal extends React.Component {
 
   }
 
-  tempTester = () => {
-    //Putting some testing here for now. 
-
-    let times = {'Edit': {}, 'Delete': [], 'Add': [] }
-
-    let temp = Object.entries(this.props.data.Times)
-
-
-
-    Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
-      //If our time has an id. 
-      if (time[3] !== undefined) {
-        times['Edit'][time[3]] = parser(time.slice(0, 3));
-      } else {
-        //It is an addition.
-        //Create our item here. Use our TimelapsedTools.
-        times['Add'].push(editParser(item, time))
-      }
-    })})
-
-    //Then check for deletions:
-    temp.forEach((item) => {
-      let data = item[1];
-      console.log(data)
-      if(times['Edit'][data.id] === undefined ) {
-        //then it has been deleted
-        times['Delete'].push(data.id)
-      }
-    })
-
-    //times is now correct
-
-    console.log(times)
-
-  }
-
   saveEdit = () => {
+    let query = {Data: {Description: this.state.description, Name: this.state.title, Position: this.state.switchPosition === -Infinity? -1: this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].id , Topic: this.props.board[this.state.topic].Data.id} }
+    let times = {'Edit': {}, 'Delete': [], 'Add': [] }
 
     if (Object.keys(this.props.times).length !== 0) {
       //If we have edited our times. 
 
+      let temp = Object.entries(this.props.data.Times)
+  
+  
+  
+      Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
+        //If our time has an id. 
+        if (time[3] !== undefined) {
+          times['Edit'][time[3]] = parser(time.slice(0, 3));
+        } else {
+          //It is an addition.
+          //Create our item here. Use our TimelapsedTools.
+          times['Add'].push(editParser(item, time))
+        }
+      })})
+  
+      //Then check for deletions:
+      temp.forEach((item) => {
+        let data = item[1];
+        if(times['Edit'][data.id] === undefined ) {
+          //then it has been deleted
+          times['Delete'].push(data.id)
+        }
+      })
+  
+      //times is now correct
+  
+      console.log(times)
+      query['Times'] = times
+
     }
-
-    
-
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
 
-    Api().put(`/card/${this.props.data.id}/`, {Data: {Description: this.state.description, Name: this.state.title, Position: this.state.switchPosition === -Infinity? -1: this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].id , Topic: this.props.board[this.state.topic].Data.id} } )
+    Api().put(`/card/${this.props.data.id}/`, query)
     .then((res) => {
       if (res.status === 200) {
         //Call redux. 
@@ -258,7 +250,6 @@ class CardEditModal extends React.Component {
            return item;
          })}
         {editTimesModal}
-        <button onClick = {this.tempTester}> TEST ME </button>
         <button onClick = {this.deleteCard}> DELETE </button>
         <button onClick = {this.saveEdit} >Save </button>
         <button onClick = {() => this.props.closeModal() }>Cancel </button>
