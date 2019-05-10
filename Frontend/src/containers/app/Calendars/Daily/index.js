@@ -103,13 +103,13 @@ class DailyCalendar extends React.Component {
       let itemOne = this.convertTime(item[0].split(',')[0].split(':'))
       let itemTwo = this.convertTime(item[0].split(',')[1].split(':'))
     
-      if(testOne < itemOne && testTwo > itemOne && testTwo < itemTwo) {
-        //replace the first time.
+      if(testOne <= itemOne && testTwo > itemOne && testTwo <= itemTwo) {
+        //replace the first or both times.
         item[0].split(',')[0] = next.split(',')[0]
         overlap = true;
         return [`${next.split(',')[0]} , ${item[0].split(',')[1]}`, numweeks, skipped]
       }
-      if(testOne < itemOne && testTwo > itemTwo) {
+      if(testOne <= itemOne && testTwo >= itemTwo) {
         //Replace both times
         overlap = true;
         item[0].split(',')[0] = next.split(',')[0]
@@ -117,7 +117,7 @@ class DailyCalendar extends React.Component {
         return [`${next.split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
       }
     
-      if(testOne > itemOne && testOne < itemTwo && testTwo > itemTwo ) {
+      if(testOne >= itemOne && testOne < itemTwo && testTwo >= itemTwo ) {
         //Replace the last time.
         overlap = true;
         item[0].split(',')[1] = next.split(',')[1]
@@ -166,6 +166,7 @@ class DailyCalendar extends React.Component {
   addTime = (time, weeks, skipped) => {
     //if overlap.
     let test = this.testOverlap(time, weeks, skipped);
+    console.log('DOES IT OVERLAP??', test)
 
     if(test) {
       //Why do we sort twice here? First, we add in any overlap, resort those times (we may have added more overlap at this point), then resort again to fix any added overlap. 

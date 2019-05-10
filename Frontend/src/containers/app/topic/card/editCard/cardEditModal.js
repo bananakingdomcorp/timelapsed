@@ -125,11 +125,14 @@ class CardEditModal extends React.Component {
     //Then check for deletions:
     temp.forEach((item) => {
       let data = item[1];
-      if(times['Edit'][data].id === undefined ) {
+      console.log(data)
+      if(times['Edit'][data.id] === undefined ) {
         //then it has been deleted
         times['Delete'].push(data.id)
       }
     })
+
+    //times is now correct
 
     console.log(times)
 
