@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const ADD_TIMES = 'card/ADD_TIMES'
 export const CLEAR_TIMES = 'card/CLEAR_TIMES'
 export const REMOVE_TIMES = 'card/REMOVE_TIMES'
@@ -11,7 +13,6 @@ const initialState = {
 export default (state = initialState, action) => {
   switch(action.type) {
     case ADD_TIMES:
-      console.log('times', action.times)
       let ourTimes
       if(state.times[action.day] === undefined ) {
         ourTimes = action.times;          
@@ -33,7 +34,7 @@ export default (state = initialState, action) => {
       return {
         times: {
           ...state.times,
-          [action.day] : state.times[action.day].filter((item) => item !== action.time)
+          [action.day] : state.times[action.day].filter((item) => !_.isEqual(item, action.time) )
         }
       }
     case CLEAR_TIMES:

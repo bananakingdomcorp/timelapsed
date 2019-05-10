@@ -107,6 +107,7 @@ class DailyCalendar extends React.Component {
         //replace the first or both times.
         item[0].split(',')[0] = next.split(',')[0]
         overlap = true;
+        this.props.removeTimes(this.props.day,item)
         return [`${next.split(',')[0]} , ${item[0].split(',')[1]}`, numweeks, skipped]
       }
       if(testOne <= itemOne && testTwo >= itemTwo) {
@@ -114,6 +115,7 @@ class DailyCalendar extends React.Component {
         overlap = true;
         item[0].split(',')[0] = next.split(',')[0]
         item[0].split(',')[1] = next.split(',')[1]
+        this.props.removeTimes(this.props.day,item)
         return [`${next.split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
       }
     
@@ -121,6 +123,7 @@ class DailyCalendar extends React.Component {
         //Replace the last time.
         overlap = true;
         item[0].split(',')[1] = next.split(',')[1]
+        this.props.removeTimes(this.props.day, item)
         return [`${item[0].split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
       }
       return item
@@ -147,6 +150,9 @@ class DailyCalendar extends React.Component {
       let itemSecond = this.convertTime(item[0].split(',')[1].split(':'))
 
       if(temp > itemFirst && temp < itemSecond  ) {
+        //We need to remove the item from our store as it has now been overlapped.
+
+        this.props.removeTimes(this.props.day, item)
         merged.push([`${current[0].split(',')[0]},${item[0].split(',')[1]}`, item[1], item[2] ])
       } 
       if(temp > itemFirst && temp > itemSecond ) {
@@ -166,9 +172,10 @@ class DailyCalendar extends React.Component {
   addTime = (time, weeks, skipped) => {
     //if overlap.
     let test = this.testOverlap(time, weeks, skipped);
-    console.log('DOES IT OVERLAP??', test)
 
     if(test) {
+
+
       //Why do we sort twice here? First, we add in any overlap, resort those times (we may have added more overlap at this point), then resort again to fix any added overlap. 
       this.setState({times: test.sort((a, b) => {return  this.convertTime(a[0].split(',')[0].split(':') ) - this.convertTime(b[0].split(',')[0].split(':') ) })}, 
       () =>  {this.setState({times: this.resort()})} )
@@ -194,6 +201,8 @@ class DailyCalendar extends React.Component {
 
   submitTimes = () => {
     if (this.state.times.length !== 0) {
+      console.log(this.state.times)
+      //If there is an overlap, times are still getting added. 
       this.props.addTimes(this.props.day, this.state.times)
 
 
