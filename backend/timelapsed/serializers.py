@@ -40,8 +40,9 @@ class EditCardTimesSerializer(serializers.ModelSerializer):
 class DeleteCardTimesSerializer(serializers.ListField):
   child = serializers.CharField()
 
+
 class UpdateCardTimesSerializer(serializers.Serializer):
-  # Edit = EditCardTimesSerializer()
+  Edit = EditCardTimesSerializer(many = True)
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
   Delete = DeleteCardTimesSerializer()
 
@@ -70,6 +71,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
     info = validated_data['Data']
     times = validated_data['Times']
     temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
+    res = {}
 
     #If topic is the same. 
     if temp['Topic'] == info['Topic'] :
@@ -100,13 +102,18 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
     #Handle Edits:
 
+
+
     #Handle Additions:
 
-    for key in times['Add']:
-      print(times['Add'])
+    # for key in times['Add']:
+    #   ids = []
+    #   a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
+    #   ids.append(a.id)
+    #   res['Added_Times'] = {'ids': ids}
         
 
-    return 
+    return res
 
   class Meta:
     model = Card
