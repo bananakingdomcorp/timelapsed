@@ -36,15 +36,20 @@ class EditCardTimesSerializer(serializers.ModelSerializer):
     model = Date_Range
     fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
 
-class UpdateCardTimesSerializer(serializers.ModelSerializer):
-  Edit = EditCardTimesSerializer()
+
+class DeleteCardTimesSerializer(serializers.ListField):
+  child = serializers.CharField()
+
+class UpdateCardTimesSerializer(serializers.Serializer):
+  # Edit = EditCardTimesSerializer()
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
-  Delete = serializers.ListField(child = serializers.CharField())
+  Delete = DeleteCardTimesSerializer()
 
 
   class Meta:
     model = Date_Range
-    field = ('Edit', 'Delete', 'Add')
+    # fields = ('Delete',)
+    exclude = ('Add', 'Edit')
 
 class CreateCardDataSerializer(serializers.ModelSerializer):
   Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
@@ -63,6 +68,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
   def update(self, validated_data, pk, user):
 
     info = validated_data['Data']
+    times = validated_data['Times']
     temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
 
     #If topic is the same. 
@@ -86,7 +92,20 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
     
     Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])     
-    #daterangeserializer post here. This does not currently update dates. 
+
+    #Handle Deletions:
+
+    # for key in times['Delete']:
+    #   Date_Range.objects.filter(id = key).delete()
+
+    #Handle Edits:
+
+    #Handle Additions:
+
+    for key in times['Add']:
+      print(times['Add'])
+        
+
     return 
 
   class Meta:
