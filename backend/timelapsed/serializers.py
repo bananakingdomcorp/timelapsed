@@ -26,16 +26,11 @@ class CreateCardTimesSerializer(serializers.ModelSerializer):
     model = Date_Range
     fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
 
-class DeleteCardTimesSerializer(serializers.ListSerializer):
-  def destroy(self, validated_data):
-    print(validated_data, 'in DeleteCardTimesSerializer')
-
-    #I think we an simply destroy here, not sure. 
-
 class EditCardTimesSerializer(serializers.ModelSerializer):
   
   def update(self, instance, validated_data):
     print(instance, validated_data)
+    return
   
   class Meta:
     model = Date_Range
@@ -44,7 +39,7 @@ class EditCardTimesSerializer(serializers.ModelSerializer):
 class UpdateCardTimesSerializer(serializers.ModelSerializer):
   Edit = EditCardTimesSerializer()
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
-  Delete = serializers.ListField(child = DeleteCardTimesSerializer(),)
+  Delete = serializers.ListField(child = serializers.CharField())
 
 
   class Meta:
