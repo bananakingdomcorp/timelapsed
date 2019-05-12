@@ -28,10 +28,6 @@ class CreateCardTimesSerializer(serializers.ModelSerializer):
 
 class EditCardTimesSerializer(serializers.ModelSerializer):
   
-  def update(self, instance, validated_data):
-    print(instance, validated_data)
-    return
-  
   class Meta:
     model = Date_Range
     fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
@@ -42,7 +38,7 @@ class DeleteCardTimesSerializer(serializers.ListField):
 
 
 class UpdateCardTimesSerializer(serializers.Serializer):
-  Edit = EditCardTimesSerializer()
+  Edit = serializers.DictField(child = EditCardTimesSerializer(),)
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
   Delete = DeleteCardTimesSerializer()
 
@@ -62,7 +58,6 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
 
 class UpdateCardSerializer(serializers.ModelSerializer):
   Data = CreateCardDataSerializer()
-  # Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False)
   Times = UpdateCardTimesSerializer(required = False,)
 
   
@@ -102,6 +97,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
     #Handle Edits:
 
+    print(times['Edit'])
 
 
     #Handle Additions:
