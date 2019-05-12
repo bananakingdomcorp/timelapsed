@@ -104,6 +104,7 @@ class CardEditModal extends React.Component {
 
   saveEdit = () => {
     let query = {Data: {Description: this.state.description, Name: this.state.title, Position: this.state.switchPosition === -Infinity? -1: this.props.board[this.props.topic].Data.Cards[this.state.switchPosition].id , Topic: this.props.board[this.state.topic].Data.id} }
+    
     let times = {'Edit': {}, 'Delete': [], 'Add': [] }
 
     if (Object.keys(this.props.times).length !== 0) {
@@ -115,6 +116,7 @@ class CardEditModal extends React.Component {
   
       Object.keys(this.props.times).forEach((item) => {this.props.times[item].forEach((time) => {
         //If our time has an id. 
+        console.log('TIME', time)
         if (time[3] !== undefined) {
           times['Edit'][time[3]] = parser(time.slice(0, 3));
         } else {

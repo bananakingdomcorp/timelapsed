@@ -116,7 +116,7 @@ class DailyCalendar extends React.Component {
         item[0].split(',')[0] = next.split(',')[0]
         item[0].split(',')[1] = next.split(',')[1]
         this.props.removeTimes(this.props.day,item)
-        return [`${next.split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
+        return [`${next.split(',')[0]},${next.split(',')[1]}`, numweeks, skipped, item[3]]
       }
     
       if(testOne >= itemOne && testOne < itemTwo && testTwo >= itemTwo ) {
@@ -124,7 +124,7 @@ class DailyCalendar extends React.Component {
         overlap = true;
         item[0].split(',')[1] = next.split(',')[1]
         this.props.removeTimes(this.props.day, item)
-        return [`${item[0].split(',')[0]},${next.split(',')[1]}`, numweeks, skipped]
+        return [`${item[0].split(',')[0]},${next.split(',')[1]}`, numweeks, skipped, item[3]]
       }
       return item
     
@@ -153,7 +153,7 @@ class DailyCalendar extends React.Component {
         //We need to remove the item from our store as it has now been overlapped.
 
         this.props.removeTimes(this.props.day, item)
-        merged.push([`${current[0].split(',')[0]},${item[0].split(',')[1]}`, item[1], item[2] ])
+        merged.push([`${current[0].split(',')[0]},${item[0].split(',')[1]}`, item[1], item[2], item[3] ])
       } 
       if(temp > itemFirst && temp > itemSecond ) {
         merged.push(current)
@@ -162,6 +162,7 @@ class DailyCalendar extends React.Component {
       }
     }
   })
+
 
   return merged
 

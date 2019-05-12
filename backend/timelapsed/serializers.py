@@ -42,7 +42,7 @@ class DeleteCardTimesSerializer(serializers.ListField):
 
 
 class UpdateCardTimesSerializer(serializers.Serializer):
-  Edit = EditCardTimesSerializer(many = True)
+  Edit = EditCardTimesSerializer()
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
   Delete = DeleteCardTimesSerializer()
 
