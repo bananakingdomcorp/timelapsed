@@ -149,9 +149,11 @@ class CardEditModal extends React.Component {
     Api().put(`/card/${this.props.data.id}/`, query)
     .then((res) => {
       if (res.status === 200) {
+        //Now we have to add in id's for any added items.
+        console.log(res.data)
 
         //Call redux. 
-        let temp =  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id } 
+        let temp =  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : Object.values(this.props.times), id: this.props.data.id } 
         //if we are changing the topic that the card is in.
         if(this.state.topic !== this.props.topic) {
           this.props.changeCardTopic(this.props.topic, Number(this.state.topic), temp )
