@@ -141,12 +141,15 @@ class CardEditModal extends React.Component {
       query['Times'] = times
 
     }
+
+
     //Send everything to the backend. 
     let pos = this.state.switchPosition === -Infinity? this.props.position : this.state.switchPosition;
 
     Api().put(`/card/${this.props.data.id}/`, query)
     .then((res) => {
       if (res.status === 200) {
+
         //Call redux. 
         let temp =  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id } 
         //if we are changing the topic that the card is in.
@@ -157,7 +160,7 @@ class CardEditModal extends React.Component {
           //We have changed the position of the card. 
         }else {
        //If we are just changing the information about the card...
-
+          console.log(temp)
           this.props.changeCardInfo(this.props.topic, temp)
         }
       }

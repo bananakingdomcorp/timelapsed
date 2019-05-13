@@ -92,21 +92,22 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
     #Handle Deletions:
 
-    # for key in times['Delete']:
-    #   Date_Range.objects.filter(id = key).delete()
+    for key in times['Delete']:
+      Date_Range.objects.filter(id = key).delete()
 
     #Handle Edits:
 
-    print(times['Edit'])
+    for key in times['Edit']:
+      Date_Range.objects.filter(id = key).update(Begin_Time = times['Edit'][key]['Begin_Time'], End_Time = times['Edit'][key]['End_Time'], Num_Weeks =  times['Edit'][key]['Num_Weeks'], Weeks_Skipped = times['Edit'][key]['Weeks_Skipped']  )
 
 
     #Handle Additions:
 
-    # for key in times['Add']:
-    #   ids = []
-    #   a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
-    #   ids.append(a.id)
-    #   res['Added_Times'] = {'ids': ids}
+    for key in times['Add']:
+      ids = []
+      a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
+      ids.append(a.id)
+      res['Added_Times'] = {'ids': ids}
         
 
     return res
