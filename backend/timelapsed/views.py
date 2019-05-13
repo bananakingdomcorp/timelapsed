@@ -106,8 +106,8 @@ class CardView(viewsets.ModelViewSet):
     print(request.data, 'REQUEST')
     serializer = UpdateCardSerializer(data = request.data)
     if(serializer.is_valid()):
-      created = serializer.update(serializer.data, pk, request.user.email)
-      return Response('updated', 200)
+      updated = serializer.update(serializer.data, pk, request.user.email)
+      return Response(updated, 200)
     print(serializer.errors)
     return Response('failed',400)
 

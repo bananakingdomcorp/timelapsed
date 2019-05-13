@@ -137,7 +137,6 @@ class CardEditModal extends React.Component {
   
       //times is now correct
   
-      console.log(times)
       query['Times'] = times
 
     }
@@ -162,7 +161,6 @@ class CardEditModal extends React.Component {
           //We have changed the position of the card. 
         }else {
        //If we are just changing the information about the card...
-          console.log(temp)
           this.props.changeCardInfo(this.props.topic, temp)
         }
       }

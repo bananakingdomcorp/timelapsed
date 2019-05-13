@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import Selector from './selector'
 import ReactDOM from 'react-dom'
 import {addTimes, removeTimes} from './../../../../modules/card'
+import _ from 'lodash'
 
 
 const ModalRoot = document.querySelector('#modal-root-two')
@@ -206,9 +207,10 @@ class DailyCalendar extends React.Component {
   }
 
   submitTimes = () => {
-    if (this.state.times.length !== 0) {
-      console.log(this.state.times)
-      //If there is an overlap, times are still getting added. 
+    if (this.state.times.length !== 0 && !_.isEqual(this.state.times, this.props.times[this.props.day]) ) {
+      
+      //Basically, if there is nothing or nothing has changed, just close the modal. 
+      
       this.props.addTimes(this.props.day, this.state.times)
 
 
