@@ -150,7 +150,7 @@ class CardEditModal extends React.Component {
     .then((res) => {
       if (res.status === 200) {
         //Now we have to add in id's for any added items.
-        console.log(res.data)
+        console.log(res.data, 'DATA')
 
         //Call redux. 
         let temp =  {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : Object.values(this.props.times), id: this.props.data.id } 

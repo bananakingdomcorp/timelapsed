@@ -102,9 +102,14 @@ class DailyCalendar extends React.Component {
     let fixed = this.state.times.map((item) => {
       let itemOne = this.convertTime(item[0].split(',')[0].split(':'))
       let itemTwo = this.convertTime(item[0].split(',')[1].split(':'))
+
+      if(itemOne >= testOne && itemTwo <= testTwo) {
+        //Our time we are adding is subsumed by the original time
+        return false;
+      }
     
       if(testOne <= itemOne && testTwo > itemOne && testTwo <= itemTwo) {
-        //replace the first or both times.
+        //replace the first time.
         item[0].split(',')[0] = next.split(',')[0]
         overlap = true;
         this.props.removeTimes(this.props.day,item)
