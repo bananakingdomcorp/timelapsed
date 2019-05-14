@@ -4,6 +4,7 @@ import Selector from './selector'
 import ReactDOM from 'react-dom'
 import {addTimes, removeTimes} from './../../../../modules/card'
 import _ from 'lodash'
+import { array } from 'prop-types';
 
 
 const ModalRoot = document.querySelector('#modal-root-two')
@@ -207,11 +208,17 @@ class DailyCalendar extends React.Component {
   }
 
   submitTimes = () => {
-    if (this.state.times.length !== 0 && !_.isEqual(this.state.times, this.props.times[this.props.day]) ) {
-      
+    if (this.state.times.length !== 0 ) {
+
+      let filtered = this.state.times
+      if(this.props.times[this.props.day] !== undefined) {
+        this.state.times.filter(item => this.props.times[this.props.day].find((time) => {
+          _.isEqual(item, time)}) === undefined)
+      }
+
       //Basically, if there is nothing or nothing has changed, just close the modal. 
       
-      this.props.addTimes(this.props.day, this.state.times)
+      this.props.addTimes(this.props.day, filtered)
 
 
 
