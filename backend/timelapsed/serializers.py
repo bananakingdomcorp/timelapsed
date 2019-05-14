@@ -66,7 +66,6 @@ class UpdateCardSerializer(serializers.ModelSerializer):
     info = validated_data['Data']
     times = validated_data['Times']
     temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
-    res = {}
 
     #If topic is the same. 
     if temp['Topic'] == info['Topic'] :
@@ -107,10 +106,11 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       ids = []
       a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
       ids.append(a.id)
-      res['Added_Times'] = {'ids': ids}
-        
+      
+    Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
 
-    return res
+
+    return Return_Times
 
   class Meta:
     model = Card
