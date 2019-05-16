@@ -1,0 +1,12 @@
+FROM python:3.6
+
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir /timelapsed_prod
+
+WORKDIR /timelapsed_prod
+
+ADD . /timelapsed_prod
+
+RUN pip install -r requirements.txt
+
