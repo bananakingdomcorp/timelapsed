@@ -4,6 +4,8 @@
   "main": "app.js",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongoose": "^5.5.9",
+    "socket.io": "^2.2.0"
   }
 }
