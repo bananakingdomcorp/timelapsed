@@ -1,0 +1,17 @@
+FROM node:7
+
+RUN mkdir /node_docker
+
+WORKDIR /node_docker
+
+COPY package*.json ./
+
+USER node
+
+RUN npm install
+
+COPY --chown=node:node . .
+
+EXPOSE 8080
+
+CMD [ "node", "app.js" ]
