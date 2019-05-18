@@ -105,6 +105,24 @@ class MonthlyCalender extends React.Component {
 
   }
 
+  timesSort = (times) => {
+    //Sort out times here.
+    let sorted = Object.keys(times).map((item) => times[item].map((time, index) => time.sort((a, b) => Date(a) - Date(b))
+    ))
+    return  Object.keys(sorted).map((item) => sorted[item].map((time, index) => {
+      if (time[1] !== 0 && time[2] ===0) {
+        return <div key = {index}> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span> </div>
+      }
+      if (time[1] !== 0 && time[2] !==0 ) {
+        return <div key = {index}> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times every {time[2]} weeks <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span>  </div>
+      }
+      return <div key = {index}> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]} <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span>  </div> 
+      }   
+    ))
+
+    
+  }
+
   renderCalendar=() => {
     let arr = []
 
@@ -145,6 +163,12 @@ class MonthlyCalender extends React.Component {
     }
 
     //Shows all of our currently selected days. 
+
+    //These need to be reorganized so that they are in correct order. 
+
+    // times = this.timesSort(this.props.times)
+
+
     let dates = Object.keys(this.props.times).map((item) => this.props.times[item].map((time, index) => {
       if (time[1] !== 0 && time[2] ===0) {
         return <div key = {index}> {item}, {time[0].split(',')[0]}--{time[0].split(',')[1]}, repeating for {time[1]} times <span onClick = {() => this.deleteTime(item, time)} > Delete Time </span> </div>
