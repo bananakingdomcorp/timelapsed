@@ -166,3 +166,47 @@ class Card(models.Model):
         return reverse('timelapsed_card_update', args=(self.pk,))
 
 
+
+
+# class Subclasses(models.Model):
+
+#     # Fields
+#     id = models.BigAutoField(primary_key=True)
+#     type = models.TextField()
+
+#     # Relationship Fields
+#     Email = models.ForeignKey(
+#         'timelapsed.Users',
+#         on_delete=models.CASCADE, related_name="subclasses", 
+#     )
+#     # Parent_ID = models.ForeignKey(
+#         'timelapsed.Card',
+#         on_delete=models.CASCADE, related_name="subclasses", null=True
+#     )
+
+#     # Child_ID = models.ForeignKey(
+#         'timelapsed.Card',
+#         on_delete=models.CASCADE, related_name="subclasses", null=True
+#     )
+
+    # def save(self, *args, **kwargs):
+      # if self.Parent_ID == self.Child_ID:
+        # raise Exception("You cannot subclass yourself")
+        
+
+    #   super().save(*args, **kwargs)
+
+
+#     class Meta:
+#         ordering = ('-pk',)
+
+#     def __unicode__(self):
+#         return u'%s' % self.pk
+
+#     def get_absolute_url(self):
+#         return reverse('timelapsed_subclasses_detail', args=(self.pk,))
+
+
+#     def get_update_url(self):
+#         return reverse('timelapsed_subclasses_update', args=(self.pk,))
+
