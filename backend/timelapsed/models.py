@@ -166,36 +166,67 @@ class Card(models.Model):
         return reverse('timelapsed_card_update', args=(self.pk,))
 
 
+class Subclasses(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="subclasses", 
+    )
+    Parent_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="subclasses", null=True
+    )
+    Child_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="subclasses", null=True
+    )
+    def save(self, *args, **kwargs):
+      if self.Parent_ID == self.Child_ID:
+        raise Exception("You cannot subclass yourself")   
+      super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_subclasses_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_subclasses_update', args=(self.pk,))
 
 
-# class Subclasses(models.Model):
+
+
+# class Card_Relationships(models.Model):
 
 #     # Fields
 #     id = models.BigAutoField(primary_key=True)
-#     type = models.TextField()
+#     type = models.textField()
 
 #     # Relationship Fields
 #     Email = models.ForeignKey(
 #         'timelapsed.Users',
-#         on_delete=models.CASCADE, related_name="subclasses", 
+#         on_delete=models.CASCADE, related_name="card_relationships", 
 #     )
-#     # Parent_ID = models.ForeignKey(
-#         'timelapsed.Card',
-#         on_delete=models.CASCADE, related_name="subclasses", null=True
+#     Parent_ID = models.ForeignKey(
+#       'timelapsed.Card',
+#       on_delete=models.CASCADE, related_name="card_relationships", null=True
 #     )
-
-#     # Child_ID = models.ForeignKey(
-#         'timelapsed.Card',
-#         on_delete=models.CASCADE, related_name="subclasses", null=True
+#     Child_ID = models.ForeignKey(
+#       'timelapsed.Card',
+#       on_delete=models.CASCADE, related_name="card_relationships", null=True
 #     )
-
-    # def save(self, *args, **kwargs):
-      # if self.Parent_ID == self.Child_ID:
-        # raise Exception("You cannot subclass yourself")
-        
-
-    #   super().save(*args, **kwargs)
-
+#     def save(self, *args, **kwargs):
+#       if self.Parent_ID == self.Child_ID:
+#         raise Exception("You cannot have a relationship with yourself")   
+#       super().save(*args, **kwargs)
 
 #     class Meta:
 #         ordering = ('-pk',)
@@ -204,9 +235,45 @@ class Card(models.Model):
 #         return u'%s' % self.pk
 
 #     def get_absolute_url(self):
-#         return reverse('timelapsed_subclasses_detail', args=(self.pk,))
-
+#         return reverse('timelapsed_card_relationships_detail', args=(self.pk,))
 
 #     def get_update_url(self):
-#         return reverse('timelapsed_subclasses_update', args=(self.pk,))
+#         return reverse('timelapsed_card_relationships_update', args=(self.pk,))
 
+
+
+# class Topic_Relationships(models.Model):
+
+#     # Fields
+#     id = models.BigAutoField(primary_key=True)
+#     type = models.textField()
+
+#     # Relationship Fields
+#     Email = models.ForeignKey(
+#         'timelapsed.Users',
+#         on_delete=models.CASCADE, related_name="topic_relationships", 
+#     )
+#     Parent_ID = models.ForeignKey(
+#       'timelapsed.Topic',
+#       on_delete=models.CASCADE, related_name="topic_relationships", null=True
+#     )
+#     Child_ID = models.ForeignKey(
+#       'timelapsed.Topic',
+#       on_delete=models.CASCADE, related_name="topic_relationships", null=True
+#     )
+#     def save(self, *args, **kwargs):
+#       if self.Parent_ID == self.Child_ID:
+#         raise Exception("You cannot relate to yourself")   
+#       super().save(*args, **kwargs)
+
+#     class Meta:
+#         ordering = ('-pk',)
+
+#     def __unicode__(self):
+#         return u'%s' % self.pk
+
+#     def get_absolute_url(self):
+#         return reverse('timelapsed_topic_relationships_detail', args=(self.pk,))
+
+#     def get_update_url(self):
+#         return reverse('timelapsed_topic_relationships_update', args=(self.pk,))
