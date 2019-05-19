@@ -11,8 +11,8 @@ router.register(r'user', views.UsersView, basename = 'user')
 router.register(r'topic', views.TopicView, basename = 'add topic')
 
 router.register(r'card', views.CardView, basename = 'card')
-router.register(r'event', views.EventView, basename = 'event')
-# router.register(r'date', views.DateRangeView, basename = 'date')
+
+
 
 """
 Note, all of the routes that are mentioned here may or may not be used, they are just here for now so that I can test that the work. 

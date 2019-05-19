@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Event, Date_Range, Card
 
-from .serializers import UsersSerializer, AddTopicSerializer,CardSerializer, EventSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer
 
 import  timelapsed.services as services
 
@@ -81,13 +81,8 @@ class TopicView(viewsets.ModelViewSet):
 
 
 
-class EventView(viewsets.ModelViewSet):
-  serializer_class= EventSerializer
-  queryset= Event.objects.all()
-  permission_classes = (IsAuthenticated, )
-
 class CardView(viewsets.ModelViewSet):
-  serializer_class= CardSerializer
+  serializer_class= CreateCardSerializer
   queryset= Card.objects.all()
   permission_classes = (IsAuthenticated, )
   http_method_names = ['post', 'put', 'delete' ]

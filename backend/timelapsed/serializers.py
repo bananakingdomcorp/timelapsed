@@ -160,12 +160,6 @@ class DeleteCardSerializer(serializers.ModelSerializer):
     fields = ('id',)
 
 
-class CardSerializer(serializers.ModelSerializer):
-  class Meta:
-    model: Card
-    fields = ('Name', 'Description', 'Position', 'Email', 'Topic')
-
-
 class AddTopicSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
@@ -236,9 +230,3 @@ class EditTopicSerializer(serializers.ModelSerializer):
     fields = ('Name', 'switchPosition' )
     extra_kwargs = {'switchPosition': {'write_only': True}}
 
-
-
-class EventSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Event
-    fields = ('id', 'User')
