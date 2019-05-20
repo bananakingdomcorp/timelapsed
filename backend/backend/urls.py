@@ -12,12 +12,11 @@ router.register(r'topic', views.TopicView, basename = 'add topic')
 
 router.register(r'card', views.CardView, basename = 'card')
 
+router.register(r'subclass', views.SubclassesView, basename = 'subclass')
 
+router.register(r'topic_relationship', views.TopicRelationshipsView, basename = 'topic_relationship')
 
-"""
-Note, all of the routes that are mentioned here may or may not be used, they are just here for now so that I can test that the work. 
-
-"""
+router.register(r'card_relationship', views.CardRelationshipsView, basename = 'card_relationship')
 
 
 urlpatterns = [

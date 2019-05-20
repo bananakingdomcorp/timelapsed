@@ -9,9 +9,9 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-from .models import Users, Topic, Event, Date_Range, Card
+from .models import Users, Topic, Event, Date_Range, Card, Subclasses, Card_Relationships, Topic_Relationships
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, SubclassesSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer
 
 import  timelapsed.services as services
 
@@ -114,9 +114,46 @@ class CardView(viewsets.ModelViewSet):
 
     return Response('Failed', 200)
 
-
-
-
     return 
+
+class SubclassesView(views.ModelViewSet):
+  serializer_class= SubclassesSerializer
+  queryset= Subclasses.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['post', 'put', 'delete' ]
+
+  def create(self, request):
+    return
+  def update(self, request):
+    return
+  def destroy(self, request):
+    return
+
+class TopicRelationshipsView(views.ModelViewSet):
+  serializer_class= TopicRelationshipsSerializer
+  queryset= Topic_Relationships.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['post', 'put', 'delete' ]
+
+  def create(self, request):
+    return
+  def update(self, request):
+    return
+  def destroy(self, request):
+    return
+
+class CardRelationshipsView(views.ModelViewSet):
+  serializer_class= CardRelationshipsSerializer
+  queryset= Card_Relationships.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['post', 'put', 'delete' ]
+
+  def create(self, request):
+    return
+  def update(self, request):
+    return
+  def destroy(self, request):
+    return
+
 
 

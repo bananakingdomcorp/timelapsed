@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Event, Date_Range, Card
+from .models import Users, Topic, Event, Date_Range, Card, Subclasses, Card_Relationships, Topic_Relationships
 
 from datetime import datetime
 
@@ -230,3 +230,21 @@ class EditTopicSerializer(serializers.ModelSerializer):
     fields = ('Name', 'switchPosition' )
     extra_kwargs = {'switchPosition': {'write_only': True}}
 
+
+class SubclassesSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Subclasses
+    fields = ('Parent_ID', 'Child_ID')
+
+class TopicRelationshipsSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Topic_Relationships
+    fields = ('Type', 'Parent_ID', 'Child_ID')
+
+class CardRelationshipsSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Card_Relationships
+    fields = ('Type', 'Parent_ID', 'Child_ID')
