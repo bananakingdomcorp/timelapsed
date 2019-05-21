@@ -195,7 +195,7 @@ class Subclass(models.Model):
         return reverse('timelapsed_subclass_update', args=(self.pk,))
 
 
-class Subclass_Relationship(models.Model):
+class Subclass_Relationships(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
@@ -211,17 +211,12 @@ class Subclass_Relationship(models.Model):
       on_delete=models.CASCADE, related_name = 'Subclass_Relationship'
     )
 
-    Parent_ID = models.ForeignKey(
-      'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="Subclass_Relationship", null=True
-    )
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
       on_delete=models.CASCADE, related_name="Subclass_Relationship", null=True
     )
     def save(self, *args, **kwargs):
-      if self.Parent_ID == self.Child_ID:
-        raise Exception("You cannot subclass yourself")   
+      #have exception for self subclassing here.    
       super().save(*args, **kwargs)
 
     class Meta:

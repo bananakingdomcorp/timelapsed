@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
+from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
 from datetime import datetime
 
@@ -243,11 +243,14 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
   Cards = serializers.ListField(child = CardListSerializer()) 
 
 
-  def create(self, validated_data):
+  def create(self, validated_data, user):
 
-    
+    sub = Subclass.objects.create(Head = validated_data['Head'],  Email = Users.objects.get(Email = user))
 
-    return n.id
+    for i in validated_data['Cards']:
+      Subclass_Relationships.objects.create(Subclass = sub.id, Email = Users.objects.get(Email = user), Child_ID = i)
+
+    return
 
 
   class Meta:
@@ -257,6 +260,8 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
 
 class EditSubclassSerializer(serializers.ModelSerializer):
 
+
+
   # Only edits from the perspective of the parent. There is both addition and removal. 
 
 
@@ -264,13 +269,11 @@ class EditSubclassSerializer(serializers.ModelSerializer):
 
   def update(self, validated_data, pk):
 
-    Subclass.objects.filter(id = pk).update(Child_ID = validated_data['Child_ID'])
-
     return 
 
   class Meta:
     model = Subclass
-    fields = ('Child_ID')
+    fields = ('Add', 'Remove')
 
 
 class DeleteSubclassSerializer(serializers.ModelSerializer):

@@ -129,7 +129,7 @@ class SubclassesView(views.ModelViewSet):
   def create(self, request):
     serializer = CreateSubclassSerializer(data = request.data)
     if serializer.is_valid():
-      created = serializer.create(serializer.data)
+      created = serializer.create(serializer.data, request.user.email)
     return Response(created, 201)
     
     print(serializer.errors)
