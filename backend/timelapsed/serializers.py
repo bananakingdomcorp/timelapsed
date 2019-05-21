@@ -231,13 +231,51 @@ class EditTopicSerializer(serializers.ModelSerializer):
     extra_kwargs = {'switchPosition': {'write_only': True}}
 
 
-class SubclassesSerializer(serializers.ModelSerializer):
+class CreateSubclassSerializer(serializers.ModelSerializer):
+
+  def create(self, validated_data):
+
+    n = Subclasses.objects.create(Parent_ID = validated_data['Parent_ID'], Child_ID = validated_data['Child_ID'])
+
+    return n.id
+
 
   class Meta:
     model = Subclasses
     fields = ('Parent_ID', 'Child_ID')
 
+
+class EditSubclassSerializer(serializers.ModelSerializer):
+
+  def update(self, validated_data, pk):
+    # You can only update the child from the parent. 
+
+    Subclasses.objects.filter(id = pk).update(Child_ID = validated_data['Child_ID'])
+
+    return 
+
+  class Meta:
+    model = Subclasses
+    fields = ('Child_ID')
+
+class DeleteSubclassSerializer(serializers.ModelSerializer):
+
+  def destroy(self, validated_data):
+
+    Subclasses.objects.filter(id = validated_data).delete()
+
+    return
+
+  class Meta:
+    model = Subclasses
+    fields = ('id')
+
+
+
+
 class TopicRelationshipsSerializer(serializers.ModelSerializer):
+
+  
 
   class Meta:
     model = Topic_Relationships

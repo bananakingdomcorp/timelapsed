@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Event, Date_Range, Card, Subclasses, Card_Relationships, Topic_Relationships
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, SubclassesSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer
 
 import  timelapsed.services as services
 
@@ -117,17 +117,45 @@ class CardView(viewsets.ModelViewSet):
     return 
 
 class SubclassesView(views.ModelViewSet):
-  serializer_class= SubclassesSerializer
+  serializer_class= CreateSubclassSerializer
   queryset= Subclasses.objects.all()
   permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', 'put', 'delete' ]
+  http_method_names = ['get', 'post', 'put', 'delete' ]
+
+  def get(self, request):
+    return
+
 
   def create(self, request):
-    return
-  def update(self, request):
-    return
+    serializer = CreateSubclassSerializer(data = request.data)
+    if serializer.is_valid():
+      created = serializer.create(serializer.data)
+    return Response(created, 201)
+    
+    print(serializer.errors)
+    return Response('Creation Failed', 400)
+
+
+  def update(self, request, pk):
+    serializer = EditSubclassSerializer(data = request.data)
+    if serializer.is_valid():
+      serializer.update(serializer.data, pk)
+    return Response('Updated', 200)
+
+    print(serializer.errors)
+    return ('Update Failed', 400)
+
+
   def destroy(self, request):
-    return
+    serializer = DeleteSubclassSerializer(data = request.data)
+    if serializer.is_valid():
+      serializer.destroy(serializer.data)
+    return Response('Deleted', 204)
+
+    print(serializer.errors)
+
+    return Response('Delete failed', 400)
+
 
 class TopicRelationshipsView(views.ModelViewSet):
   serializer_class= TopicRelationshipsSerializer
@@ -136,6 +164,7 @@ class TopicRelationshipsView(views.ModelViewSet):
   http_method_names = ['post', 'put', 'delete' ]
 
   def create(self, request):
+    
     return
   def update(self, request):
     return
