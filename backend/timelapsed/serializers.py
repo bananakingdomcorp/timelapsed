@@ -2,10 +2,14 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Event, Date_Range, Card, Subclasses, Card_Relationships, Topic_Relationships
+from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
 
 from datetime import datetime
 
+class CardListSerializer(serializers.ListField):
+#Just a generic serializer for any lists of card ID's 
+
+  child = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
 
 class UsersSerializer(serializers.ModelSerializer):
 
@@ -231,45 +235,57 @@ class EditTopicSerializer(serializers.ModelSerializer):
     extra_kwargs = {'switchPosition': {'write_only': True}}
 
 
+
+
 class CreateSubclassSerializer(serializers.ModelSerializer):
+
+  Head = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
+  Cards = serializers.ListField(child = CardListSerializer()) 
+
 
   def create(self, validated_data):
 
-    n = Subclasses.objects.create(Parent_ID = validated_data['Parent_ID'], Child_ID = validated_data['Child_ID'])
+    
 
     return n.id
 
 
   class Meta:
-    model = Subclasses
-    fields = ('Parent_ID', 'Child_ID')
+    model = Subclass
+    fields = ('Head', 'Cards')
 
 
 class EditSubclassSerializer(serializers.ModelSerializer):
 
-  def update(self, validated_data, pk):
-    # You can only update the child from the parent. 
+  # Only edits from the perspective of the parent. There is both addition and removal. 
 
-    Subclasses.objects.filter(id = pk).update(Child_ID = validated_data['Child_ID'])
+
+
+
+  def update(self, validated_data, pk):
+
+    Subclass.objects.filter(id = pk).update(Child_ID = validated_data['Child_ID'])
 
     return 
 
   class Meta:
-    model = Subclasses
+    model = Subclass
     fields = ('Child_ID')
+
 
 class DeleteSubclassSerializer(serializers.ModelSerializer):
 
-  def destroy(self, validated_data):
+  def destroy(self, validated_data, pk):
 
-    Subclasses.objects.filter(id = validated_data).delete()
+    #Destroys all subclass relationships for a single subclass
+
+    Subclass.objects.filter(Parent_ID = validated_data).delete()
 
     return
 
   class Meta:
-    model = Subclasses
+    model = Subclass
     fields = ('id')
-
 
 
 

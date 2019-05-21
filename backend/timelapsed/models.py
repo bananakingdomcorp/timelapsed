@@ -166,7 +166,7 @@ class Card(models.Model):
         return reverse('timelapsed_card_update', args=(self.pk,))
 
 
-class Subclasses(models.Model):
+class Subclass(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
@@ -174,15 +174,50 @@ class Subclasses(models.Model):
     # Relationship Fields
     Email = models.ForeignKey(
         'timelapsed.Users',
-        on_delete=models.CASCADE, related_name="subclasses", 
+        on_delete=models.CASCADE, related_name="subclass", 
     )
+
+    Head = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete = models.CASCADE, related_name = 'subclass',
+    )
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_subclass_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_subclass_update', args=(self.pk,))
+
+
+class Subclass_Relationship(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="Subclass_Relationship", 
+    )
+
+    Subclass = models.ForeignKey(
+      'timelapsed.Subclass',
+      on_delete=models.CASCADE, related_name = 'Subclass_Relationship'
+    )
+
     Parent_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="subclasses", null=True
+      on_delete=models.CASCADE, related_name="Subclass_Relationship", null=True
     )
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="subclasses", null=True
+      on_delete=models.CASCADE, related_name="Subclass_Relationship", null=True
     )
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:
@@ -196,11 +231,10 @@ class Subclasses(models.Model):
         return u'%s' % self.pk
 
     def get_absolute_url(self):
-        return reverse('timelapsed_subclasses_detail', args=(self.pk,))
+        return reverse('timelapsed_subclass_relationship_detail', args=(self.pk,))
 
     def get_update_url(self):
-        return reverse('timelapsed_subclasses_update', args=(self.pk,))
-
+        return reverse('timelapsed_subclass_relationship_update', args=(self.pk,))
 
 
 

@@ -9,7 +9,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-from .models import Users, Topic, Event, Date_Range, Card, Subclasses, Card_Relationships, Topic_Relationships
+from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
 
 from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer
 
@@ -118,7 +118,7 @@ class CardView(viewsets.ModelViewSet):
 
 class SubclassesView(views.ModelViewSet):
   serializer_class= CreateSubclassSerializer
-  queryset= Subclasses.objects.all()
+  queryset= Subclass.objects.all()
   permission_classes = (IsAuthenticated, )
   http_method_names = ['get', 'post', 'put', 'delete' ]
 
@@ -146,15 +146,22 @@ class SubclassesView(views.ModelViewSet):
     return ('Update Failed', 400)
 
 
-  def destroy(self, request):
+  def destroy(self, request, pk):
+    #request has the id of the card
     serializer = DeleteSubclassSerializer(data = request.data)
     if serializer.is_valid():
-      serializer.destroy(serializer.data)
+      serializer.destroy(serializer.data, pk)
     return Response('Deleted', 204)
 
     print(serializer.errors)
 
     return Response('Delete failed', 400)
+
+
+
+# class CardSubclassesView(views.ModelViewSet):
+
+
 
 
 class TopicRelationshipsView(views.ModelViewSet):
