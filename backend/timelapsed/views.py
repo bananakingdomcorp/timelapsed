@@ -159,7 +159,11 @@ class SubclassesView(views.ModelViewSet):
 
 
 
-# class CardSubclassesView(views.ModelViewSet):
+# class SubclassRelationshipsView(views.ModelViewSet):
+
+
+
+
 
 
 

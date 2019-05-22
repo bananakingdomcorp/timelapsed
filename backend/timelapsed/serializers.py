@@ -260,14 +260,23 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
 
 class EditSubclassSerializer(serializers.ModelSerializer):
 
-
+  Add = serializers.ListField(child = CardListSerializer()) 
+  Remove = serializers.ListField(child = CardListSerializer()) 
 
   # Only edits from the perspective of the parent. There is both addition and removal. 
 
+  def update(self, validated_data, pk, user):
+    # PK is the ID of the subclass.     
 
+    #First add...
 
+    for i in validated_data['Add']:
+      Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = Subclass.objects.get(id = pk), Child_ID = i)
 
-  def update(self, validated_data, pk):
+    #Then Delete
+
+    for j in validated_data['Remove']:
+      Subclass_Relationships.objects.filter(Subclass = Subclass.objects.get(id = pk), Child_ID = i ).delete()
 
     return 
 
@@ -277,19 +286,36 @@ class EditSubclassSerializer(serializers.ModelSerializer):
 
 
 class DeleteSubclassSerializer(serializers.ModelSerializer):
+  Empty = serializers.ReadOnlyField(required = False)
 
-  def destroy(self, validated_data, pk):
+  def destroy(self, pk):
 
-    #Destroys all subclass relationships for a single subclass
+    #Destroys the subclass. 
 
-    Subclass.objects.filter(Parent_ID = validated_data).delete()
+    Subclass.objects.filter(id = pk).delete()
 
     return
 
   class Meta:
     model = Subclass
-    fields = ('id')
+    fields = ('Empty')
 
+
+class SubclassRelationshipCreateSerializer(serializers.ModelSerializer):
+
+  Subclass = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all())
+  Child_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
+
+
+  def create(self, validated_data, user):
+
+    Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = validated_data['Subclass'], Child_ID = validated_data['Child_ID'])
+
+    return
+
+  class Meta:
+    model = Subclass_Relationships
+    fields = ('Subclass', 'Child_ID')
 
 
 class TopicRelationshipsSerializer(serializers.ModelSerializer):
