@@ -3,11 +3,14 @@ import mongoose from 'mongoose';
 //this is just a placeholder for now. 
 
 
+
+
 const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    unique: true,
-  },
+  UserName: String,
+  Comment: String,
+  Likes: {type : Number, default : 0},
+  Card_ID: Number,
+
 });
 
 const User = mongoose.model('User', userSchema);
