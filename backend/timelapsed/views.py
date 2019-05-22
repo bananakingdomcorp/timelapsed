@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer
 
 import  timelapsed.services as services
 
@@ -123,7 +123,13 @@ class SubclassesView(views.ModelViewSet):
   http_method_names = ['get', 'post', 'put', 'delete' ]
 
   def get(self, request):
-    return
+    serializer = GetSubclassSerializer(data = request.data)
+    if serializer.is_valid():
+      found = serializer.get(serializer.data)
+    return Response(found, 200)
+
+    print(serializer.errors)
+    return Response('Error finding Subclass', 400)
 
 
   def create(self, request):
@@ -139,7 +145,7 @@ class SubclassesView(views.ModelViewSet):
   def update(self, request, pk):
     serializer = EditSubclassSerializer(data = request.data)
     if serializer.is_valid():
-      serializer.update(serializer.data, pk)
+      serializer.update(serializer.data, pk, request.user.email)
     return Response('Updated', 200)
 
     print(serializer.errors)
@@ -150,7 +156,7 @@ class SubclassesView(views.ModelViewSet):
     #request has the id of the card
     serializer = DeleteSubclassSerializer(data = request.data)
     if serializer.is_valid():
-      serializer.destroy(serializer.data, pk)
+      serializer.destroy(pk)
     return Response('Deleted', 204)
 
     print(serializer.errors)

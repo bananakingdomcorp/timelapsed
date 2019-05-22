@@ -237,6 +237,22 @@ class EditTopicSerializer(serializers.ModelSerializer):
 
 
 
+class GetSubclassSerializer(serializers.ModelSerializer):
+
+  def get(self, validated_data):
+
+    res = [i for i in Subclass_Relationships.objects.values('Child_ID').filter(Subclass = Subclass.objects.get(id = validated_data['id'])) ]
+
+# Returns all of the Card ID's in a certain subclass. 
+
+    return res
+
+
+  class Meta:
+    model = Subclass
+    fields = ('id')
+
+
 class CreateSubclassSerializer(serializers.ModelSerializer):
 
   Head = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
