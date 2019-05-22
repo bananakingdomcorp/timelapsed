@@ -1,8 +1,7 @@
-import mongoose from 'mongoose';
-
-//this is just a placeholder for now. 
-
-
+const mongoose = require('mongoose')
+// mongoose.connect('mongodb://localhost/timelapsed');
+const Schema = mongoose.Schema;
+// Just boilerplate stuff now, fill out later. 
 
 
 const userSchema = new mongoose.Schema({
@@ -13,6 +12,6 @@ const userSchema = new mongoose.Schema({
 
 });
 
-const User = mongoose.model('User', userSchema);
 
-export default User;
+
+module.exports =  mongoose.model('User', userSchema);
