@@ -61,31 +61,6 @@ class Topic(models.Model):
         return reverse('timelapsed_topic_update', args=(self.pk,))
 
 
-class Event(models.Model):
-
-    # Fields
-    id = models.BigAutoField(primary_key=True)
-
-    # Relationship Fields
-    Email = models.ForeignKey(
-        'timelapsed.Users',
-        on_delete=models.CASCADE, related_name="events", 
-    )
-
-    class Meta:
-        ordering = ('-pk',)
-
-    def __unicode__(self):
-        return u'%s' % self.pk
-
-    def get_absolute_url(self):
-        return reverse('timelapsed_event_detail', args=(self.pk,))
-
-
-    def get_update_url(self):
-        return reverse('timelapsed_event_update', args=(self.pk,))
-
-
 class Date_Range(models.Model):
 
     # Fields

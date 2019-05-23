@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
 from datetime import datetime
 
@@ -321,6 +321,8 @@ class GetSubclassRelationshipSerializer(serializers.ModelSerializer):
   Card = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
 
   # Gets both subclasses that start with this card as well as subclasses this card is a part of. 
+
+  
 
   class Meta:
     model = Subclass_Relationships

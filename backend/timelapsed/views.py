@@ -9,7 +9,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
 
 from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateSubclassRelationshipSerializer 
 
