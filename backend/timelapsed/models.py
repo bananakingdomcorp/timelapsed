@@ -77,20 +77,12 @@ class Date_Range(models.Model):
         'timelapsed.Users',
         on_delete=models.CASCADE, related_name="dateranges", 
     )
-    Event_ID = models.ForeignKey(
-        'timelapsed.Event',
-        on_delete=models.CASCADE, related_name="dateranges", null=True
-    )
     Card_ID = models.ForeignKey(
         'timelapsed.Card',
         on_delete=models.CASCADE, related_name="dateranges", null=True
     )
     def save(self, *args, **kwargs):
       days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      if not self.Event_ID and not self.Card_ID:
-        raise Exception("You can't leave both fields as null")
-      if self.Event_ID and self.Card_ID:
-        raise Exception("You have to have one field as null")
       if self.Day not in days:
         raise Exception("You are not entering a valid day of the week")
       super().save(*args, **kwargs)
