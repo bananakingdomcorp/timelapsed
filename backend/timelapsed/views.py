@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Event, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateSubclassRelationshipSerializer 
 
 import  timelapsed.services as services
 
