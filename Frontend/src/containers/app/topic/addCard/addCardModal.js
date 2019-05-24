@@ -26,8 +26,6 @@ class AddCardModal extends React.Component {
       description: '',
       optionOpen : false,
       selectedOption: 'Untimed',
-      tooltipTimed: false,
-      tooltipUntimed: false
 
 
     }
@@ -156,15 +154,7 @@ class AddCardModal extends React.Component {
 
   }
 
-  timedMouseOver = () => {
-    this.setState({tooltipTimed: true})
 
-  }
-
-  timedMouseOut = () => {
-    this.setState({tooltipTimed: false})
-
-  }
 
   recurringMouseOver = () => {
     this.setState({tooltipRecurring: true})
@@ -178,15 +168,6 @@ class AddCardModal extends React.Component {
 
   }
 
-  untimedMouseOver = () => {
-    this.setState({tooltipUntimed: true})
-
-  }
-
-  untimedMouseOut = () => {
-    this.setState({tooltipUntimed: false})
-
-  }
  
   openOption = () => {
     this.setState({optionOpen: true})
@@ -206,37 +187,17 @@ class AddCardModal extends React.Component {
   render() {
 
     let options = null;
-
-    let timedDiv = null;
-
-    let untimedDiv = null;
-
-    if(this.state.tooltipTimed) {
-      timedDiv = <div className ='addCardModalInstructions' >
-        A timed task is one where you have an idea how long a task will take to accomplish, and you want to measure that time with regards 
-        to your schedule. For example, if you estimate that it will take four hours for you to read a book, this option will estimate a completion date 
-        based on your schedule. 
-
-      </div>
-    }
-
-    if(this.state.tooltipUntimed) {
-      untimedDiv = <div className = 'addCardModalInstructions'>
-      This task will not be timed. This can be changed at a later date 
-      </div>
-
-    }
  
     let optionsOpen = null;
 
     // Style this. 
 
-    let timedButton =   <button className = 'addCardModalTimedUnclicked' value = 'Timed' onClick = {this.optionChange} onMouseOver = {this.timedMouseOver} onMouseOut = {this.timedMouseOut} > Timed</button> 
+    let timedButton =   <button className = 'addCardModalTimedUnclicked' value = 'Timed' onClick = {this.optionChange}  > Add Times</button> 
 
-    let untimedButton = <button className = 'addCardModalRecurringUnclicked' value = 'Untimed' onClick = {this.optionChange} onMouseOver = {this.untimedMouseOver} onMouseOut = {this.untimedMouseOut} />
+    let untimedButton = <button className = 'addCardModalRecurringUnclicked' value = 'Untimed' onClick = {this.optionChange} />
 
     if(this.state.selectedOption === 'Timed') {
-      timedButton =  <button className = 'addCardModalTimedClicked' value = 'Timed' onClick = {this.optionChange} onMouseOver = {this.timedMouseOver} onMouseOut = {this.timedMouseOut} > Timed Clicked</button> 
+      timedButton =  <button className = 'addCardModalTimedClicked' value = 'Timed' onClick = {this.optionChange} > Timed Clicked</button> 
     }
 
 
@@ -258,8 +219,6 @@ class AddCardModal extends React.Component {
         <div className = 'addCardModalSelectPrompt' onClick = {this.openOption} >Click here to tell me more about this task...   </div>
         <br></br>
         {optionsOpen}
-        {timedDiv}
-        {untimedDiv}
 
       </div>
     }
