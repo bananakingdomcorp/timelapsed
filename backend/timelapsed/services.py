@@ -1,6 +1,6 @@
 #Add in services/functionality here
 
-from .models import Users, Topic, Event, Date_Range, Card
+from .models import Users, Topic, Date_Range, Card
 from collections import OrderedDict 
 
 def get_user_information(data):

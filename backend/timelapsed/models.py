@@ -204,7 +204,7 @@ class Card_Relationships(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
-    Type = models.textField()
+    Type = models.TextField()
 
     # Relationship Fields
     Email = models.ForeignKey(
@@ -213,11 +213,11 @@ class Card_Relationships(models.Model):
     )
     Parent_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationships", null=True
+      on_delete=models.CASCADE, related_name="card_relationships_parent", null=True
     )
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationships", null=True
+      on_delete=models.CASCADE, related_name="card_relationships_child", null=True
     )
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:
@@ -242,7 +242,6 @@ class Topic_Relationships(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
-    Type = models.textField()
 
     # Relationship Fields
     Email = models.ForeignKey(
@@ -251,11 +250,11 @@ class Topic_Relationships(models.Model):
     )
     Parent_ID = models.ForeignKey(
       'timelapsed.Topic',
-      on_delete=models.CASCADE, related_name="topic_relationships", null=True
+      on_delete=models.CASCADE, related_name="topic_relationships_parent", null=True
     )
     Child_ID = models.ForeignKey(
       'timelapsed.Topic',
-      on_delete=models.CASCADE, related_name="topic_relationships", null=True
+      on_delete=models.CASCADE, related_name="topic_relationships_child", null=True
     )
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:

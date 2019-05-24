@@ -20,6 +20,5 @@ class DateRangeAdmin(admin.ModelAdmin):
 
 admin.site.register(Users, UsersAdmin)
 admin.site.register(Topic, TopicAdmin)
-admin.site.register(Event, EventAdmin)
 admin.site.register(Date_Range, DateRangeAdmin)
 admin.site.register(Card, CardAdmin)

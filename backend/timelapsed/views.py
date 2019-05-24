@@ -116,7 +116,7 @@ class CardView(viewsets.ModelViewSet):
 
     return 
 
-class SubclassesView(views.ModelViewSet):
+class SubclassesView(viewsets.ModelViewSet):
   serializer_class= CreateSubclassSerializer
   queryset= Subclass.objects.all()
   permission_classes = (IsAuthenticated, )
@@ -165,7 +165,7 @@ class SubclassesView(views.ModelViewSet):
 
 
 
-# class SubclassRelationshipsView(views.ModelViewSet):
+# class SubclassRelationshipsView(viewsets.ModelViewSet):
 
 
 
@@ -174,7 +174,7 @@ class SubclassesView(views.ModelViewSet):
 
 
 
-class TopicRelationshipsView(views.ModelViewSet):
+class TopicRelationshipsView(viewsets.ModelViewSet):
   serializer_class= TopicRelationshipsSerializer
   queryset= Topic_Relationships.objects.all()
   permission_classes = (IsAuthenticated, )
@@ -188,7 +188,7 @@ class TopicRelationshipsView(views.ModelViewSet):
   def destroy(self, request):
     return
 
-class CardRelationshipsView(views.ModelViewSet):
+class CardRelationshipsView(viewsets.ModelViewSet):
   serializer_class= CardRelationshipsSerializer
   queryset= Card_Relationships.objects.all()
   permission_classes = (IsAuthenticated, )
