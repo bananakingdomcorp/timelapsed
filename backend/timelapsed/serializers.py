@@ -166,6 +166,7 @@ class DeleteCardSerializer(serializers.ModelSerializer):
 
 class AddTopicSerializer(serializers.ModelSerializer):
 
+
   def create(self, validated_data, user):
     # first, find the proper position. We can just add from the previous highest position.
     pos = Topic.objects.values('Position').filter(Email = user).order_by('-Position').first()
@@ -182,6 +183,7 @@ class AddTopicSerializer(serializers.ModelSerializer):
 class DeleteTopicSerializer(serializers.ModelSerializer):
 
   def delete(self, validated_data):
+    #Set this so that it deletes all of the cards inside of the topic first. 
     temp = Topic.objects.get(id = validated_data).delete()
     return
 
@@ -200,6 +202,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
 
     record = Topic.objects.get(id = pk)
     #If we are only changing the name
+
 
     if('Name' in validated_data and not 'switchPosition' in validated_data):
       record.Name = validated_data['Name']
@@ -235,13 +238,11 @@ class EditTopicSerializer(serializers.ModelSerializer):
     extra_kwargs = {'switchPosition': {'write_only': True}}
 
 
-
-
 class GetSubclassSerializer(serializers.ModelSerializer):
 
   def get(self, validated_data):
 
-    res = [i for i in Subclass_Relationships.objects.values('Child_ID').filter(Subclass = Subclass.objects.get(id = validated_data['id'])) ]
+    res = [i for i in Subclass_Relationships.objects.values('Child_ID',).filter(Subclass = Subclass.objects.get(id = validated_data['id'])) ]
 
 # Returns all of the Card ID's in a certain subclass. 
 

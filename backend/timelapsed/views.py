@@ -15,6 +15,8 @@ from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializ
 
 import  timelapsed.services as services
 
+
+
 class UsersView(viewsets.ModelViewSet):
   #UsersView is designed to either create a user, or respond back with a users data.
   queryset= Users.objects.all()
@@ -42,7 +44,7 @@ class TopicView(viewsets.ModelViewSet):
   serializer_class= AddTopicSerializer
   queryset= Topic.objects.all()
   permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', 'update', 'put', 'delete']
+  http_method_names = ['post', 'put', 'delete']
 
   def create (self, request):
     serializer = AddTopicSerializer(data = request.data)
@@ -70,7 +72,6 @@ class TopicView(viewsets.ModelViewSet):
 
     return Response('NONE VALID', 200) #consider adding a default failure status code. 
 
-    
 
   def destroy(self, request, pk):
     serializer = DeleteTopicSerializer(data = {id:pk})
@@ -98,7 +99,6 @@ class CardView(viewsets.ModelViewSet):
     return Response('INVALID', 200)
 
   def update(self, request, pk):
-    print(request.data, 'REQUEST')
     serializer = UpdateCardSerializer(data = request.data)
     if(serializer.is_valid()):
       updated = serializer.update(serializer.data, pk, request.user.email)

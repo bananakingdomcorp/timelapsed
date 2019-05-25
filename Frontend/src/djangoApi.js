@@ -7,10 +7,9 @@ import axios from 'axios'
 import setAuthToken from './modules/token'
 
 
-
 //This creates a function that you can call. 
 
-export const Api =() => {
+export const Api = () => {
 
   let token = store.getState().token.authToken
 

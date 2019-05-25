@@ -219,6 +219,7 @@ class Card_Relationships(models.Model):
       'timelapsed.Card',
       on_delete=models.CASCADE, related_name="card_relationships_child", null=True
     )
+
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:
         raise Exception("You cannot have a relationship with yourself")   
@@ -272,3 +273,5 @@ class Topic_Relationships(models.Model):
 
     def get_update_url(self):
         return reverse('timelapsed_topic_relationships_update', args=(self.pk,))
+
+
