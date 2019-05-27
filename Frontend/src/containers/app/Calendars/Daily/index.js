@@ -4,7 +4,6 @@ import Selector from './selector'
 import ReactDOM from 'react-dom'
 import {addTimes, removeTimes} from './../../../../modules/card'
 import _ from 'lodash'
-import { array } from 'prop-types';
 
 
 const ModalRoot = document.querySelector('#modal-root-two')
@@ -224,6 +223,7 @@ class DailyCalendar extends React.Component {
 
     }
     this.props.closeModal(this.state.times)
+    return
   }
 
 
