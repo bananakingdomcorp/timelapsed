@@ -12,6 +12,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch(action.type) {
+
     case ADD_TIMES:
       let ourTimes
       if(state.times[action.day] === undefined ) {
@@ -31,10 +32,13 @@ export default (state = initialState, action) => {
         times: action.board
       }
     case REMOVE_TIMES:
+      if(state.times[action.day] === undefined) {
+        return state;
+      }
       return {
         times: {
           ...state.times,
-          [action.day] : state.times[action.day].filter((item) => !_.isEqual(item, action.time) )
+          [action.day] : state.times[action.day].filter(item => !_.isEqual(item, action.time) )
         }
       }
     case CLEAR_TIMES:

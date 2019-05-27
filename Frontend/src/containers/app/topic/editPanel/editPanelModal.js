@@ -186,6 +186,7 @@ class EditPanelModal extends React.Component{
     }
 
   }
+ 
 
 
   render() {

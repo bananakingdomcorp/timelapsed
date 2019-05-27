@@ -129,6 +129,7 @@ class DailyCalendar extends React.Component {
         //Replace the last time.
         overlap = true;
         item[0].split(',')[1] = next.split(',')[1]
+        console.log(this.props.day, item)
         this.props.removeTimes(this.props.day, item)
         return [`${item[0].split(',')[0]},${next.split(',')[1]}`, numweeks, skipped, item[3]]
       }
@@ -183,6 +184,7 @@ class DailyCalendar extends React.Component {
     if(test) {
 
 
+
       //Why do we sort twice here? First, we add in any overlap, resort those times (we may have added more overlap at this point), then resort again to fix any added overlap. 
       this.setState({times: test.sort((a, b) => {return  this.convertTime(a[0].split(',')[0].split(':') ) - this.convertTime(b[0].split(',')[0].split(':') ) })}, 
       () =>  {this.setState({times: this.resort()})} )
@@ -191,6 +193,8 @@ class DailyCalendar extends React.Component {
 
 
     } else {
+
+      console.log('NO OVERLAP???')
       //Add and sort
       this.setState({times: [...this.state.times, [time, weeks, skipped]  ]}, 
         () => this.setState({times: this.state.times.sort((a, b) => {return  this.convertTime(a[0].split(',')[0].split(':') ) - this.convertTime(b[0].split(',')[0].split(':') ) }) }, 

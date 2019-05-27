@@ -184,7 +184,9 @@ class MonthlyCalender extends React.Component {
         </div>
 
         {dailyCalender}
+        <div className = 'MonthlyCalendarDates'>
         {dates}
+        </div>
       </div>
     )
   }

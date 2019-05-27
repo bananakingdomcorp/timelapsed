@@ -58,7 +58,7 @@ class Topic extends React.Component {
         </div>
 
         <div className =  'topicAddCard' onClick= {this.openAddCardModal}>
-          Add a task
+          Add a card
         </div>
         {this.props.board[this.props.id].Data.Cards.map((info, index) => {
           return <Card topic = {this.props.id} data = {info} position ={index} key = {index} />

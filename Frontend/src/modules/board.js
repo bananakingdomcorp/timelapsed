@@ -51,6 +51,7 @@ export default (state = initialState, action) => {
         board: state.board.filter(item => item.Data.id !== action.id)
       }
     case CHANGE_TOPIC_NAME:
+      //This should probably be fixed to avoid having a variable. 
       let fixedName = state.board.map((item, index) => {
         if (index ===action.id) {
           return {...state.board.item, Data: {...item.Data, Name: action.name}}
