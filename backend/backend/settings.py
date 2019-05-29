@@ -18,23 +18,16 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# SECRET_KEY = os.environ.get('SECRET_KEY')
+import backend.secret_key as secret
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
-
-# import backend.secret_key as secret
-
-# import backend.google_keys as google
+import backend.google_keys as google
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = secret.SECRET_KEY
-
-SECRET_KEY = 'ay*+0sy)*%jlir_#fha(le2chwp%&fk)^)$ckx-*7rk_0mc-yo'
+SECRET_KEY = secret.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -116,8 +109,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 #Google Auth Keys
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = google.CLIENT_ID
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = google.CLIENT_SECRET
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = google.CLIENT_ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = google.CLIENT_SECRET
 
 
 
