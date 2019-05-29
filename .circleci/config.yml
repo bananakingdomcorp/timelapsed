@@ -23,6 +23,7 @@ jobs: # A basic unit of work in a run
             pipenv install
       - run:
           command: |
+            cd ..
             ls
             cd backend
             pipenv run python manage.py test
