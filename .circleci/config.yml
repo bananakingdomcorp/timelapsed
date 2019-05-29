@@ -16,7 +16,6 @@ jobs: # A basic unit of work in a run
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
-            cd backend
             sudo pip install --upgrade pip setuptools wheel
             sudo pip install pipenv
             pipenv install
