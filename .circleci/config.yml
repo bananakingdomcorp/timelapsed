@@ -3,4 +3,5 @@ jobs:
   test:
     machine: true
     steps:
+    - run: cd backend
     - run: pipenv run python manage.py test
