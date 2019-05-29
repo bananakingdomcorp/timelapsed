@@ -7,12 +7,12 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Deliberate break
 
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
