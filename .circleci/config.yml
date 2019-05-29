@@ -1,7 +1,11 @@
 version: 2
 jobs:
-  test:
+  build:
     machine: true
     steps:
-    - run: cd backend
-    - run: pipenv run python manage.py test
+      - run:
+          command: |
+            sudo pip install pipenv
+            pipenv install
+            cd backend
+            pipenv run "python manage.py test"
