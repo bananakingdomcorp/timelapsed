@@ -14,7 +14,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 #Insert Production Host Values Here
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost'] 
