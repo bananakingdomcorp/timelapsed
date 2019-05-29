@@ -13,7 +13,8 @@
 
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
-  build: # runs not using Workflows must have a `build` job as entry point 
+  build: 
+  working_directory: ~/timelapsed
     machine: true
     steps: # steps that comprise the `build` job
       - run:
