@@ -16,6 +16,6 @@ jobs: # A basic unit of work in a run
           command: |
             sudo pipenv install
       - run: 
-          coammand: |
+          command: |
             cd backend
             sudo pipenv run python manage.py test
