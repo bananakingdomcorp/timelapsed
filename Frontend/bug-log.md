@@ -1,4 +1,4 @@
-THIS IS A FE BUG LOG. 
+THIS IS A FE BUG/REQUIREMENTS LOG. 
 
 DeleteWarningModal does not overlay.
 
@@ -18,3 +18,4 @@ No cancel button when adding times to the card.
 
 Add button blacks out when selected in card edit modal.
 
+Add in warning when editing cards/topics that there might be outside effects. 

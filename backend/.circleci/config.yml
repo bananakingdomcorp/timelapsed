@@ -1,0 +1,6 @@
+version: 2
+jobs:
+  test:
+    machine: true
+    steps:
+    - run: pipenv run python manage.py test
