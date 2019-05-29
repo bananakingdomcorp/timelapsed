@@ -17,14 +17,13 @@ jobs: # A basic unit of work in a run
     working_directory: ~/timelapsed
     machine: true
     steps: # steps that comprise the `build` job
+      - checkout
       - run:
           command: |
             sudo pip install pipenv
             pipenv install
       - run:
           command: |
-            cd ..
-            ls
             cd backend
             pipenv run python manage.py test
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
