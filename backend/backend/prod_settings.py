@@ -7,14 +7,15 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Deliberate break
 
-# SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #Insert Production Host Values Here
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost'] 
@@ -29,9 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'oauth2_provider',
-    'social_django',
-    'rest_framework_social_oauth2',
+    # 'oauth2_provider',
+    # 'social_django',
+    # 'rest_framework_social_oauth2',
     'corsheaders',
     'rest_framework',
 
@@ -80,17 +81,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
 
-      'oauth2_provider.contrib.rest_framework.OAuth2Authentication', 
-      'rest_framework_social_oauth2.authentication.SocialAuthentication',
-      'rest_framework.authentication.TokenAuthentication',
+      # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication', 
+      # 'rest_framework_social_oauth2.authentication.SocialAuthentication',
+      # 'rest_framework.authentication.TokenAuthentication',
   ),
 }
 
 AUTHENTICATION_BACKENDS = (
 
-  'social_core.backends.google.GoogleOAuth2', 
-  'rest_framework_social_oauth2.backends.DjangoOAuth2',
-  'django.contrib.auth.backends.ModelBackend',
+  # 'social_core.backends.google.GoogleOAuth2', 
+  # 'rest_framework_social_oauth2.backends.DjangoOAuth2',
+  # 'django.contrib.auth.backends.ModelBackend',
 )
 
 
