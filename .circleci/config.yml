@@ -1,10 +1,32 @@
-version: 2
-jobs:
-  build:
+# version: 2
+# jobs:
+#   build:
+#     machine: true
+#     steps:
+#       - run:
+#           command: |
+#             sudo pip install pipenv
+#             pipenv install
+#             pipenv shell
+#             cd backend
+#             pipenv run "python manage.py test"
+
+version: 2 # use CircleCI 2.0
+jobs: # A basic unit of work in a run
+  build: # runs not using Workflows must have a `build` job as entry point 
     machine: true
-    steps:
+    steps: # steps that comprise the `build` job
       - run:
           command: |
             sudo pip install pipenv
             pipenv install
-            pipenv run "python manage.py test"
+            pipenv shell
+      - run:
+          command: |
+            cd backend
+            pipenv run python manage.py test
+      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: test-results
+      - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: test-results
+          destination: tr1
