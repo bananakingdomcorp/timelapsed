@@ -12,6 +12,6 @@ jobs: # A basic unit of work in a run
           command: |
             sudo pip install --upgrade pip setuptools wheel
             sudo pip install pipenv
-            pipenv install
+            sudo pipenv install
             cd backend
-            pipenv run python manage.py test
+            sudo pipenv run python manage.py test
