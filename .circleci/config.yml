@@ -1,4 +1,4 @@
-#Giving oauth_2 error
+
 
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
@@ -10,8 +10,6 @@ jobs: # A basic unit of work in a run
       - checkout
       - run:
           command: |
-            echo 'export DJANGO_SETTINGS_MODULE= $DJANGO_SETTINGS_MODULE' >> $BASH_ENV
-            echo 'export SECRET_KEY= $SECRET_KEY' >> $BASH_ENV
             sudo pip install --upgrade pip setuptools wheel
             sudo pip install pipenv
             sudo pipenv install
