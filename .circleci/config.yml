@@ -15,7 +15,7 @@ version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
   build: 
   working_directory: ~/timelapsed
-    machine: true
+  machine: true
     steps: # steps that comprise the `build` job
       - run:
           command: |
