@@ -8,10 +8,11 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = os.getenv['SECRET_KEY']
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['CLIENT_ID']
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['CLIENT_SECRET']
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('CLIENT_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
