@@ -10,7 +10,7 @@ jobs: # A basic unit of work in a run
       - checkout
       - run:
           command: |
-            pip install --upgrade pip
+            sudo pip install --upgrade pip setuptools wheel
             sudo pip install pipenv
             pipenv install
             cd backend
