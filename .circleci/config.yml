@@ -15,7 +15,8 @@ version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
   build: 
     working_directory: ~/timelapsed
-    machine: true
+    docker:
+      - image: circleci/python:3.6.4
     steps: # steps that comprise the `build` job
       - checkout
       - run:
