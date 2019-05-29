@@ -18,9 +18,14 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-import backend.secret_key as secret
+SECRET_KEY = os.environ['SECRET_KEY']
 
-import backend.google_keys as google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['CLIENT_ID']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['CLIENT_SECRET']
+
+# import backend.secret_key as secret
+
+# import backend.google_keys as google
 
 
 # Quick-start development settings - unsuitable for production
@@ -109,8 +114,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 #Google Auth Keys
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = google.CLIENT_ID
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = google.CLIENT_SECRET
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = google.CLIENT_ID
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = google.CLIENT_SECRET
 
 
 
