@@ -1,29 +1,3 @@
-
-
-# version: 2 # use CircleCI 2.0
-# jobs: # A basic unit of work in a run
-#   build: 
-#     working_directory: ~/timelapsed
-#     docker:
-#       - image: circleci/python:3.6.4
-#     steps: # steps that comprise the `build` job
-#       - checkout
-#       - run:
-#           command: |
-#             sudo pip install --upgrade pip setuptools wheel
-#             sudo pip install pipenv
-#       - run:
-#           command: |
-#             sudo pipenv install
-#       - run: 
-#           command: |
-#             cd backend
-#             sudo pipenv shell
-#       - run:
-#           command: |
-#             sudo python manage.py test
-
-
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
   build: # runs not using Workflows must have a `build` job as entry point 
