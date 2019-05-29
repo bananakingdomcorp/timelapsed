@@ -10,6 +10,7 @@ jobs: # A basic unit of work in a run
       - checkout
       - run:
           command: |
+            echo 'export DJANGO_SETTINGS_MODULE= $DJANGO_SETTINGS_MODULE' >> $BASH_ENV
             sudo pip install --upgrade pip setuptools wheel
             sudo pip install pipenv
             sudo pipenv install
