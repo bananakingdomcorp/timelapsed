@@ -74,8 +74,6 @@ jobs: # A basic unit of work in a run
           path: test-results.xml
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
-
-
 workflows:
   version: 2
   build_and_test:
