@@ -76,6 +76,8 @@ jobs: # A basic unit of work in a run
 
 #### Still need to add in Node layer testing.  As that layer is not currently being used, not implmented. 
 
+##Django Layer broken again. 
+
 workflows:
   version: 2
   build_and_test:
