@@ -58,7 +58,7 @@ jobs: # A basic unit of work in a run
 
   React_Tests: # runs not using Workflows must have a `build` job as entry point
     docker: # run the steps with Docker
-      - image: circleci/node:<version> # ...with this image as the primary container; this is where all `steps` will run
+      - image: circleci/node:10.16.0 # ...with this image as the primary container; this is where all `steps` will run
     working_directory: ~/my-app/Frontend
     steps: # a collection of executable commands
       - checkout:
