@@ -61,7 +61,8 @@ jobs: # A basic unit of work in a run
       - image: circleci/node:4.8.2 # ...with this image as the primary container; this is where all `steps` will run
     working_directory: ~/my-app/Frontend
     steps: # a collection of executable commands
-      - checkout # special step to check out source code to working directory
+      - checkout:
+      path: ~/my-app
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
