@@ -19,3 +19,5 @@ No cancel button when adding times to the card.
 Add button blacks out when selected in card edit modal.
 
 Add in warning when editing cards/topics that there might be outside effects. 
+
+Add in loading page after you save. 
