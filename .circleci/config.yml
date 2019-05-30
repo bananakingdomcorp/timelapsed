@@ -62,7 +62,7 @@ jobs: # A basic unit of work in a run
     working_directory: ~/my-app/Frontend
     steps: # a collection of executable commands
       - checkout:
-      path: ~/my-app
+          path: ~/my-app
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
