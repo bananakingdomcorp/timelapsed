@@ -1,7 +1,7 @@
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
-  Django_Tests: # runs not using Workflows must have a `build` job as entry point 
-    # directory where steps are run
+  Django_Tests: # This run controlls our Django Tests 
+
     docker: # run the steps with Docker
       # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
       - image: circleci/python:3.6.4
@@ -41,7 +41,7 @@ jobs: # A basic unit of work in a run
           destination: tr1
 
 
-  React_Tests: # runs not using Workflows must have a `build` job as entry point
+  React_Tests: # runs our FE tests
     docker: # run the steps with Docker
       - image: circleci/node:10.16.0 # ...with this image as the primary container; this is where all `steps` will run
     working_directory: ~/my-app/Frontend
