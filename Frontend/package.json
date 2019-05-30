@@ -7,7 +7,7 @@
     "start": "node scripts/start.js",
     "now-start": "serve -s ./build",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
+    "test": "jest",
     "precommit": "pretty-quick --staged"
   },
   "devDependencies": {
