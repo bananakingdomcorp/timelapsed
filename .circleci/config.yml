@@ -63,7 +63,7 @@ jobs: # A basic unit of work in a run
       - checkout # special step to check out source code to working directory
       - run: 
           name: Change directory
-          command: cd frontend
+          command: cd Frontend
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
