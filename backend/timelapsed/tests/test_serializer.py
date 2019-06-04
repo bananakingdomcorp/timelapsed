@@ -6,12 +6,16 @@ from django.contrib.auth.models import User
 ### In this file we want to ensure that our serializers correctly enforce data types. 
 
 
-class CheckIfWorking(APITestCase):
+class TestUsersSerializer(APITestCase):
 
   def setUp(self):
     #Runs before every test
+
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
     user = User.objects.create_user('username', 'Pas$w0rd')
     self.client.force_authenticate(user)
+    ######################################################
 
   def tearDown(self):
     #Runs after every test  

@@ -3,12 +3,15 @@ from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 
 
-class CheckIfWorking(APITestCase):
+class TestUsersResponses(APITestCase):
 
   def setUp(self):
     #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
     user = User.objects.create_user('username', 'Pas$w0rd')
     self.client.force_authenticate(user)
+    ######################################################
 
 
   def tearDown(self):
