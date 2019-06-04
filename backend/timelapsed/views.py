@@ -58,25 +58,19 @@ class TopicView(viewsets.ModelViewSet):
     if serializer.is_valid():
       created = serializer.create(serializer.data, request.user.email)
       return Response(created, 201)
-
+    
+    print(serializer.errors)
+    
     return Response('Bad request', 400)
 
 
   def update(self, request, pk):
-    '''
-    How does the update work:
 
-    There may be multiple positional arguments. 
-
-    If there are, then a switch is happening. 
-
-    If there are not, then we are just updating a title.
-
-    '''
     serializer = EditTopicSerializer(data = request.data)
     if serializer.is_valid():
       serializer.update(serializer.data, pk)
       return Response('updated', 200)
+    
     print(serializer.errors)
 
     return Response('Bad Request', 400)
@@ -87,6 +81,8 @@ class TopicView(viewsets.ModelViewSet):
     if serializer.is_valid():
       serializer.delete(pk)
       return Response('deleted', 204)
+    
+    print(serializer.errors)      
 
     return Response('Bad Request', 400)
 
@@ -103,18 +99,21 @@ class CardView(viewsets.ModelViewSet):
     if(serializer.is_valid()):
       created =  serializer.create(serializer.data, request.user.email)
       return Response(created , 201)
-    else:
+
+
       print(serializer.errors)
 
-    return Response('INVALID', 200)
+    return Response('Bad Request', 400)
 
   def update(self, request, pk):
     serializer = UpdateCardSerializer(data = request.data)
     if(serializer.is_valid()):
       updated = serializer.update(serializer.data, pk, request.user.email)
       return Response(updated, 200)
+
     print(serializer.errors)
-    return Response('failed',400)
+    
+    return Response('Bad Request', 400)
 
   def destroy(self, request, pk):
     serializer = DeleteCardSerializer(data = {id:pk})
@@ -122,9 +121,9 @@ class CardView(viewsets.ModelViewSet):
       created = serializer.destroy(pk)
       return Response('Deleted', 204)
 
-    return Response('Failed', 200)
-
-    return 
+    print(serializer.errors)
+    
+    return Response('Bad Request', 400) 
 
 class SubclassesView(viewsets.ModelViewSet):
   serializer_class= CreateSubclassSerializer
@@ -139,7 +138,8 @@ class SubclassesView(viewsets.ModelViewSet):
     return Response(found, 200)
 
     print(serializer.errors)
-    return Response('Error finding Subclass', 400)
+
+    return Response('Bad Request', 400)
 
 
   def create(self, request):
@@ -149,7 +149,8 @@ class SubclassesView(viewsets.ModelViewSet):
     return Response(created, 201)
     
     print(serializer.errors)
-    return Response('Creation Failed', 400)
+
+    return Response('Bad Request', 400)
 
 
   def update(self, request, pk):
@@ -159,7 +160,8 @@ class SubclassesView(viewsets.ModelViewSet):
     return Response('Updated', 200)
 
     print(serializer.errors)
-    return ('Update Failed', 400)
+
+    return Response('Bad Request', 400)
 
 
   def destroy(self, request, pk):
@@ -171,7 +173,7 @@ class SubclassesView(viewsets.ModelViewSet):
 
     print(serializer.errors)
 
-    return Response('Delete failed', 400)
+    return Response('Bad Request', 400)
 
 
 
