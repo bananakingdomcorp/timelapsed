@@ -51,7 +51,7 @@ class TestUsersResponses(APITestCase):
 class TestTopicResponses(APITestCase):
 
   def setUp(self):
-    
+
     #Runs before every test
 
     ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
@@ -70,6 +70,7 @@ class TestTopicResponses(APITestCase):
     self.assertEqual(response.status_code, 405)
 
   def test_if_accepts_put(self):
+    
     pass
   
   def test_if_accepts_post(self):

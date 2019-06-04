@@ -59,7 +59,7 @@ class TopicView(viewsets.ModelViewSet):
       created = serializer.create(serializer.data, request.user.email)
       return Response(created, 201)
 
-    return Response(404)
+    return Response('Bad request', 400)
 
 
   def update(self, request, pk):
@@ -79,7 +79,7 @@ class TopicView(viewsets.ModelViewSet):
       return Response('updated', 200)
     print(serializer.errors)
 
-    return Response('NONE VALID', 200) #consider adding a default failure status code. 
+    return Response('Bad Request', 400)
 
 
   def destroy(self, request, pk):
@@ -87,7 +87,8 @@ class TopicView(viewsets.ModelViewSet):
     if serializer.is_valid():
       serializer.delete(pk)
       return Response('deleted', 204)
-    return Response('Delete Failed', 200) #consider changing status code
+
+    return Response('Bad Request', 400)
 
 
 
