@@ -19,6 +19,9 @@ class Users(models.Model):
     # Fields
     Email = models.EmailField(primary_key=True)
 
+    def save(self, *args, **kwargs):
+        super().full_clean()
+        super().save(*args, **kwargs)    
 
     class Meta:
         ordering = ('-pk',)

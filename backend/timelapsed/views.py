@@ -28,14 +28,21 @@ class UsersView(viewsets.ModelViewSet):
   def create(self, request):
     queryset= Users.objects.all()
     serializer = UsersSerializer(data = request.data)
-    if not serializer.is_valid():
-      info = services.get_user_information(serializer.data)
-      #Returning information about an exising record.
+    if serializer.is_valid():
+      test = Users.objects.filter(Email = serializer.data['Email'])
+      if test:
+        info = services.get_user_information(serializer.data)
+        #Returning information about an exising record.
 
-      return Response(info, 200)
+        return Response(info, 200)
+      
+
+      serializer.create(serializer.data)
+      
+      return Response(serializer.data, 201)
 
       #We created a new record
-    return Response(serializer.data, 201)
+    return Response('not found', 400)
 
 
 
