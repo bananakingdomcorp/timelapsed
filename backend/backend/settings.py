@@ -45,12 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oauth2_provider',
-    'social_django',
     'rest_framework_social_oauth2',
     'corsheaders',
     'rest_framework',
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
+    'social_django',
 
 
     #Apps
@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-
+  'oauth2_provider.middleware.OAuth2TokenMiddleware',
   'django.middleware.security.SecurityMiddleware',
   'django.contrib.sessions.middleware.SessionMiddleware',
   'django.middleware.common.CommonMiddleware',
@@ -66,7 +66,8 @@ MIDDLEWARE = [
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+  'corsheaders.middleware.CorsMiddleware',
+  'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -107,14 +108,18 @@ AUTHENTICATION_BACKENDS = (
 
   'social_core.backends.google.GoogleOAuth2', 
   'rest_framework_social_oauth2.backends.DjangoOAuth2',
-  'django.contrib.auth.backends.ModelBackend',
+  'django.contrib.auth.backends.ModelBackend'  
+
 )
 
 #Google Auth Keys
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = google.CLIENT_ID
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = google.CLIENT_SECRET
 
-
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

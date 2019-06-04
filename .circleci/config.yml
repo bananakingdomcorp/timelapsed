@@ -1,7 +1,6 @@
 version: 2 # use CircleCI 2.0
 jobs: # A basic unit of work in a run
   Django_Tests: # This run controlls our Django Tests 
-
     docker: # run the steps with Docker
       # CircleCI Python images available at: https://hub.docker.com/r/circleci/python/
       - image: circleci/python:3.6.4
