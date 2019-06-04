@@ -23,36 +23,30 @@ class UserModelTest(TestCase):
     with self.assertRaises(ValidationError):
       Users.objects.create(Email = 'test')
 
-  def test_user_does_not_create_when_blank(self):
+  def test_user_does_not_create_when_incorrect(self):
 
     with self.assertRaises(ValidationError):
       Users.objects.create(Email = '')
 
-  def test_user_does_not_create_without_email_username(self):
+
+
+class TopicModelTest(TestCase):
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+
+  def test_succeeds_with_proper_information(self):
+    Topic.objects.create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    data = Topic.objects.values('Name', 'Position', 'Email').get(Name = 'first', Position = 1)
+    self.assertEquals(data['Name'], 'first')
+    self.assertEquals(data['Position'], 1)
+    self.assertEquals(data['Email'], 'test@test.com' )
+
+
+  def test_fails_when_incomplete(self):
 
     with self.assertRaises(ValidationError):
-      Users.objects.create(Email = '@3fkljf.com')
-
-  def test_user_does_not_create_without_email_domain(self):
-
-    with self.assertRaises(ValidationError):
-      Users.objects.create(Email = 'test@')
-
-  def test_user_does_not_create_without_dot_com(self):
-
-    with self.assertRaises(ValidationError):
-      Users.objects.create(Email = 'test@3fkljf')
-
-  def test_user_does_not_create_with_invalid_domain(self):
-
-    with self.assertRaises(ValidationError):
-      Users.objects.create(Email = 'test@****.com')
-
-  
-
-    
-
-
+      Topic.objects.create(Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
 
 
 

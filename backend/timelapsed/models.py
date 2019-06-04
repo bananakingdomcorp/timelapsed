@@ -50,6 +50,10 @@ class Topic(models.Model):
         on_delete=models.CASCADE, related_name="topics", 
     )
 
+    def save(self, *args, **kwargs):
+      super().full_clean()
+      super().save(*args, **kwargs)    
+
     class Meta:
         ordering = ('-pk',)
 
@@ -88,7 +92,8 @@ class Date_Range(models.Model):
       days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       if self.Day not in days:
         raise Exception("You are not entering a valid day of the week")
-      super().save(*args, **kwargs)
+      super().full_clean()
+      super().save(*args, **kwargs)          
 
     class Meta:
         ordering = ('-pk',)
@@ -122,6 +127,10 @@ class Card(models.Model):
         on_delete=models.CASCADE, related_name="cards", 
     )
 
+    def save(self, *args, **kwargs):
+      super().full_clean()
+      super().save(*args, **kwargs)        
+
     class Meta:
         ordering = ('-pk',)
 
@@ -151,6 +160,10 @@ class Subclass(models.Model):
       'timelapsed.Card',
       on_delete = models.CASCADE, related_name = 'subclass',
     )
+
+    def save(self, *args, **kwargs):
+      super().full_clean()
+      super().save(*args, **kwargs)        
 
     class Meta:
         ordering = ('-pk',)
@@ -185,8 +198,11 @@ class Subclass_Relationships(models.Model):
       'timelapsed.Card',
       on_delete=models.CASCADE, related_name="Subclass_Relationship", null=True
     )
+    
     def save(self, *args, **kwargs):
-      #have exception for self subclassing here.    
+     #have exception for self subclassing here. 
+
+      super().full_clean()   
       super().save(*args, **kwargs)
 
     class Meta:
@@ -226,6 +242,7 @@ class Card_Relationships(models.Model):
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:
         raise Exception("You cannot have a relationship with yourself")   
+      super().full_clean()           
       super().save(*args, **kwargs)
 
     class Meta:
@@ -263,6 +280,8 @@ class Topic_Relationships(models.Model):
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:
         raise Exception("You cannot relate to yourself")   
+
+      super().full_clean()           
       super().save(*args, **kwargs)
 
     class Meta:
