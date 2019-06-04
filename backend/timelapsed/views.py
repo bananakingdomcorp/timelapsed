@@ -57,8 +57,10 @@ class TopicView(viewsets.ModelViewSet):
     serializer = AddTopicSerializer(data = request.data)
     if serializer.is_valid():
       created = serializer.create(serializer.data, request.user.email)
+      return Response(created, 201)
 
-    return Response(created, 201)
+    return Response(404)
+
 
   def update(self, request, pk):
     '''
