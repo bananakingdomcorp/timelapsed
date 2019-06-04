@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
-class DatabaseProperlyConnectedCheck(TestCase):
+class DatabaseProperlyConnectedTest(TestCase):
 
 ## This test is just a sanity check to ensure that our database is connected and properly recieving requests. 
 

@@ -50,7 +50,9 @@ MIDDLEWARE = [
   'django.contrib.auth.middleware.AuthenticationMiddleware',
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+  'corsheaders.middleware.CorsMiddleware',
+  'oauth2_provider.middleware.OAuth2TokenMiddleware',
+  'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -84,15 +86,28 @@ REST_FRAMEWORK = {
       'oauth2_provider.contrib.rest_framework.OAuth2Authentication', 
       'rest_framework_social_oauth2.authentication.SocialAuthentication',
       'rest_framework.authentication.TokenAuthentication',
+      
   ),
 }
+
 
 AUTHENTICATION_BACKENDS = (
 
   'social_core.backends.google.GoogleOAuth2', 
   'rest_framework_social_oauth2.backends.DjangoOAuth2',
-  'django.contrib.auth.backends.ModelBackend',
+  'django.contrib.auth.backends.ModelBackend'
 )
+
+
+OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = 'oauth2_provider.AccessToken'
+OAUTH2_PROVIDER_APPLICATION_MODEL = 'oauth2_provider.Application'
+OAUTH2_PROVIDER_REFRESH_TOKEN_MODEL = 'oauth2_provider.RefreshToken'
+
+
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+}
 
 
 

@@ -92,7 +92,7 @@ class CardEditModal extends React.Component {
     .then((res) => {
       if (res.status === 204) {
         //call redux.
-        this.props.deleteCard(this.props.topic, {Description: this.state.description, Name: this.state.title, Position: this.props.position, Times : this.state.times, id: this.props.data.id })
+        this.props.deleteCard(this.props.topic, {id: this.props.data.id })
 
       }
     })
