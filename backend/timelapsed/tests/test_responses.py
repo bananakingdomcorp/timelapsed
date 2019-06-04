@@ -6,6 +6,7 @@ from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship
 
 class TestUsersResponses(APITestCase):
 
+
   def setUp(self):
     #Runs before every test
 
@@ -41,4 +42,3 @@ class TestUsersResponses(APITestCase):
     response = self.client.post('/api/user/', {'Email' : 'Test@test.com'}, format = 'json')
     self.assertEqual(response.status_code, 200)
 
-  

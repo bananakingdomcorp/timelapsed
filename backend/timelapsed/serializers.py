@@ -11,6 +11,9 @@ class CardListSerializer(serializers.ListField):
 
   child = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
 
+
+
+
 class UsersSerializer(serializers.ModelSerializer):
   Email = serializers.EmailField()
 

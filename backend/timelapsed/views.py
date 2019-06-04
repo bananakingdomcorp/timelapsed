@@ -42,7 +42,7 @@ class UsersView(viewsets.ModelViewSet):
       return Response(serializer.data, 201)
 
       #We created a new record
-    return Response('not found', 404)
+    return Response('not found', 400)
 
 
 
