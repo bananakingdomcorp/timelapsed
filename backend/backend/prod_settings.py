@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'rest_framework_social_oauth2',
     'corsheaders',
     'rest_framework',
-    'social_django',
 
 
     #Apps
