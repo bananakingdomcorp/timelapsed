@@ -169,13 +169,19 @@ class DeleteCardSerializer(serializers.ModelSerializer):
 
 
 class AddTopicSerializer(serializers.ModelSerializer):
+  Name = serializers.CharField()
 
 
   def create(self, validated_data, user):
     # first, find the proper position. We can just add from the previous highest position.
     pos = Topic.objects.values('Position').filter(Email = user).order_by('-Position').first()
-
-    n = Topic.objects.create(Name = validated_data['Name'], Position = pos['Position'] + 1, Email = Users.objects.get(Email = user))
+    next_position = None
+    if pos == None:
+      next_position = 1
+    else:
+      next_position = pos['Position'] + 1
+      
+    n = Topic.objects.create(Name = validated_data['Name'], Position = next_position, Email = Users.objects.get(Email = user))
     return({'Data': {'id': n.id, 'Name': validated_data['Name'], 'Cards': [] }})
 
   class Meta:

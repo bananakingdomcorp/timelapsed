@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 
 from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
+from django.test import TestCase
+
 class TestUsersResponses(APITestCase):
 
 
@@ -11,7 +13,7 @@ class TestUsersResponses(APITestCase):
     #Runs before every test
 
     ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
-    user = User.objects.create_user('username', 'Pas$w0rd')
+    user = User.objects.create_user('test@test.com', 'test@test.com')
     self.client.force_authenticate(user)
     ######################################################
 
@@ -55,13 +57,15 @@ class TestTopicResponses(APITestCase):
     #Runs before every test
 
     ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
-    user = User.objects.create_user('username', 'Pas$w0rd')
+    user = User.objects.create_user('test@test.com', 'test@test.com')
     self.client.force_authenticate(user)
     ######################################################
+    Users.objects.create(Email = 'test@test.com')    
 
 
   def tearDown(self):
-    #Runs after every test
+    Topic.objects.all().delete()    
+    #clears the test database after every test. 
     pass
 
 
@@ -70,14 +74,23 @@ class TestTopicResponses(APITestCase):
     self.assertEqual(response.status_code, 405)
 
   def test_if_accepts_put(self):
-    
-    pass
+    pk = Topic.objects.values('id').create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    response = self.client.put(f'/api/topic/{pk.id}/', {'Name': 'Changed'})
+    self.assertEqual(response.status_code, 200)
   
   def test_if_accepts_post(self):
-    pass
-  
+    response = self.client.post('/api/topic/', {'Name': 'Second'} )
+    self.assertEqual(response.status_code, 201)
+ 
+ 
   def test_if_accepts_delete(self):
+
     pass
   
-
+  # def test_if_name_changes_correctly(self):
+  #   Numbers may need changed. 
+  #   temp = Topic.objects.create(Name = 'second', Position = 2, Email = Users.objects.get(Email = 'test@test.com'))
+  #   response = self.client.put('/api/topic/2/', {'Name': 'Changed'})
+  #   temp = Topic.objects.values('Name').get(Position = 2 )
+  #   self.assertEqual(temp['Name'], 'Changed')
   
