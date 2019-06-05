@@ -180,7 +180,7 @@ class AddTopicSerializer(serializers.ModelSerializer):
       next_position = 1
     else:
       next_position = pos['Position'] + 1
-    print(user)
+      
     n = Topic.objects.create(Name = validated_data['Name'], Position = next_position, Email = Users.objects.get(Email = user))
     return({'Data': {'id': n.id, 'Name': validated_data['Name'], 'Cards': [] }})
 

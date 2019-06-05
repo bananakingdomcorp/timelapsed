@@ -29,7 +29,7 @@ class TestServicesResponses(APITestCase):
     #Runs before every test
 
     ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
-    user = User.objects.create_user('username', 'Pas$w0rd')
+    user = User.objects.create_user('test@test.com', 'test@test.com')
     self.client.force_authenticate(user)
     ######################################################
 
