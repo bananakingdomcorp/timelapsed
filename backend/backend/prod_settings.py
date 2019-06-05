@@ -53,6 +53,7 @@ MIDDLEWARE = [
   'corsheaders.middleware.CorsMiddleware',
   'oauth2_provider.middleware.OAuth2TokenMiddleware',
   'oauth2_provider.middleware.OAuth2TokenMiddleware',
+  
 ]
 
 ROOT_URLCONF = 'backend.urls'

@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
 from datetime import datetime
+from django.shortcuts import get_object_or_404
 
 class CardListSerializer(serializers.ListField):
 #Just a generic serializer for any lists of card ID's 
@@ -180,7 +181,6 @@ class AddTopicSerializer(serializers.ModelSerializer):
       next_position = 1
     else:
       next_position = pos['Position'] + 1
-      
     n = Topic.objects.create(Name = validated_data['Name'], Position = next_position, Email = Users.objects.get(Email = user))
     return({'Data': {'id': n.id, 'Name': validated_data['Name'], 'Cards': [] }})
 
@@ -210,7 +210,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
   
   def update(self, validated_data, pk):
 
-    record = Topic.objects.get(id = pk)
+    record = get_object_or_404(Topic, id = pk)
     #If we are only changing the name
 
 
