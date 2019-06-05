@@ -6,6 +6,8 @@ from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship
 
 from django.test import TestCase
 
+### NOTE: MIGRATE TO get_object_or_404 when searching for an item in the serializers ###
+
 class TestUsersResponses(APITestCase):
 
 
@@ -37,10 +39,6 @@ class TestUsersResponses(APITestCase):
   def test_if_accepts_post(self):
     response = self.client.post('/api/user/', {'Email' : 'Test@test.com'})
     self.assertEqual(response.status_code, 201)
-
-  def test_if_rejects_bad_request(self):
-    response = self.client.post('/api/user/', {'Email' : 'dafjkldfjlk'})
-    self.assertEqual(response.status_code, 400)    
 
   def test_if_returns_200_when_valid(self):
     Users.objects.create(Email = 'Test@test.com')
@@ -74,18 +72,27 @@ class TestTopicResponses(APITestCase):
     self.assertEqual(response.status_code, 405)
 
   def test_if_accepts_put(self):
-    pk = Topic.objects.values('id').create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    pk = Topic.objects.create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
     response = self.client.put(f'/api/topic/{pk.id}/', {'Name': 'Changed'})
     self.assertEqual(response.status_code, 200)
+
+  def test_if_rejects_put_for_invalid_id(self):
+    response = self.client.put(f'/api/topic/80000/', {'Name': 'Exist'})
+    self.assertEqual(response.status_code, 404)
   
   def test_if_accepts_post(self):
     response = self.client.post('/api/topic/', {'Name': 'Second'} )
     self.assertEqual(response.status_code, 201)
  
- 
   def test_if_accepts_delete(self):
+    pk = Topic.objects.create(Name = 'second', Position = 2,  Email = Users.objects.get(Email = 'test@test.com') )
+    response = self.client.delete(f'/api/topic/{pk.id}/')
+    self.assertEqual(response.status_code, 204)
 
+  def test_if_rejects_delete_for_invalid_id(self):
     pass
+
+
   
   # def test_if_name_changes_correctly(self):
   #   Numbers may need changed. 
