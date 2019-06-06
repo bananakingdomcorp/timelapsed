@@ -75,7 +75,6 @@ class TestTopicResponses(APITestCase):
   def tearDown(self):
     Topic.objects.all().delete()    
     #clears the test database after every test. 
-    pass
 
 
   def test_if_rejects_get(self):
@@ -121,45 +120,60 @@ class TestTopicFunctionality(APITestCase):
   def tearDown(self):
     Topic.objects.all().delete()    
     #clears the test database after every test. 
-    pass
 
   def test_post_correctly_creates_topic_name(self):
     response = self.client.post('/api/topic/', {'Name': 'Testing'})
     self.assertEqual(decode_response(response)['Data']['Name'], 'Testing')
 
-  # def test_post_creates_topic_position(self):
+  def test_post_creates_topic_position(self):
+    response = self.client.post('/api/topic/', {'Name': 'Testing'})    
+    temp = Topic.objects.get(id = decode_response(response)['Data']['id'])
+    ### As of now, position is not returned ###
 
-  #   pass
+    self.assertEqual(temp.Position, 1)
 
-  # def test_post_correctly_iterates_position(self):
-  #   pass
+  def test_post_correctly_iterates_position(self):
+    self.client.post('/api/topic/', {'Name': 'Testing'})    
+    response = self.client.post('/api/topic/', {'Name': 'Two'})    
+    temp = Topic.objects.get(id = decode_response(response)['Data']['id'])  
+    self.assertEqual(temp.Position, 2)  
 
-  # def test_post_creates_empty_cards_list(self):
-  #   pass
   
-  # def test_put_correctly_changes_name(self):
-  #   pass
+  def test_post_creates_card_list(self):
+    response = self.client.post('/api/topic/', {'Name': 'Testing'})
+    temp = decode_response(response)['Data']
+    self.assertEqual(type(temp['Cards']), list)
 
-  # def test_put_correctly_changes_position(self):
-  #   pass
+  def test_post_creates_empty_cards_list(self):
+    response = self.client.post('/api/topic/', {'Name': 'Testing'})
+    temp = decode_response(response)['Data']
+    self.assertEqual(len(temp['Cards']), 0)
+
+  def test_put_correctly_changes_name(self):
+    
+
+    pass
+
+  def test_put_correctly_changes_position(self):
+    pass
   
-  # def test_put_correctly_changes_name_and_position(self):
-  #   pass
+  def test_put_correctly_changes_name_and_position(self):
+    pass
 
-  # def test_delete_properly_deletes_topic(self):
-  #   pass
+  def test_delete_properly_deletes_topic(self):
+    pass
 
-  # def test_post_reuses_position_after_deletion(self):
-  #   pass
+  def test_post_reuses_position_after_deletion(self):
+    pass
 
-  # def test_post_properly_iterates_highest_position_with(self):
-  #   pass
+  def test_post_properly_iterates_highest_position_with(self):
+    pass
 
-  # def test_post_allows_for_name_reuse(self):
-  #   pass
+  def test_post_allows_for_name_reuse(self):
+    pass
 
-  # def test_put_allows_for_name_reuse(self):
-  #   pass
+  def test_put_allows_for_name_reuse(self):
+    pass
 
   
   
