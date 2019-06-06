@@ -191,15 +191,17 @@ class AddTopicSerializer(serializers.ModelSerializer):
 
 
 class DeleteTopicSerializer(serializers.ModelSerializer):
+  Empty = serializers.ReadOnlyField(required = False)
 
   def delete(self, validated_data):
     #Set this so that it deletes all of the cards inside of the topic first. 
-    temp = Topic.objects.get(id = validated_data).delete()
+    get_object_or_404(Topic, id = validated_data).delete()
+    # temp = Topic.objects.get(id = validated_data).delete()
     return
 
   class Meta: 
     model = Topic
-    fields = ('id',)
+    fields = ('Empty',)
 
     
 

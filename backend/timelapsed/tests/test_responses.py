@@ -90,9 +90,65 @@ class TestTopicResponses(APITestCase):
     self.assertEqual(response.status_code, 204)
 
   def test_if_rejects_delete_for_invalid_id(self):
+    response = self.client.delete(f'/api/topic/80000/')
+    self.assertEqual(response.status_code, 404)    
+
+
+class TestTopicFunctionality(APITestCase):
+
+  def setUp(self):
+
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+    Users.objects.create(Email = 'test@test.com')    
+
+
+  def tearDown(self):
+    Topic.objects.all().delete()    
+    #clears the test database after every test. 
     pass
 
+  def test_post_correctly_creates_topic_name(self):
+    pass
 
+  def test_post_creates_topic_position(self):
+    pass
+
+  def test_post_correctly_iterates_position(self):
+    pass
+
+  def test_post_creates_empty_cards_list(self):
+    pass
+  
+  def test_put_correctly_changes_name(self):
+    pass
+
+  def test_put_correctly_changes_position(self):
+    pass
+  
+  def test_put_correctly_changes_name_and_position(self):
+    pass
+
+  def test_delete_properly_deletes_topic(self):
+    pass
+
+  def test_post_reuses_position_after_deletion(self):
+    pass
+
+  def test_post_properly_iterates_highest_position_with(self):
+    pass
+
+  def test_post_allows_for_name_reuse(self):
+    pass
+
+  def test_put_allows_for_name_reuse(self):
+    pass
+
+  
   
   # def test_if_name_changes_correctly(self):
   #   Numbers may need changed. 
@@ -101,3 +157,8 @@ class TestTopicResponses(APITestCase):
   #   temp = Topic.objects.values('Name').get(Position = 2 )
   #   self.assertEqual(temp['Name'], 'Changed')
   
+
+
+  # Add under cards. 
+  # def test_if_cards_delete_when_topic_deletes(self):
+  #   pass

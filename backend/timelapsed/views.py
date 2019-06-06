@@ -77,7 +77,7 @@ class TopicView(viewsets.ModelViewSet):
 
 
   def destroy(self, request, pk):
-    serializer = DeleteTopicSerializer(data = {id:pk})
+    serializer = DeleteTopicSerializer(data = {})
     if serializer.is_valid():
       serializer.delete(pk)
       return Response('deleted', 204)
