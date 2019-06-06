@@ -40,5 +40,18 @@ class TestUsersSerializer(APITestCase):
     self.assertEqual(response.status_code, 400)
   
 
-  
+class TestTopicSerializer(APITestCase):
+
+  def setUp(self):
+    #Runs before every test
+
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+
+  def tearDown(self):
+    #Runs after every test  
+    pass
 
