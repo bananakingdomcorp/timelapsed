@@ -51,5 +51,11 @@ class TopicModelTest(TestCase):
 
 
 
+class CardModelTest(TestCase):
 
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+    Topic.objects.create(Name = 'Test', Postion = 1, Email = Users.objects.get(Email = test@test.com))
 
+  
