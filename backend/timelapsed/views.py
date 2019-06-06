@@ -68,8 +68,8 @@ class TopicView(viewsets.ModelViewSet):
     
     serializer = EditTopicSerializer(data = request.data)
     if serializer.is_valid():
-      serializer.update(serializer.data, pk)
-      return Response('updated', 200)
+      updated = serializer.update(serializer.data, pk)
+      return Response(updated, 200)
     
     print(serializer.errors)
 

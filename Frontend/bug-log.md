@@ -1,5 +1,7 @@
 THIS IS A FE BUG/REQUIREMENTS LOG. 
 
+Not all calls to the server make use of the response. This needs to changed. 
+
 DeleteWarningModal does not overlay.
 
 Clicking off of DeleteWarningModal does not close the modal.
@@ -21,3 +23,4 @@ Add button blacks out when selected in card edit modal.
 Add in warning when editing cards/topics that there might be outside effects. 
 
 Add in loading page after you save. 
+
