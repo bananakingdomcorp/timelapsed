@@ -8,6 +8,8 @@ from django.test import TestCase
 
 import json
 
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 ### NOTE: MIGRATE TO get_object_or_404 when searching for an item in the serializers ###
@@ -89,6 +91,9 @@ class TestTopicResponses(APITestCase):
   def test_if_rejects_put_for_invalid_id(self):
     response = self.client.put(f'/api/topic/80000/', {'Name': 'Exist'})
     self.assertEqual(response.status_code, 404)
+
+  def test_if_rejects_put_for_deleted_id(self):
+    pass
   
   def test_if_accepts_post(self):
     response = self.client.post('/api/topic/', {'Name': 'Second'} )
@@ -138,7 +143,6 @@ class TestTopicFunctionality(APITestCase):
     temp = Topic.objects.get(id = decode_response(response)['Data']['id'])  
     self.assertEqual(temp.Position, 2)  
 
-  
   def test_post_creates_card_list(self):
     response = self.client.post('/api/topic/', {'Name': 'Testing'})
     temp = decode_response(response)['Data']
@@ -150,40 +154,111 @@ class TestTopicFunctionality(APITestCase):
     self.assertEqual(len(temp['Cards']), 0)
 
   def test_put_correctly_changes_name(self):
-    
-
-    pass
+    first = self.client.post('/api/topic/', {'Name': 'Testing'})    
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/topic/{first_id}/', {'Name': 'Changed'})
+    self.assertEqual(Topic.objects.get(id = first_id).Name, 'Changed')
 
   def test_put_correctly_changes_position(self):
-    pass
-  
+    first = self.client.post('/api/topic/', {'Name': 'First'})  
+    second = self.client.post('/api/topic/', {'Name': 'Second'})
+
+    ### First checks to verify the positions are correct. 
+
+    first_id = decode_response(first)['Data']['id']
+    second_id = decode_response(second)['Data']['id']
+
+    self.assertEqual(Topic.objects.get(id = first_id).Position, 1)
+    self.assertEqual(Topic.objects.get(id = second_id).Position, 2)
+
+    ## Switch the two. 
+
+    response = self.client.put(f'/api/topic/{first_id}/', {'switchPosition': second_id})
+
+    self.assertEqual(Topic.objects.get(id = first_id).Position, 2)
+    self.assertEqual(Topic.objects.get(id = second_id).Position, 1)
+    
+
   def test_put_correctly_changes_name_and_position(self):
-    pass
+    first = self.client.post('/api/topic/', {'Name': 'First'})  
+    second = self.client.post('/api/topic/', {'Name': 'Second'})
+
+    ### First checks to verify the positions and names are correct. 
+
+    first_id = decode_response(first)['Data']['id']
+    second_id = decode_response(second)['Data']['id']
+
+    self.assertEqual(Topic.objects.get(id = first_id).Position, 1)
+    self.assertEqual(Topic.objects.get(id = second_id).Position, 2)
+
+    ## Switch the two. 
+
+    response = self.client.put(f'/api/topic/{first_id}/', {'Name': 'Changed', 'switchPosition': second_id})
+
+    # Check to make sure the positions have switched
+
+    self.assertEqual(Topic.objects.get(id = first_id).Position, 2)
+    self.assertEqual(Topic.objects.get(id = second_id).Position, 1)
+
+    # Check to make sure the name has changed as well. 
+    self.assertEqual(Topic.objects.get(id = first_id).Name, 'Changed')
+
 
   def test_delete_properly_deletes_topic(self):
-    pass
+
+    first = self.client.post('/api/topic/', {'Name': 'First'})  
+
+    first_id = decode_response(first)['Data']['id']
+
+    self.client.delete(f'/api/topic/{first_id}/')
+
+  #Confirms object is deleted. 
+
+    with self.assertRaises(ObjectDoesNotExist):
+      Topic.objects.get(id = first_id)
+
 
   def test_post_reuses_position_after_deletion(self):
-    pass
+
+    first =  self.client.post('/api/topic/', {'Name': 'First'})  
+    first_id = decode_response(first)['Data']['id']
+    self.client.delete(f'/api/topic/{first_id}/')
+    second = self.client.post('/api/topic/', {'Name': 'Second'})
+    second_id = decode_response(second)['Data']['id']
+    self.assertEqual(Topic.objects.get(id = second_id).Position, 1)            
+
 
   def test_post_properly_iterates_highest_position_with(self):
-    pass
+    first =  self.client.post('/api/topic/', {'Name': 'First'})  
+    second = self.client.post('/api/topic/', {'Name': 'Second'})
+    third = self.client.post('/api/topic/', {'Name': 'Third'})
+
+    second_id = decode_response(second)['Data']['id']
+
+    self.client.delete(f'/api/topic/{second_id}')
+
+    fourth = self.client.post('/api/topic/', {'Name': 'Fourth'})
+
+    self.assertEqual(Topic.objects.get(id = decode_response(fourth)['Data']['id'] ).Position, 4)
+
 
   def test_post_allows_for_name_reuse(self):
-    pass
+    first =  self.client.post('/api/topic/', {'Name': 'First'})  
+    second = self.client.post('/api/topic/', {'Name': 'First'})
+
+
+    self.assertEqual(Topic.objects.get(id = decode_response(first)['Data']['id']).Name, Topic.objects.get(id = decode_response(second)['Data']['id']).Name  )
 
   def test_put_allows_for_name_reuse(self):
-    pass
+    first =  self.client.post('/api/topic/', {'Name': 'First'})  
+    second = self.client.post('/api/topic/', {'Name': 'Second'})
+    second_id = decode_response(second)['Data']['id']
 
-  
-  
-  # def test_if_name_changes_correctly(self):
-  #   Numbers may need changed. 
-  #   temp = Topic.objects.create(Name = 'second', Position = 2, Email = Users.objects.get(Email = 'test@test.com'))
-  #   response = self.client.put('/api/topic/2/', {'Name': 'Changed'})
-  #   temp = Topic.objects.values('Name').get(Position = 2 )
-  #   self.assertEqual(temp['Name'], 'Changed')
-  
+    self.client.put(f'/api/topic/{second_id}/', {'Name': 'First'})
+    
+    self.assertEqual(Topic.objects.get(id = decode_response(first)['Data']['id']).Name, Topic.objects.get(id = second_id).Name  )
+
+
 
 
   # Add under cards. 
