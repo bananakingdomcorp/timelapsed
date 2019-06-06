@@ -6,7 +6,18 @@ from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship
 
 from django.test import TestCase
 
+import json
+
+
+
 ### NOTE: MIGRATE TO get_object_or_404 when searching for an item in the serializers ###
+
+## Use decode_response do get object payload ##
+
+def decode_response(res):
+  d = res.content.decode()
+  return json.loads(d)
+
 
 class TestUsersResponses(APITestCase):
 
@@ -113,40 +124,42 @@ class TestTopicFunctionality(APITestCase):
     pass
 
   def test_post_correctly_creates_topic_name(self):
-    pass
+    response = self.client.post('/api/topic/', {'Name': 'Testing'})
+    self.assertEqual(decode_response(response)['Data']['Name'], 'Testing')
 
-  def test_post_creates_topic_position(self):
-    pass
+  # def test_post_creates_topic_position(self):
 
-  def test_post_correctly_iterates_position(self):
-    pass
+  #   pass
 
-  def test_post_creates_empty_cards_list(self):
-    pass
+  # def test_post_correctly_iterates_position(self):
+  #   pass
+
+  # def test_post_creates_empty_cards_list(self):
+  #   pass
   
-  def test_put_correctly_changes_name(self):
-    pass
+  # def test_put_correctly_changes_name(self):
+  #   pass
 
-  def test_put_correctly_changes_position(self):
-    pass
+  # def test_put_correctly_changes_position(self):
+  #   pass
   
-  def test_put_correctly_changes_name_and_position(self):
-    pass
+  # def test_put_correctly_changes_name_and_position(self):
+  #   pass
 
-  def test_delete_properly_deletes_topic(self):
-    pass
+  # def test_delete_properly_deletes_topic(self):
+  #   pass
 
-  def test_post_reuses_position_after_deletion(self):
-    pass
+  # def test_post_reuses_position_after_deletion(self):
+  #   pass
 
-  def test_post_properly_iterates_highest_position_with(self):
-    pass
+  # def test_post_properly_iterates_highest_position_with(self):
+  #   pass
 
-  def test_post_allows_for_name_reuse(self):
-    pass
+  # def test_post_allows_for_name_reuse(self):
+  #   pass
 
-  def test_put_allows_for_name_reuse(self):
-    pass
+  # def test_put_allows_for_name_reuse(self):
+  #   pass
 
   
   
@@ -162,3 +175,4 @@ class TestTopicFunctionality(APITestCase):
   # Add under cards. 
   # def test_if_cards_delete_when_topic_deletes(self):
   #   pass
+

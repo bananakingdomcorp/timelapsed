@@ -219,7 +219,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
     if('Name' in validated_data and not 'switchPosition' in validated_data):
       record.Name = validated_data['Name']
       record.save()
-      return
+      return ({'Data': {'Name': record.Name}})
 
     #If we are only changing position
     if(not 'Name' in validated_data and 'switchPosition' in validated_data):
@@ -230,7 +230,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
       otherRecord.Position = temp
       record.save()
       otherRecord.save()
-      return
+      return ({'Data': {'Position': record.Position}})
 
     #If we are changing both
     if('Name' in validated_data and 'switchPosition' in validated_data):
@@ -242,7 +242,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
       record.save()
       otherRecord.save()
 
-      return
+      return ({'Data': {'Name': record.Name, 'Position': record.Position}})
 
   class Meta:
     model = Topic
