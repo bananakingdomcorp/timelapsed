@@ -56,6 +56,19 @@ class CardModelTest(TestCase):
   @classmethod
   def setUpTestData(cls):
     Users.objects.create(Email = 'test@test.com')
-    Topic.objects.create(Name = 'Test', Postion = 1, Email = Users.objects.get(Email = test@test.com))
+    Topic.objects.create(Name = 'ModelsTest', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+
+  def test_succeds_with_proper_information(self):
+    test = Card.objects.create(Name = 'First', Description = 'Test', Position = 1, Email = Users.objects.get(Email = 'test@test.com'), Topic = Topic.objects.get(Name = 'ModelsTest') )
+    data = Card.objects.get(Name = 'First', Description = 'Test', Position = 1)
+    self.assertEqual(data.Name, 'First' )
+    self.assertEqual(data.Description, 'Test')
+    self.assertEqual(data.Position, 1)
+
+  def test_fails_when_incomplete(self):
+    with self.assertRaises(ValidationError):
+      Card.objects.create(Name = 'First', Position = 1, Email = Users.objects.get(Email = 'test@test.com'), Topic = Topic.objects.get(Name = 'ModelsTest') )          
+
+  
 
   

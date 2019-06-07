@@ -109,7 +109,9 @@ class TestTopicResponses(APITestCase):
     self.assertEqual(response.status_code, 400)
 
   def test_if_rejects_put_for_invalid_switchPosition(self):
-    pass
+    pk = Topic.objects.create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    response = self.client.put(f'/api/topic/{pk.id}/', {'switchPosition':f'{pk.id + 1}' })      
+    self.assertEqual(response.status_code, 404)
 
   def test_if_rejects_post_for_non_charfield(self): 
     response = self.client.post('/api/topic/', {'Name': []})
@@ -285,6 +287,41 @@ class TestTopicFunctionality(APITestCase):
     self.assertEqual(Topic.objects.get(id = decode_response(first)['Data']['id']).Name, Topic.objects.get(id = second_id).Name  )
 
 
+class TestCardResponses(APITestCase):
+
+
+  def setUp(self):
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+
+
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+
+
+
+class TestCardFunctionality(APITestCase):
+
+  def setUp(self):
+
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+    Users.objects.create(Email = 'test@test.com')    
+  
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+
+
 
 
 
@@ -292,4 +329,3 @@ class TestTopicFunctionality(APITestCase):
   # Add under cards. 
   # def test_if_cards_delete_when_topic_deletes(self):
   #   pass
-
