@@ -209,10 +209,15 @@ class EditTopicSerializer(serializers.ModelSerializer):
   switchPosition= serializers.IntegerField(required = False)
   Name = serializers.CharField(required = False)
 
+  def validate(self, data):
+    if not 'switchPosition' in data and not 'Name' in data:
+        raise serializers.ValidationError("They are both required.")
+    return data
   
   def update(self, validated_data, pk):
 
     record = get_object_or_404(Topic, id = pk)
+    
     #If we are only changing the name
 
 
@@ -224,7 +229,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
     #If we are only changing position
     if(not 'Name' in validated_data and 'switchPosition' in validated_data):
 
-      otherRecord = Topic.objects.get(id = validated_data['switchPosition'])
+      otherRecord = get_object_or_404(Topic, id = validated_data['switchPosition'])
       temp = record.Position
       record.Position = otherRecord.Position
       otherRecord.Position = temp
@@ -235,7 +240,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
     #If we are changing both
     if('Name' in validated_data and 'switchPosition' in validated_data):
       record.Name = validated_data['Name']
-      otherRecord = Topic.objects.get(id= validated_data['switchPosition'])
+      otherRecord = get_object_or_404(Topic, id= validated_data['switchPosition'])
       temp = record.Position
       record.Position = otherRecord.Position
       otherRecord.Position = temp

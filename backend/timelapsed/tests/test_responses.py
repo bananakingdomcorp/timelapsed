@@ -93,8 +93,32 @@ class TestTopicResponses(APITestCase):
     self.assertEqual(response.status_code, 404)
 
   def test_if_rejects_put_for_deleted_id(self):
+    #checks to ensure that the put can be found originally. 
+    pk = Topic.objects.create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    response = self.client.put(f'/api/topic/{pk.id}/', {'Name': 'Changed'})
+    self.assertEqual(response.status_code, 200)    
+
+    #Then deletes out the item, and checks to ensure 404. 
+    Topic.objects.get(id = pk.id).delete()
+    test = self.client.put(f'/api/topic/{pk.id}/', {'Name': 'Test'})
+    self.assertEqual(test.status_code, 404)
+
+  def test_if_rejects_put_for_wrong_name(self):
+    pk = Topic.objects.create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    response = self.client.put(f'/api/topic/{pk.id}/', {'Dame': 'Changed'})  
+    self.assertEqual(response.status_code, 400)
+
+  def test_if_rejects_put_for_invalid_switchPosition(self):
     pass
-  
+
+  def test_if_rejects_post_for_non_charfield(self): 
+    response = self.client.post('/api/topic/', {'Name': []})
+    self.assertEqual(response.status_code, 400)
+
+  def test_if_rejects_post_for_incorrect_name(self):
+    response = self.client.post('/api/topic/', {'Dame': 'First'})
+    self.assertEqual(response.status_code, 400)
+
   def test_if_accepts_post(self):
     response = self.client.post('/api/topic/', {'Name': 'Second'} )
     self.assertEqual(response.status_code, 201)
@@ -107,6 +131,8 @@ class TestTopicResponses(APITestCase):
   def test_if_rejects_delete_for_invalid_id(self):
     response = self.client.delete(f'/api/topic/80000/')
     self.assertEqual(response.status_code, 404)    
+
+
 
 
 class TestTopicFunctionality(APITestCase):
@@ -257,6 +283,8 @@ class TestTopicFunctionality(APITestCase):
     self.client.put(f'/api/topic/{second_id}/', {'Name': 'First'})
     
     self.assertEqual(Topic.objects.get(id = decode_response(first)['Data']['id']).Name, Topic.objects.get(id = second_id).Name  )
+
+
 
 
 
