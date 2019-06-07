@@ -286,6 +286,9 @@ class TestTopicFunctionality(APITestCase):
     
     self.assertEqual(Topic.objects.get(id = decode_response(first)['Data']['id']).Name, Topic.objects.get(id = second_id).Name  )
 
+### Add test to ensure that all cards delete when a topic deletes. 
+
+
 
 class TestCardResponses(APITestCase):
 

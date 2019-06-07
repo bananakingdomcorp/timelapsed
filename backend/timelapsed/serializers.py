@@ -220,32 +220,32 @@ class EditTopicSerializer(serializers.ModelSerializer):
     
     #If we are only changing the name
 
-
-    if('Name' in validated_data and not 'switchPosition' in validated_data):
+    def nameChange():
       record.Name = validated_data['Name']
       record.save()
+
+    def positionChange():
+      otherRecord = get_object_or_404(Topic, id = validated_data['switchPosition'])
+      otherRecord.Position, record.Position = record.Position, otherRecord.Position
+      record.save()
+      otherRecord.save()
+
+
+    if('Name' in validated_data and not 'switchPosition' in validated_data):
+      
+      nameChange()
       return ({'Data': {'Name': record.Name}})
 
     #If we are only changing position
     if(not 'Name' in validated_data and 'switchPosition' in validated_data):
-
-      otherRecord = get_object_or_404(Topic, id = validated_data['switchPosition'])
-      temp = record.Position
-      record.Position = otherRecord.Position
-      otherRecord.Position = temp
-      record.save()
-      otherRecord.save()
+      positionChange()
+      
       return ({'Data': {'Position': record.Position}})
 
     #If we are changing both
     if('Name' in validated_data and 'switchPosition' in validated_data):
-      record.Name = validated_data['Name']
-      otherRecord = get_object_or_404(Topic, id= validated_data['switchPosition'])
-      temp = record.Position
-      record.Position = otherRecord.Position
-      otherRecord.Position = temp
-      record.save()
-      otherRecord.save()
+      nameChange()
+      positionChange()
 
       return ({'Data': {'Name': record.Name, 'Position': record.Position}})
 
