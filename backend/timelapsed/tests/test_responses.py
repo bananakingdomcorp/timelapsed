@@ -292,6 +292,9 @@ class TestTopicFunctionality(APITestCase):
 
 class TestCardResponses(APITestCase):
 
+  # This class tests our post responses without considering our date/times. Use the date_range classes for that. 
+
+  topic_id = 0
 
   def setUp(self):
     #Runs before every test
@@ -305,25 +308,77 @@ class TestCardResponses(APITestCase):
   @classmethod
   def setUpTestData(cls):
     Users.objects.create(Email = 'test@test.com')
+    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.topic_id = set_up_topic.id
 
+  def test_for_topic_setup(self):
+    #Checks to make sure a topic ID was added
+    self.assertNotEqual(self.topic_id, 0)
+
+  def test_if_rejects_get(self):
+    pass
+  
+  def test_if_accepts_post(self):
+    pass
+
+  def test_if_rejects_Empty_post(self):
+    pass
+  
+  def test_if_rejects_wrong_post_name(self):
+    pass
+
+  def test_if_post_rejects_invalid_topic(self):
+    pass
+
+  def test_if_accepts_put(self):
+    pass
+
+  def test_if_rejects_empty_put(self):
+    pass
+
+  def test_if_put_rejects_invalid_id(self):
+    pass
+
+  def test_if_put_rejects_invalid_topic(self):
+    pass
+
+  def test_if_put_rejects_invalid_position(self):
+    pass
+  
+  def test_if_put_rejects_own_topic(self):
+    pass
+  
+  def test_if_put_rejects_own_position(self):
+    pass
+  
+  def test_if_accepts_delete(self):
+    pass
+
+  def test_if_delete_rejects_invalid_id(self):
+    pass
 
 
 class TestCardFunctionality(APITestCase):
+  topic_id = 0
 
   def setUp(self):
-
     #Runs before every test
 
     ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
     user = User.objects.create_user('test@test.com', 'test@test.com')
     self.client.force_authenticate(user)
     ######################################################
-    Users.objects.create(Email = 'test@test.com')    
-  
+
+
   @classmethod
   def setUpTestData(cls):
     Users.objects.create(Email = 'test@test.com')
+    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.topic_id = set_up_topic.id
 
+  def test_for_topic_setup(self):
+    #Checks to make sure a topic ID was added
+    self.assertNotEqual(self.topic_id, 0)
 
 
 
