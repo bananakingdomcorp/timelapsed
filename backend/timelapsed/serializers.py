@@ -59,26 +59,25 @@ class UpdateCardTimesSerializer(serializers.Serializer):
 
 class CreateCardDataSerializer(serializers.ModelSerializer):
   Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
-  Position = serializers.IntegerField(required = False,)
 
   class Meta: 
     model = Card
-    fields = ('Name', 'Description', 'Topic', 'Position' )
+    fields = ('Name', 'Description', 'Topic', )
 
 class UpdateCardDataSerializer(serializers.ModelSerializer):
   Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all(), required = False)
-  Position = serializers.IntegerField(required = False,)
+  Switch_Position = serializers.IntegerField(required = False,)
   Description = serializers.CharField(required = False,)
   Name = serializers.CharField(required = False,)
 
   def validate(self, data):
-    if not 'Name' in data and not 'Description' in data and not 'Topic' in data and not 'Position' in data:
+    if not 'Name' in data and not 'Description' in data and not 'Topic' in data and not 'Switch_Position' in data:
         raise serializers.ValidationError("Data cannot be empty.")
     return data
 
   class Meta: 
     model = Card
-    fields = ('Name', 'Description', 'Topic', 'Position' )
+    fields = ('Name', 'Description', 'Topic', 'Switch_Position' )
 
 
 class UpdateCardSerializer(serializers.ModelSerializer):
@@ -92,7 +91,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
   
   def update(self, validated_data, pk, user):
     
-    temp =  Card.objects.get(id = pk)
+    temp =  get_object_or_404(Card, id = pk)
 
     if 'Data' in validated_data:
       
@@ -111,17 +110,20 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
       #If there is a position change. 
       
-      if 'Position' in validated_data['Data']:
-        switch = Card.objects.get(id = validated_data['Data']['Position'])
+      if 'Switch_Position' in validated_data['Data']:
+
+        switch = Card.objects.get(id = validated_data['Data']['Switch_Position'])
         switch.Position, temp.Position = temp.Position, switch.Position
         switch.save()
 
         pass
 
       if 'Name' in validated_data['Data']:
+        
         temp.Name = validated_data['Data']['Name']
       
       if 'Description' in validated_data['Data']:
+
         temp.Description = validated_data['Data']['Description']
 
 

@@ -354,12 +354,15 @@ class TestCardResponses(APITestCase):
     self.assertEqual(response.status_code, 400)
 
   def test_if_put_rejects_invalid_id(self):
-    
 
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/card/8000/', {'Data':{'Name': 'First'}}, format= 'json')
 
-    pass
+    self.assertEqual(response.status_code, 404)
 
   def test_if_put_rejects_invalid_topic(self):
+    
     pass
 
   def test_if_put_rejects_invalid_position(self):
