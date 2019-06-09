@@ -133,6 +133,8 @@ class CreateCardSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
     info = validated_data['Data']
+    
+
     pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
     if pos == None:
       pos = 0
@@ -142,13 +144,14 @@ class CreateCardSerializer(serializers.ModelSerializer):
     res = {}
 
     if validated_data.get('Times'):
-      
       for times in validated_data['Times']:
         ids = []
         a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
         ids.append(a.id)
         res['Data'] = {'ids': ids}
-    res['Data']['id']= n.id
+      res['Data']['id']= n.id      
+    else :
+      res['Data'] = {'id': n.id}
     return (res)
 
   class Meta:

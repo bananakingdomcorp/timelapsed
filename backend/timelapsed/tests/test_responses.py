@@ -316,21 +316,35 @@ class TestCardResponses(APITestCase):
     self.assertNotEqual(self.topic_id, 0)
 
   def test_if_rejects_get(self):
-    pass
-  
+    response = self.client.get('/api/card/')
+
+    self.assertEqual(response.status_code, 405) 
+
   def test_if_accepts_post(self):
-    pass
+    response = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+
+    self.assertEqual(response.status_code, 201)
 
   def test_if_rejects_Empty_post(self):
-    pass
-  
+    response = self.client.post('/api/card/', {})
+
+    self.assertEqual(response.status_code, 400) 
   def test_if_rejects_wrong_post_name(self):
-    pass
+    response = self.client.post('/api/card/', {'Data': {'Drame': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+
+    self.assertEqual(response.status_code, 400)
 
   def test_if_post_rejects_invalid_topic(self):
-    pass
+    response = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': 800000}}, format = 'json')
+
+    self.assertEqual(response.status_code, 400)
 
   def test_if_accepts_put(self):
+    # first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    # first_id = decode_response(first)['Data']['id']
+    # response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Name': 'First'}}, format= 'json')
+
+    # self.assertEqual(response.status_code, 200)
     pass
 
   def test_if_rejects_empty_put(self):
@@ -379,6 +393,9 @@ class TestCardFunctionality(APITestCase):
   def test_for_topic_setup(self):
     #Checks to make sure a topic ID was added
     self.assertNotEqual(self.topic_id, 0)
+
+  def test_card_moves_to_right_position_when_moved_into_new_topic(self):
+    pass
 
 
 
