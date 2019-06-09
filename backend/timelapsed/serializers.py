@@ -65,61 +65,96 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
     model = Card
     fields = ('Name', 'Description', 'Topic', 'Position' )
 
+class UpdateCardDataSerializer(serializers.ModelSerializer):
+  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all(), required = False)
+  Position = serializers.IntegerField(required = False,)
+  Description = serializers.CharField(required = False,)
+  Name = serializers.CharField(required = False,)
+
+  def validate(self, data):
+    if not 'Name' in data and not 'Description' in data and not 'Topic' in data and not 'Position' in data:
+        raise serializers.ValidationError("Data cannot be empty.")
+    return data
+
+  class Meta: 
+    model = Card
+    fields = ('Name', 'Description', 'Topic', 'Position' )
+
+
 class UpdateCardSerializer(serializers.ModelSerializer):
-  Data = CreateCardDataSerializer()
+  Data = UpdateCardDataSerializer(required = False)
   Times = UpdateCardTimesSerializer(required = False,)
 
+  def validate(self, data):
+    if not 'Data' in data and not 'Times' in data:
+        raise serializers.ValidationError("Either Data or Times are required.")
+    return data
   
   def update(self, validated_data, pk, user):
-
-    info = validated_data['Data']
-    times = validated_data['Times']
-    temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
-
-    #If topic is the same. 
-    if temp['Topic'] == info['Topic'] :
-      #If Position has changed. 
-      if info['Position'] != -1:
-        #Find the position of the card to switch with. 
-        pos = Card.objects.values('Position').filter(id = info['Position']).first()
-        Card.objects.filter(id = info['Position']).update(Position = temp['Position'])
-        
-        Card.objects.filter(id = pk).update(Position = pos['Position'])
-    else :
-      #The topic has changed. 
-      pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-      #If there are no cards in the topic. 
-      if pos == None:
-        pos = 0
-      else :
-        pos = pos['Position']
-
-      Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
     
-    Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])     
+    temp =  Card.objects.get(id = pk)
+
+    if 'Data' in validated_data:
+      
+      #If there is a topic change. 
+
+      if 'Topic' in validated_data['Data']:
+
+        pos =  Card.objects.values('Position').filter(Topic = validated_data['Data']['Topic']).order_by('-Position').first()
+        #If there are no cards in the topic. 
+        if pos == None:
+          pos = 0
+        else :
+          pos = pos['Position']        
+        temp.Topic = validated_data['Data']['Topic']
+        temp.Position = pos
+
+      #If there is a position change. 
+      
+      if 'Position' in validated_data['Data']:
+        switch = Card.objects.get(id = validated_data['Data']['Position'])
+        switch.Position, temp.Position = temp.Position, switch.Position
+        switch.save()
+
+        pass
+
+      if 'Name' in validated_data['Data']:
+        temp.Name = validated_data['Data']['Name']
+      
+      if 'Description' in validated_data['Data']:
+        temp.Description = validated_data['Data']['Description']
+
+
+
+      temp.save()
+
+    if 'Times' in validated_data:
+
 
     #Handle Deletions:
 
-    for key in times['Delete']:
-      Date_Range.objects.filter(id = key).delete()
+      for key in validated_data['Times']['Delete']:
+        Date_Range.objects.filter(id = key).delete()
 
-    #Handle Edits:
+      #Handle Edits:
 
-    for key in times['Edit']:
-      Date_Range.objects.filter(id = key).update(Begin_Time = times['Edit'][key]['Begin_Time'], End_Time = times['Edit'][key]['End_Time'], Num_Weeks =  times['Edit'][key]['Num_Weeks'], Weeks_Skipped = times['Edit'][key]['Weeks_Skipped']  )
-
-
-    #Handle Additions:
-
-    for key in times['Add']:
-      ids = []
-      a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
-      ids.append(a.id)
-      
-    Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
+      for key in validated_data['Times']['Edit']:
+        Date_Range.objects.filter(id = key).update(Begin_Time = validated_data['Times']['Edit'][key]['Begin_Time'], End_Time = validated_data['Times']['Edit'][key]['End_Time'], Num_Weeks =  validated_data['Times']['Edit'][key]['Num_Weeks'], Weeks_Skipped = validated_data['Times']['Edit'][key]['Weeks_Skipped']  )
 
 
-    return Return_Times
+      #Handle Additions:
+
+      for key in validated_data['Times']['Add']:
+        ids = []
+        a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
+        ids.append(a.id)
+        
+      Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
+
+
+      return Return_Times
+
+    return
 
   class Meta:
     model = Card
@@ -133,7 +168,7 @@ class CreateCardSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
     info = validated_data['Data']
-    
+
 
     pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
     if pos == None:
@@ -214,7 +249,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
 
   def validate(self, data):
     if not 'switchPosition' in data and not 'Name' in data:
-        raise serializers.ValidationError("They are both required.")
+        raise serializers.ValidationError("One is required!.")
     return data
   
   def update(self, validated_data, pk):

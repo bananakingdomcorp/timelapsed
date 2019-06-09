@@ -340,17 +340,23 @@ class TestCardResponses(APITestCase):
     self.assertEqual(response.status_code, 400)
 
   def test_if_accepts_put(self):
-    # first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
-    # first_id = decode_response(first)['Data']['id']
-    # response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Name': 'First'}}, format= 'json')
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Name': 'First'}}, format= 'json')
 
-    # self.assertEqual(response.status_code, 200)
-    pass
+    self.assertEqual(response.status_code, 200)
 
   def test_if_rejects_empty_put(self):
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/card/{first_id}/', {}, format= 'json')
+
+    self.assertEqual(response.status_code, 400)
 
   def test_if_put_rejects_invalid_id(self):
+    
+
+
     pass
 
   def test_if_put_rejects_invalid_topic(self):
@@ -364,6 +370,7 @@ class TestCardResponses(APITestCase):
   
   def test_if_put_rejects_own_position(self):
     pass
+
   
   def test_if_accepts_delete(self):
     pass
