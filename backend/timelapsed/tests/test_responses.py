@@ -339,10 +339,17 @@ class TestCardResponses(APITestCase):
 
     self.assertEqual(response.status_code, 400)
 
-  def test_if_accepts_put(self):
+  def test_if_accepts_put_with_Name(self):
     first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
     first_id = decode_response(first)['Data']['id']
     response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Name': 'First'}}, format= 'json')
+
+    self.assertEqual(response.status_code, 200)
+
+  def test_if_accepts_put_with_description(self):
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Description': 'Changed'}}, format= 'json')    
 
     self.assertEqual(response.status_code, 200)
 
@@ -362,11 +369,44 @@ class TestCardResponses(APITestCase):
     self.assertEqual(response.status_code, 404)
 
   def test_if_put_rejects_invalid_topic(self):
-    
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Topic': 8000}}, format= 'json')    
+
+    self.assertEqual(response.status_code, 400)
+
+  def test_if_put_accepts_valid_position(self):
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    second = self.client.post('/api/card/', {'Data': {'Name': 'Second', 'Description': 'Tester', 'Topic': self.topic_id}}, format = 'json')
+    second_id = decode_response(second)['Data']['id']    
+
+    response = self.client.put(f'/api/card/{second_id}/', {'Data':{'Switch_Position': first_id}}, format= 'json')      
+
+    self.assertEqual(response.status_code, 200)
 
   def test_if_put_rejects_invalid_position(self):
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Position': 8000}}, format= 'json')      
+
+    self.assertEqual(response.status_code, 400)
+
+  def test_if_put_accepts_valid_topic(self):
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+
+    switch_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Topic': switch_topic.id}}, format= 'json')    
+
+
+  def test_if_put_rejects_invalid_topic(self):
     pass
+
   
   def test_if_put_rejects_own_topic(self):
     pass

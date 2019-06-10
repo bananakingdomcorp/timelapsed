@@ -65,8 +65,8 @@ class CreateCardDataSerializer(serializers.ModelSerializer):
     fields = ('Name', 'Description', 'Topic', )
 
 class UpdateCardDataSerializer(serializers.ModelSerializer):
-  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all(), required = False)
-  Switch_Position = serializers.IntegerField(required = False,)
+  Switch_Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all(), required = False)
+  Switch_Position = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), required = False)
   Description = serializers.CharField(required = False,)
   Name = serializers.CharField(required = False,)
 
@@ -77,7 +77,7 @@ class UpdateCardDataSerializer(serializers.ModelSerializer):
 
   class Meta: 
     model = Card
-    fields = ('Name', 'Description', 'Topic', 'Switch_Position' )
+    fields = ('Name', 'Description', 'Switch_Topic', 'Switch_Position' )
 
 
 class UpdateCardSerializer(serializers.ModelSerializer):
@@ -97,15 +97,15 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       
       #If there is a topic change. 
 
-      if 'Topic' in validated_data['Data']:
+      if 'Switch_Topic' in validated_data['Data']:
 
-        pos =  Card.objects.values('Position').filter(Topic = validated_data['Data']['Topic']).order_by('-Position').first()
+        pos =  Card.objects.values('Position').filter(Topic = validated_data['Data']['Switch_Topic']).order_by('-Position').first()
         #If there are no cards in the topic. 
         if pos == None:
           pos = 0
         else :
           pos = pos['Position']        
-        temp.Topic = validated_data['Data']['Topic']
+        temp.Topic = validated_data['Data']['Switch_Topic']
         temp.Position = pos
 
       #If there is a position change. 
