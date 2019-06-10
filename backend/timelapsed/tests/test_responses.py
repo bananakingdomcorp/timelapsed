@@ -481,13 +481,51 @@ class TestCardFunctionality(APITestCase):
     #Checks to make sure a topic ID was added
     self.assertNotEqual(self.topic_id, 0)
 
-  def test_card_moves_to_right_position_when_moved_into_new_topic(self):
+  def test_card_name_creates_correctly(self):
+    pass
+  def test_card_description_creates_correctly(self):
     pass
 
+  def test_card_position_creates_correctly(self):
+    pass
 
+  def test_card_creates_in_proper_topic(self):
+    pass
 
+  def test_card_updates_name_correctly(self):
+    pass
 
+  def test_card_updates_description_correctly(self):
+    pass
 
-  # Add under cards. 
-  # def test_if_cards_delete_when_topic_deletes(self):
-  #   pass
+  def test_card_names_not_unique(self):
+    pass
+
+  def test_card_descriptions_not_unique(self):
+    pass
+
+  def test_card_changes_topic_correctly(self):
+    pass
+  
+  def test_card_goes_to_correct_position_when_moved_to_new_topic(self):
+    pass
+
+  def test_card_goes_to_correct_position_when_topic_and_position_changed(self):
+    pass
+
+  def test_if_cards_delete_when_topic_deletes(self):
+    pass
+
+  def test_card_iterates_highest_position_in_topic(self):
+    pass
+
+  def test_card_iterates_highest_position_in_topic_after_move_in(self):
+    pass
+  def test_card_iterates_highest_position_in_topic_after_move_out(self):
+    pass
+
+  def test_card_deletes_correctly(self):
+    pass
+  def test_card_creation_returns_empty_return_times_when_none_spedified(self):
+    pass
+
