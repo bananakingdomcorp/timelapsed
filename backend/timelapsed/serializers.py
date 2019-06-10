@@ -71,7 +71,7 @@ class UpdateCardDataSerializer(serializers.ModelSerializer):
   Name = serializers.CharField(required = False,)
 
   def validate(self, data):
-    if not 'Name' in data and not 'Description' in data and not 'Topic' in data and not 'Switch_Position' in data:
+    if not 'Name' in data and not 'Description' in data and not 'Switch_Topic' in data and not 'Switch_Position' in data:
         raise serializers.ValidationError("Data cannot be empty.")
     return data
 
@@ -105,7 +105,8 @@ class UpdateCardSerializer(serializers.ModelSerializer):
           pos = 0
         else :
           pos = pos['Position']        
-        temp.Topic = validated_data['Data']['Switch_Topic']
+        Topic_Switch = Topic.objects.get(id = validated_data['Data']['Switch_Topic'])
+        temp.Topic = Topic_Switch
         temp.Position = pos
 
       #If there is a position change. 
@@ -198,10 +199,8 @@ class CreateCardSerializer(serializers.ModelSerializer):
 class DeleteCardSerializer(serializers.ModelSerializer):
   def destroy(self, pk):
     #Delete any times associated with said card. 
-
-    Date_Range.objects.filter(Card_ID = Card.objects.get(id = pk)).delete()
-
-    Card.objects.get(id = pk).delete()
+    temp = get_object_or_404(Card, id = pk)
+    temp.delete()
     return 'Deleted'
   
   class Meta: 

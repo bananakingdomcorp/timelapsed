@@ -401,25 +401,62 @@ class TestCardResponses(APITestCase):
 
     switch_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
 
-    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Topic': switch_topic.id}}, format= 'json')    
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Topic': switch_topic.id}}, format= 'json')    
+
+    self.assertEqual(response.status_code, 200)
+
 
 
   def test_if_put_rejects_invalid_topic(self):
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Topic': 8000}}, format= 'json')    
 
+    self.assertEqual(response.status_code, 400)
   
-  def test_if_put_rejects_own_topic(self):
-    pass
+  def test_if_put_accepts_own_topic(self):
+    #Yes it's dumb, but there may be issues (especially with concurrency) where you may have this situation. 
+    #We are going to allow it is it does nothing to harm the product. 
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+
+
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Topic': self.topic_id}}, format= 'json')    
+
+    self.assertEqual(response.status_code, 200)
   
-  def test_if_put_rejects_own_position(self):
-    pass
+  def test_if_put_accepts_own_position(self):
+    #Reasoning is same as above. 
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+
+
+    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Position': first_id}}, format= 'json')    
+
+    self.assertEqual(response.status_code, 200)    
 
   
   def test_if_accepts_delete(self):
-    pass
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+
+
+    response = self.client.delete(f'/api/card/{first_id}/')    
+
+    self.assertEqual(response.status_code, 204)    
+
 
   def test_if_delete_rejects_invalid_id(self):
-    pass
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']
+
+
+    response = self.client.delete(f'/api/card/8000/')    
+
+    self.assertEqual(response.status_code, 404)    
+
 
 
 class TestCardFunctionality(APITestCase):
