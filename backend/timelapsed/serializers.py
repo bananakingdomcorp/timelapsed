@@ -92,6 +92,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
   def update(self, validated_data, pk, user):
     
     temp =  get_object_or_404(Card, id = pk)
+    res = {}
 
     if 'Data' in validated_data:
       
@@ -131,6 +132,8 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
       temp.save()
 
+      res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
+
     if 'Times' in validated_data:
 
 
@@ -154,10 +157,9 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         
       Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
 
-
-      return Return_Times
-
-    return
+      res['Data']['Return_Times' : Return_Times]
+    
+    return res
 
   class Meta:
     model = Card
@@ -179,7 +181,7 @@ class CreateCardSerializer(serializers.ModelSerializer):
     else :
       pos = pos['Position']
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
-    res = {}
+    res = {'Data': {'Name': n.Name, 'Description': n.Description}}
 
     if validated_data.get('Times'):
       for times in validated_data['Times']:
@@ -187,9 +189,8 @@ class CreateCardSerializer(serializers.ModelSerializer):
         a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
         ids.append(a.id)
         res['Data'] = {'ids': ids}
-      res['Data']['id']= n.id      
-    else :
-      res['Data'] = {'id': n.id}
+
+    res['Data']['id'] = n.id
     return (res)
 
   class Meta:
