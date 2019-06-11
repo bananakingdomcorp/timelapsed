@@ -399,7 +399,7 @@ class TestCardResponses(APITestCase):
     first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
     first_id = decode_response(first)['Data']['id']
 
-    switch_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    switch_topic = Topic.objects.create(Name = 'UseForTesting', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
 
     response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Topic': switch_topic.id}}, format= 'json')    
 
@@ -507,52 +507,113 @@ class TestCardFunctionality(APITestCase):
     response = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
     response_id = decode_response(response)['Data']['id']  
 
-    
+    second =  self.client.put(f'/api/card/{response_id}/', {'Data': {'Name': 'Changed'}}, format = 'json' )
 
-    pass    
-
+    self.assertEqual(decode_response(second)['Data']['Name'], 'Changed')
 
   def test_card_updates_description_correctly(self):
-    
-    
-    pass
+
+    response = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    response_id = decode_response(response)['Data']['id']  
+
+    second =  self.client.put(f'/api/card/{response_id}/', {'Data': {'Description': 'Changed'}}, format = 'json' )
+
+    self.assertEqual(decode_response(second)['Data']['Description'], 'Changed')    
 
   def test_card_names_not_unique(self):
-    
-    
-    pass
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'REally_First', 'Topic': self.topic_id}}, format = 'json')
+    second = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Second', 'Topic': self.topic_id}}, format = 'json')        
+    first_name = decode_response(first)['Data']['Name']      
+    second_name = decode_response(second)['Data']['Name']    
+
+    self.assertEqual(first_name, second_name)  
 
   def test_card_descriptions_not_unique(self):
-    
-    
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    second = self.client.post('/api/card/', {'Data': {'Name': 'Second', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')        
+    first_description = decode_response(first)['Data']['Description']      
+    second_description = decode_response(second)['Data']['Description']    
+
+    self.assertEqual(first_description, second_description)      
+
 
   def test_card_changes_topic_correctly(self):
-    
-    
-    pass
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']  
+    changed_topic =  Topic.objects.create(Name = 'changed', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    self.client.put(f'/api/card/{first_id}/', {'Data': {'Switch_Topic': changed_topic.id}}, format = 'json' ) 
+
+    self.assertEqual(Card.objects.get(id = first_id).Topic, changed_topic)
+
+  def test_card_changes_position_correctly(self):   
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}}, format = 'json')
+    second = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}}, format = 'json')        
+    first_id = decode_response(first)['Data']['id']      
+    second_id = decode_response(second)['Data']['id']    
+    self.client.put(f'/api/card/{first_id}/', {'Data': {'Switch_Position': second_id}}, format = 'json' )
+
+    self.assertEqual(Card.objects.get(id = first_id).Position, 2)    
   
   def test_card_goes_to_correct_position_when_moved_to_new_topic(self):
-    
-    
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']  
+    changed_topic =  Topic.objects.create(Name = 'changed', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    second = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': changed_topic.id}}, format = 'json') 
+    second_id = decode_response(second)['Data']['id']        
+    self.client.put(f'/api/card/{first_id}/', {'Data': {'Switch_Topic': changed_topic.id}}, format = 'json' ) 
+
+    self.assertEqual(Card.objects.get(id = first_id).Position, 2)
+
 
   def test_card_goes_to_correct_position_when_topic_and_position_changed(self):
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']  
+    changed_topic =  Topic.objects.create(Name = 'changed', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    second = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': changed_topic.id}}, format = 'json') 
+    second_id = decode_response(second)['Data']['id']        
+    self.client.put(f'/api/card/{first_id}/', {'Data': {'Switch_Topic': changed_topic.id, 'Switch_Position': second_id}}, format = 'json' ) 
+
+    self.assertEqual(Card.objects.get(id = first_id).Position, 1)
+
 
   def test_if_cards_delete_when_topic_deletes(self):
-    pass
+    to_delete =  Topic.objects.create(Name = 'changed', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': to_delete.id}}, format = 'json') 
+    first_id = decode_response(first)['Data']['id']
+    self.client.delete(f'/api/topic/{to_delete.id}/')
+
+    with self.assertRaises(ObjectDoesNotExist):
+      Card.objects.get(id = to_delete.id)
 
   def test_card_iterates_highest_position_in_topic(self):
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}}, format = 'json')
+    second = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}}, format = 'json')
+    third = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}}, format = 'json')
+    second_id = decode_response(second)['Data']['id']
 
-  def test_card_iterates_highest_position_in_topic_after_move_in(self):
-    pass
+    self.client.delete(f'/api/card/{second_id}/')
+    fourth = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}}, format = 'json')
+    fourth_id = decode_response(fourth)['Data']['id']
+    self.assertEqual(Card.objects.get(id = fourth_id).Position, 4)
+
   def test_card_iterates_highest_position_in_topic_after_move_out(self):
-    pass
+    second_topic =  Topic.objects.create(Name = 'changed', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': second_topic.id}}, format = 'json') 
+    first_id = decode_response(first)['Data']['id']
+    self.client.put(f'/api/card/{first_id}/', {'Data': {'Switch_Topic': self.topic_id}}, format = 'json'  )
+    second = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': second_topic.id}}, format = 'json')
+    second_id = decode_response(second)['Data']['id']
+
+    self.assertEqual(Card.objects.get(id = second_id).Position, 1)
 
   def test_card_deletes_correctly(self):
-    pass
-  def test_card_creation_returns_empty_return_times_when_none_spedified(self):
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+    first_id = decode_response(first)['Data']['id']      
+    self.client.delete(f'/api/card/{first_id}/')
+
+    with self.assertRaises(ObjectDoesNotExist):
+      Card.objects.get(id = first_id)
 

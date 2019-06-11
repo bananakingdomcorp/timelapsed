@@ -105,7 +105,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         if pos == None:
           pos = 0
         else :
-          pos = pos['Position']        
+          pos = pos['Position'] +1        
         Topic_Switch = Topic.objects.get(id = validated_data['Data']['Switch_Topic'])
         temp.Topic = Topic_Switch
         temp.Position = pos
@@ -157,7 +157,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         
       Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
 
-      res['Data']['Return_Times' : Return_Times]
+      res['Data']['Return_Times']= Return_Times
     
     return res
 
