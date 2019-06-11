@@ -3,7 +3,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
-
+import datetime
 
 
 
@@ -71,4 +71,139 @@ class CardModelTest(TestCase):
 
   
 
+  
+class DateRangeModelTest(TestCase):
+  card_id = 0
+
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+    Topic.objects.create(Name = 'ModelsTest', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'ModelsTest'), Email = Users.objects.get(Email = 'test@test.com'))
+    cls.card_id = card_setup.id
+
+    # Day = models.TextField(max_length=100, default = 'Sunday')
+    # Begin_Date = models.DateTimeField(default = now)
+    # Num_Weeks = models.IntegerField(default = 0)
+    # Weeks_Skipped = models.IntegerField(default = 0)
+    # Begin_Time = models.TimeField()
+    # End_Time = models.TimeField()        
+
+
+  def test_succeds_with_day_Sunday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Sunday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Sunday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_succeds_with_day_Monday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Monday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Monday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_succeds_with_day_Tuesday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Tuesday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Tuesday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_succeds_with_day_Wednesday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Wednesday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Wednesday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_succeds_with_day_Thursday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Thursday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Thursday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_succeds_with_day_Friday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Friday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Friday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_succeds_with_day_Saturday(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    self.assertEqual(test.Day, 'Saturday')
+    self.assertEqual(test.Begin_Date, begin)
+    self.assertEqual(test.Num_Weeks, 0)
+    self.assertEqual(test.Weeks_Skipped, 0)
+    self.assertEqual(test.Begin_Time, begin_timed)
+    self.assertEqual(test.End_Time, end_timed)
+
+  def test_fails_with_invalid_day(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    with self.assertRaises(Exception):
+      Date_Range.objects.create(Day = 'invalid', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+  
+
+
+  
   
