@@ -617,3 +617,103 @@ class TestCardFunctionality(APITestCase):
     with self.assertRaises(ObjectDoesNotExist):
       Card.objects.get(id = first_id)
 
+
+
+
+
+class TestDateRangeResponses(APITestCase):
+  card_setup = 0
+
+  def setUp(self):
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+
+
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'ModelsTest'), Email = Users.objects.get(Email = 'test@test.com'))
+    cls.card_id = card_setup.id
+
+
+    # Day = models.TextField(max_length=100, default = 'Sunday')
+    # Begin_Date = models.DateTimeField(default = now)
+    # Num_Weeks = models.IntegerField(default = 0)
+    # Weeks_Skipped = models.IntegerField(default = 0)
+    # Begin_Time = models.TimeField()
+    # End_Time = models.TimeField()      
+
+  def test_if_accepts_valid_post(self):
+    pass
+
+  def test_if_rejects_incomplete_post(self):
+    pass
+  
+  def test_if_post_rejects_times_dictionary(self): 
+    pass
+  
+  def test_if_post_rejects_empty_times(self):
+    pass
+
+  def test_if_accepts_post_without_data(self):
+    pass
+
+  def test_if_accepts_valid_put(self):
+    pass
+
+  def test_if_accepts_put_without_Data(self):
+    pass
+
+  def test_if_accepts_put_only_edits(self):
+    pass
+
+  def test_if_rejects_nonexistent_edits(self):
+    pass
+  
+  def test_if_accepts_put_only_additions(self):
+    pass
+
+  def test_if_rejects_incorrect_additions(self):
+    pass
+
+  def test_if_accepts_put_only_deletions(self):
+    pass
+
+  def test_if_rejects_incorrect_deletions(self):
+    pass
+  
+
+
+
+
+
+class TestDateRangeFunctionality(APITestCase):
+  card_setup = 0
+
+  def setUp(self):
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+
+
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'ModelsTest'), Email = Users.objects.get(Email = 'test@test.com'))
+    cls.card_id = card_setup.id
+
+  
+
+  
+
+
+  
