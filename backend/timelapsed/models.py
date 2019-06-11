@@ -72,10 +72,10 @@ class Date_Range(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
-    Day = models.TextField(max_length=100, default = 'Sunday')
-    Begin_Date = models.DateTimeField(default = now)
-    Num_Weeks = models.IntegerField(default = 0)
-    Weeks_Skipped = models.IntegerField(default = 0)
+    Day = models.TextField(max_length=100,)
+    Begin_Date = models.DateTimeField()
+    Num_Weeks = models.IntegerField()
+    Weeks_Skipped = models.IntegerField()
     Begin_Time = models.TimeField()
     End_Time = models.TimeField()
 
@@ -92,6 +92,7 @@ class Date_Range(models.Model):
       days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       if self.Day not in days:
         raise Exception("You are not entering a valid day of the week")
+
       super().full_clean()
       super().save(*args, **kwargs)          
 

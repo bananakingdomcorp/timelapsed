@@ -203,7 +203,11 @@ class DateRangeModelTest(TestCase):
     with self.assertRaises(Exception):
       Date_Range.objects.create(Day = 'invalid', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
   
+  def test_fails_when_incomplete(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-
-  
+    with self.assertRaises(ValidationError):
+      Date_Range.objects.create(Day = 'Sunday', Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )  
   
