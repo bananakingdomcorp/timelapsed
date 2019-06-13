@@ -180,7 +180,16 @@ class CreateCardSerializer(serializers.ModelSerializer):
 
 
 class EditCardTimesSerializer(serializers.ModelSerializer):
-  
+  Num_Weeks = serializers.IntegerField()
+  Weeks_Skipped = serializers.IntegerField()
+  Begin_Time = serializers.TimeField()
+  End_Time = serializers.TimeField()  
+
+  def validate(self, data):
+    if not 'Num_Weeks' in data or not 'Weeks_Skipped' in data or not 'Begin_Time' in data or not 'End_Time' in data:
+      raise serializers.ValidationError('Invalid request')
+    return data  
+
   class Meta:
     model = Date_Range
     fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
@@ -191,6 +200,7 @@ class DeleteCardTimesSerializer(serializers.ListField):
 
 
 class UpdateCardTimesSerializer(serializers.Serializer):
+  #Edit dictionary field is key: data
   Edit = serializers.DictField(child = EditCardTimesSerializer(),)
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
   Delete = DeleteCardTimesSerializer()

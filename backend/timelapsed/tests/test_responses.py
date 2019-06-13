@@ -688,7 +688,7 @@ class TestDateRangeResponses(APITestCase):
     first = self.client.post('/api/card/', {'Times': [{'Day' : 'Saturday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
     self.assertEqual(first.status_code, 400)    
 
-  def test_if_accepts_put_without_Data(self):
+  def test_if_accepts_delete_put(self):
 
     begin = datetime.datetime(1999, 4, 14)
     begin_timed = datetime.time(4, 25)
@@ -700,21 +700,22 @@ class TestDateRangeResponses(APITestCase):
 
     self.assertEqual(response.status_code, 200)
 
-  def test_if_accepts_put_only_edits(self):
+  def test_if_accepts_edit_put(self):
 
-    # begin = datetime.datetime(1999, 4, 14)
-    # begin_timed = datetime.time(4, 25)
-    # end_timed = datetime.time(7, 59)
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-    # test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
 
-    # response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {test.id: {'Num_Weeks': 1, 'Weeks_Skipped' : 1, 'Begin_Time' : begin_timed, 'End_Time': end_timed }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-    # self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, 200)
 
+  def test_if_rejects_nonexistent_edit_ids(self):
     pass
 
-  def test_if_rejects_nonexistent_edits(self):
+  def test_if_rejects_incomplete_edit_data(self):
     pass
   
   def test_if_accepts_put_only_additions(self):
