@@ -708,11 +708,17 @@ class TestDateRangeResponses(APITestCase):
 
     test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
 
-    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {test.id: {'Num_Weeks': 1, 'Weeks_Skipped' : 1, 'Begin_Time' : begin_timed, 'End_Time': end_timed }}, 'Add' : [], 'Delete' : []} }, format = 'json')
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 1, 'Weeks_Skipped' : 1, 'Begin_Time' : begin_timed, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
     self.assertEqual(response.status_code, 200)
 
   def test_if_rejects_nonexistent_edit_ids(self):
+
+
+
+
+
+
     pass
 
   def test_if_rejects_incomplete_edit_data(self):
@@ -721,10 +727,7 @@ class TestDateRangeResponses(APITestCase):
   def test_if_accepts_put_only_additions(self):
     pass
 
-  def test_if_rejects_incorrect_additions(self):
-    pass
-
-  def test_if_accepts_put_only_deletions(self):
+  def test_if_rejects_incorrect_addition_data(self):
     pass
 
   def test_if_rejects_incorrect_deletions(self):

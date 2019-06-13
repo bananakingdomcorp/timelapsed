@@ -184,15 +184,16 @@ class EditCardTimesSerializer(serializers.ModelSerializer):
   Weeks_Skipped = serializers.IntegerField()
   Begin_Time = serializers.TimeField()
   End_Time = serializers.TimeField()  
+  id = serializers.PrimaryKeyRelatedField(queryset = Date_Range.objects.all(),)
 
   def validate(self, data):
-    if not 'Num_Weeks' in data or not 'Weeks_Skipped' in data or not 'Begin_Time' in data or not 'End_Time' in data:
+    if not 'Num_Weeks' in data or not 'Weeks_Skipped' in data or not 'Begin_Time' in data or not 'End_Time' in data or not 'id' in data:
       raise serializers.ValidationError('Invalid request')
     return data  
 
   class Meta:
     model = Date_Range
-    fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
+    fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped', 'id')
 
 
 class DeleteCardTimesSerializer(serializers.ListField):
@@ -200,7 +201,6 @@ class DeleteCardTimesSerializer(serializers.ListField):
 
 
 class UpdateCardTimesSerializer(serializers.Serializer):
-  #Edit dictionary field is key: data
   Edit = serializers.DictField(child = EditCardTimesSerializer(),)
   Add = serializers.ListField(child = CreateCardTimesSerializer(),)
   Delete = DeleteCardTimesSerializer()
@@ -293,7 +293,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       #Handle Edits:
 
       for key in validated_data['Times']['Edit']:
-        Date_Range.objects.filter(id = key).update(Begin_Time = validated_data['Times']['Edit'][key]['Begin_Time'], End_Time = validated_data['Times']['Edit'][key]['End_Time'], Num_Weeks =  validated_data['Times']['Edit'][key]['Num_Weeks'], Weeks_Skipped = validated_data['Times']['Edit'][key]['Weeks_Skipped']  )
+        Date_Range.objects.filter(id = validated_data['Times']['Edit'][key]['id']).update(Begin_Time = validated_data['Times']['Edit'][key]['Begin_Time'], End_Time = validated_data['Times']['Edit'][key]['End_Time'], Num_Weeks =  validated_data['Times']['Edit'][key]['Num_Weeks'], Weeks_Skipped = validated_data['Times']['Edit'][key]['Weeks_Skipped']  )
 
 
       #Handle Additions:
