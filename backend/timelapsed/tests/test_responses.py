@@ -688,13 +688,30 @@ class TestDateRangeResponses(APITestCase):
     first = self.client.post('/api/card/', {'Times': [{'Day' : 'Saturday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
     self.assertEqual(first.status_code, 400)    
 
-  def test_if_accepts_valid_put(self):
-    pass
-
   def test_if_accepts_put_without_Data(self):
-    pass
+
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
+
+    self.assertEqual(response.status_code, 200)
 
   def test_if_accepts_put_only_edits(self):
+
+    # begin = datetime.datetime(1999, 4, 14)
+    # begin_timed = datetime.time(4, 25)
+    # end_timed = datetime.time(7, 59)
+
+    # test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    # response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
+
+    # self.assertEqual(response.status_code, 200)
+
     pass
 
   def test_if_rejects_nonexistent_edits(self):

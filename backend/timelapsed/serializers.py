@@ -185,8 +185,10 @@ class EditCardTimesSerializer(serializers.ModelSerializer):
     model = Date_Range
     fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
 
+
 class DeleteCardTimesSerializer(serializers.ListField):
-  child = serializers.CharField()
+  child = serializers.PrimaryKeyRelatedField(queryset = Date_Range.objects.all(), )
+
 
 class UpdateCardTimesSerializer(serializers.Serializer):
   Edit = serializers.DictField(child = EditCardTimesSerializer(),)
@@ -268,7 +270,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
       temp.save()
 
-      res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
+    res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
 
     if 'Times' in validated_data:
 
@@ -292,7 +294,6 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         ids.append(a.id)
         
       Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
-
       res['Data']['Return_Times']= Return_Times
     
     return res
