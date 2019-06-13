@@ -662,17 +662,31 @@ class TestDateRangeResponses(APITestCase):
     self.assertEqual(first.status_code, 201)
 
   def test_if_rejects_incomplete_post(self):
-    
-    pass
-  
-  def test_if_post_rejects_times_dictionary(self): 
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    self.assertEqual(first.status_code, 400)    
+
   
   def test_if_post_rejects_empty_times(self):
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-  def test_if_accepts_post_without_data(self):
-    pass
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [] }, format = 'json') 
+    self.assertEqual(first.status_code, 400)    
+
+  def test_if_rejects_post_without_data(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Times': [{'Day' : 'Saturday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    self.assertEqual(first.status_code, 400)    
 
   def test_if_accepts_valid_put(self):
     pass

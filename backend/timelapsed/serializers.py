@@ -13,6 +13,7 @@ class CardListSerializer(serializers.ListField):
   child = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
 
 
+#### Users Serializers
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -26,9 +27,104 @@ class UsersSerializer(serializers.ModelSerializer):
     return super().create(validated_data)
 
 
+#### Topic Serializers
+
+class AddTopicSerializer(serializers.ModelSerializer):
+  Name = serializers.CharField()
+
+
+  def create(self, validated_data, user):
+    # first, find the proper position. We can just add from the previous highest position.
+    pos = Topic.objects.values('Position').filter(Email = user).order_by('-Position').first()
+    next_position = None
+    if pos == None:
+      next_position = 1
+    else:
+      next_position = pos['Position'] + 1
+    n = Topic.objects.create(Name = validated_data['Name'], Position = next_position, Email = Users.objects.get(Email = user))
+    return({'Data': {'id': n.id, 'Name': validated_data['Name'], 'Cards': [] }})
+
+  class Meta:
+    model = Topic
+    fields =  ('Name', )
+
+class DeleteTopicSerializer(serializers.ModelSerializer):
+  Empty = serializers.ReadOnlyField(required = False)
+
+  def delete(self, validated_data):
+    #Set this so that it deletes all of the cards inside of the topic first. 
+    get_object_or_404(Topic, id = validated_data).delete()
+    # temp = Topic.objects.get(id = validated_data).delete()
+    return
+
+  class Meta: 
+    model = Topic
+    fields = ('Empty',)
+
+    
+
+class EditTopicSerializer(serializers.ModelSerializer):
+  switchPosition= serializers.IntegerField(required = False)
+  Name = serializers.CharField(required = False)
+
+  def validate(self, data):
+    if not 'switchPosition' in data and not 'Name' in data:
+        raise serializers.ValidationError("One is required!.")
+    return data
+  
+  def update(self, validated_data, pk):
+
+    record = get_object_or_404(Topic, id = pk)
+    
+    #If we are only changing the name
+
+    def nameChange():
+      record.Name = validated_data['Name']
+      record.save()
+
+    def positionChange():
+      otherRecord = get_object_or_404(Topic, id = validated_data['switchPosition'])
+      otherRecord.Position, record.Position = record.Position, otherRecord.Position
+      record.save()
+      otherRecord.save()
+
+
+    if('Name' in validated_data and not 'switchPosition' in validated_data):
+      
+      nameChange()
+      return ({'Data': {'Name': record.Name}})
+
+    #If we are only changing position
+    if(not 'Name' in validated_data and 'switchPosition' in validated_data):
+      positionChange()
+      
+      return ({'Data': {'Position': record.Position}})
+
+    #If we are changing both
+    if('Name' in validated_data and 'switchPosition' in validated_data):
+      nameChange()
+      positionChange()
+
+      return ({'Data': {'Name': record.Name, 'Position': record.Position}})
+
+  class Meta:
+    model = Topic
+    fields = ('Name', 'switchPosition' )
+    extra_kwargs = {'switchPosition': {'write_only': True}}
+
+
+
+#### Card Serializers
+
+
+class CreateCardDataSerializer(serializers.ModelSerializer):
+  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
+
+  class Meta: 
+    model = Card
+    fields = ('Name', 'Description', 'Topic', )
 
 class CreateCardTimesSerializer(serializers.ModelSerializer):
-
 
   Day = serializers.CharField()
   Begin_Date = serializers.DateTimeField()
@@ -49,16 +145,48 @@ class CreateCardTimesSerializer(serializers.ModelSerializer):
     model = Date_Range
     fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
 
+
+
+class CreateCardSerializer(serializers.ModelSerializer):
+
+  Data = CreateCardDataSerializer()
+  Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False, allow_empty = False)
+
+  def create(self, validated_data, user):
+    info = validated_data['Data']
+
+
+    pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
+    if pos == None:
+      pos = 0
+    else :
+      pos = pos['Position']
+    n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
+    res = {'Data': {'Name': n.Name, 'Description': n.Description}}
+
+    if validated_data.get('Times'):
+      for times in validated_data['Times']:
+        ids = []
+        a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
+        ids.append(a.id)
+        res['Data'] = {'ids': ids}
+
+    res['Data']['id'] = n.id
+    return (res)
+
+  class Meta:
+    model = Card
+    fields = ('Data', 'Times')
+
+
 class EditCardTimesSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = Date_Range
     fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
 
-
 class DeleteCardTimesSerializer(serializers.ListField):
   child = serializers.CharField()
-
 
 class UpdateCardTimesSerializer(serializers.Serializer):
   Edit = serializers.DictField(child = EditCardTimesSerializer(),)
@@ -71,12 +199,6 @@ class UpdateCardTimesSerializer(serializers.Serializer):
     # fields = ('Delete',)
     exclude = ('Add', 'Edit')
 
-class CreateCardDataSerializer(serializers.ModelSerializer):
-  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
-
-  class Meta: 
-    model = Card
-    fields = ('Name', 'Description', 'Topic', )
 
 class UpdateCardDataSerializer(serializers.ModelSerializer):
   Switch_Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all(), required = False)
@@ -180,36 +302,6 @@ class UpdateCardSerializer(serializers.ModelSerializer):
     fields = ('Data', 'Times')
 
 
-class CreateCardSerializer(serializers.ModelSerializer):
-
-  Data = CreateCardDataSerializer()
-  Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False)
-
-  def create(self, validated_data, user):
-    info = validated_data['Data']
-
-
-    pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-    if pos == None:
-      pos = 0
-    else :
-      pos = pos['Position']
-    n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
-    res = {'Data': {'Name': n.Name, 'Description': n.Description}}
-
-    if validated_data.get('Times'):
-      for times in validated_data['Times']:
-        ids = []
-        a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
-        ids.append(a.id)
-        res['Data'] = {'ids': ids}
-
-    res['Data']['id'] = n.id
-    return (res)
-
-  class Meta:
-    model = Card
-    fields = ('Data', 'Times')
 
 class DeleteCardSerializer(serializers.ModelSerializer):
   def destroy(self, pk):
@@ -222,91 +314,6 @@ class DeleteCardSerializer(serializers.ModelSerializer):
     model = Card
     fields = ('id',)
 
-
-class AddTopicSerializer(serializers.ModelSerializer):
-  Name = serializers.CharField()
-
-
-  def create(self, validated_data, user):
-    # first, find the proper position. We can just add from the previous highest position.
-    pos = Topic.objects.values('Position').filter(Email = user).order_by('-Position').first()
-    next_position = None
-    if pos == None:
-      next_position = 1
-    else:
-      next_position = pos['Position'] + 1
-    n = Topic.objects.create(Name = validated_data['Name'], Position = next_position, Email = Users.objects.get(Email = user))
-    return({'Data': {'id': n.id, 'Name': validated_data['Name'], 'Cards': [] }})
-
-  class Meta:
-    model = Topic
-    fields =  ('Name', )
-
-
-
-class DeleteTopicSerializer(serializers.ModelSerializer):
-  Empty = serializers.ReadOnlyField(required = False)
-
-  def delete(self, validated_data):
-    #Set this so that it deletes all of the cards inside of the topic first. 
-    get_object_or_404(Topic, id = validated_data).delete()
-    # temp = Topic.objects.get(id = validated_data).delete()
-    return
-
-  class Meta: 
-    model = Topic
-    fields = ('Empty',)
-
-    
-
-class EditTopicSerializer(serializers.ModelSerializer):
-  switchPosition= serializers.IntegerField(required = False)
-  Name = serializers.CharField(required = False)
-
-  def validate(self, data):
-    if not 'switchPosition' in data and not 'Name' in data:
-        raise serializers.ValidationError("One is required!.")
-    return data
-  
-  def update(self, validated_data, pk):
-
-    record = get_object_or_404(Topic, id = pk)
-    
-    #If we are only changing the name
-
-    def nameChange():
-      record.Name = validated_data['Name']
-      record.save()
-
-    def positionChange():
-      otherRecord = get_object_or_404(Topic, id = validated_data['switchPosition'])
-      otherRecord.Position, record.Position = record.Position, otherRecord.Position
-      record.save()
-      otherRecord.save()
-
-
-    if('Name' in validated_data and not 'switchPosition' in validated_data):
-      
-      nameChange()
-      return ({'Data': {'Name': record.Name}})
-
-    #If we are only changing position
-    if(not 'Name' in validated_data and 'switchPosition' in validated_data):
-      positionChange()
-      
-      return ({'Data': {'Position': record.Position}})
-
-    #If we are changing both
-    if('Name' in validated_data and 'switchPosition' in validated_data):
-      nameChange()
-      positionChange()
-
-      return ({'Data': {'Name': record.Name, 'Position': record.Position}})
-
-  class Meta:
-    model = Topic
-    fields = ('Name', 'switchPosition' )
-    extra_kwargs = {'switchPosition': {'write_only': True}}
 
 
 class GetSubclassSerializer(serializers.ModelSerializer):
