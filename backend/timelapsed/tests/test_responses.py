@@ -10,6 +10,8 @@ import json
 
 from django.core.exceptions import ObjectDoesNotExist
 
+import datetime
+
 
 
 ### NOTE: MIGRATE TO get_object_or_404 when searching for an item in the serializers ###
@@ -623,6 +625,7 @@ class TestCardFunctionality(APITestCase):
 
 class TestDateRangeResponses(APITestCase):
   card_setup = 0
+  topic_id = 0  
 
   def setUp(self):
     #Runs before every test
@@ -637,7 +640,8 @@ class TestDateRangeResponses(APITestCase):
   def setUpTestData(cls):
     Users.objects.create(Email = 'test@test.com')
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
-    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'ModelsTest'), Email = Users.objects.get(Email = 'test@test.com'))
+    cls.topic_id = set_up_topic.id
+    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
     cls.card_id = card_setup.id
 
 
@@ -649,9 +653,16 @@ class TestDateRangeResponses(APITestCase):
     # End_Time = models.TimeField()      
 
   def test_if_accepts_valid_post(self):
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Saturday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    self.assertEqual(first.status_code, 201)
 
   def test_if_rejects_incomplete_post(self):
+    
     pass
   
   def test_if_post_rejects_times_dictionary(self): 
@@ -708,10 +719,48 @@ class TestDateRangeFunctionality(APITestCase):
   def setUpTestData(cls):
     Users.objects.create(Email = 'test@test.com')
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
-    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'ModelsTest'), Email = Users.objects.get(Email = 'test@test.com'))
+    card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
     cls.card_id = card_setup.id
 
-  
+  def test_if_day_creates_correctly_on_post(self):
+
+
+    pass
+  def test_if_begin_date_creates_correctly(self):
+    pass
+  def test_if_num_weeks_creates_correctly(self):
+    pass
+  def test_if_num_weeks_defaults_correctly(self):
+    pass
+  def test_if_weeks_skipped_creates_correctly(self):
+    pass
+  def test_if_weeks_skipped_defaults_correctly(self):
+    pass
+  def test_if_begin_time_creates_correctly(self):
+    pass
+  def test_if_end_time_creates_correctly(self):
+    pass
+  def test_if_begin_time_edits_correctly(self):
+    pass
+  def test_if_end_time_edits_correctly(self):
+    pass
+  def test_if_num_weeks_edits_correctly(self):
+    pass
+  def test_if_begin_date_rejects_edit(self):
+    #Might be better for responses
+    pass
+  def test_if_day_rejects_edit(self):
+    #Might be better for responses
+    pass
+  def test_if_times_add_in_put(self):
+    pass
+
+  def test_if_times_delete(self):
+    pass
+
+  def test_if_times_delete_when_card_deletes(self):
+    pass
+    
 
   
 

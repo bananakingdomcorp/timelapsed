@@ -29,9 +29,21 @@ class UsersSerializer(serializers.ModelSerializer):
 
 class CreateCardTimesSerializer(serializers.ModelSerializer):
 
-  
-  Begin_Date = serializers.DateField()
 
+  Day = serializers.CharField()
+  Begin_Date = serializers.DateTimeField()
+  Num_Weeks = serializers.IntegerField(required = False, )
+  Weeks_Skipped = serializers.IntegerField(required = False,)
+  Begin_Time = serializers.TimeField()
+  End_Time = serializers.TimeField()
+
+  def validate(self, data):
+    if not 'Day' in data or not 'Begin_Date' in data or not 'Begin_Time' in data or not 'End_Time' in data:
+      raise serializers.ValidationError('Invalid request')
+    valid_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    if data['Day'] not in valid_days:
+      raise serializers.ValidationError('Must Enter a valid day')
+    return data
 
   class Meta:
     model = Date_Range
