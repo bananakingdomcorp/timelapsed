@@ -11,7 +11,7 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 
 import datetime
-
+from django.utils import timezone
 
 
 ### NOTE: MIGRATE TO get_object_or_404 when searching for an item in the serializers ###
@@ -954,9 +954,23 @@ class TestDateRangeFunctionality(APITestCase):
     self.assertEqual(test.Day, 'Sunday' )
 
   def test_if_begin_date_creates_correctly(self):
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Begin_Date, begin )
+
+
   def test_if_num_weeks_creates_correctly(self):
     pass
+
+    
   def test_if_num_weeks_defaults_correctly(self):
     pass
   def test_if_weeks_skipped_creates_correctly(self):
