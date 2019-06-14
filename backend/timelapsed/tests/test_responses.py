@@ -903,19 +903,25 @@ class TestDateRangeResponses(APITestCase):
 
     self.assertEqual(response.status_code, 200)      
 
+  def test_rejects_if_performing_multiple_edits_on_the_same_id(self):
+    #These should raise a custom error, as our requests are broken. 
 
-  def test_if_rejects_edits_and_deletes_of_the_same_id(self):
+    pass
+  def test_rejects_if_performing_multiple_deletions_on_the_same_id(self):
+
+    pass
     
+  def test_if_rejects_edits_and_deletes_of_the_same_id(self):
+
 
     pass
   
 
 
 
-
-
 class TestDateRangeFunctionality(APITestCase):
   card_setup = 0
+  topic_id = 0  
 
   def setUp(self):
     #Runs before every test
@@ -930,13 +936,23 @@ class TestDateRangeFunctionality(APITestCase):
   def setUpTestData(cls):
     Users.objects.create(Email = 'test@test.com')
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.topic_id = set_up_topic.id
     card_setup = Card.objects.create(Name = 'Test', Description = 'Test', Position = 1,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
     cls.card_id = card_setup.id
 
   def test_if_day_creates_correctly_on_post(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
 
-    pass
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Day, 'Sunday' )
+
   def test_if_begin_date_creates_correctly(self):
     pass
   def test_if_num_weeks_creates_correctly(self):
