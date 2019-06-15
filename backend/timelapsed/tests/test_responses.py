@@ -968,22 +968,104 @@ class TestDateRangeFunctionality(APITestCase):
 
 
   def test_if_num_weeks_creates_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 1, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Num_Weeks, 1 )
+
+
+  def test_if_num_weeks_defaults_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Num_Weeks, 0 )
+
+
+
+  def test_if_weeks_skipped_creates_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 1, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Weeks_Skipped, 1 )
+
+
+  def test_if_weeks_skipped_defaults_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 1, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Weeks_Skipped, 0 )
+
+
+  def test_if_begin_time_creates_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 1, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.Begin_Time, begin_timed )
+
+  def test_if_end_time_creates_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'test', 'Topic': self.topic_id}, 
+    'Times': [{'Day' : 'Sunday', 'Begin_Date' : begin, 'Num_Weeks' : 1, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, ] }, format = 'json') 
+    first_id = decode_response(first)['Data']['ids'][0]
+
+    test = Date_Range.objects.get(id = first_id)
+
+    self.assertEqual(test.End_Time, end_timed )
+
+  def test_if_begin_time_edits_correctly(self):
+    # begin = datetime.datetime(1999, 4, 14)
+    # begin_timed = datetime.time(4, 25)
+    # end_timed = datetime.time(7, 59)
+
+    # change_begin_time = datetime.time(5, 19)
+
+    # test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    # response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : change_begin_time, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
+
+    # self.assertEqual(test.Begin_Time, change_begin_time)
     pass
 
-    
-  def test_if_num_weeks_defaults_correctly(self):
-    pass
-  def test_if_weeks_skipped_creates_correctly(self):
-    pass
-  def test_if_weeks_skipped_defaults_correctly(self):
-    pass
-  def test_if_begin_time_creates_correctly(self):
-    pass
-  def test_if_end_time_creates_correctly(self):
-    pass
-  def test_if_begin_time_edits_correctly(self):
-    pass
   def test_if_end_time_edits_correctly(self):
+
     pass
   def test_if_num_weeks_edits_correctly(self):
     pass

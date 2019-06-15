@@ -128,8 +128,8 @@ class CreateCardTimesSerializer(serializers.ModelSerializer):
 
   Day = serializers.CharField()
   Begin_Date = serializers.DateTimeField()
-  Num_Weeks = serializers.IntegerField(required = False, )
-  Weeks_Skipped = serializers.IntegerField(required = False,)
+  Num_Weeks = serializers.IntegerField(required = False, default = 0 )
+  Weeks_Skipped = serializers.IntegerField(required = False, default = 0)
   Begin_Time = serializers.TimeField()
   End_Time = serializers.TimeField()
 
