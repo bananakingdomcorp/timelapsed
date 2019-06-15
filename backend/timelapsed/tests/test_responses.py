@@ -903,17 +903,7 @@ class TestDateRangeResponses(APITestCase):
 
     self.assertEqual(response.status_code, 200)      
 
-  def test_rejects_if_performing_multiple_edits_on_the_same_id(self):
-    #These should raise a custom error, as our requests are broken. 
-
-    pass
-  def test_rejects_if_performing_multiple_deletions_on_the_same_id(self):
-
-    pass
-    
-  def test_if_rejects_edits_and_deletes_of_the_same_id(self):
-
-
+  def test_if_rejects_invalid_time(self):
     pass
   
 
@@ -1051,37 +1041,97 @@ class TestDateRangeFunctionality(APITestCase):
     self.assertEqual(test.End_Time, end_timed )
 
   def test_if_begin_time_edits_correctly(self):
-    # begin = datetime.datetime(1999, 4, 14)
-    # begin_timed = datetime.time(4, 25)
-    # end_timed = datetime.time(7, 59)
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-    # change_begin_time = datetime.time(5, 19)
+    change_begin_time = datetime.time(5, 19)
 
-    # test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
 
-    # response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : change_begin_time, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-    # self.assertEqual(test.Begin_Time, change_begin_time)
-    pass
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : change_begin_time, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
+
+    times =  decode_response(response)['Data']['Return_Times']
+
+    self.assertEqual(int(str.split(next(x['Begin_Time'] for x in times if x['id'] == test.id), ':' )[0]), 5)
+    self.assertEqual(int(str.split(next(x['Begin_Time'] for x in times if x['id'] == test.id), ':' )[1]), 19)
 
   def test_if_end_time_edits_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-    pass
+    change_end_time = datetime.time(12, 47)
+
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': change_end_time, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
+
+    times =  decode_response(response)['Data']['Return_Times']
+
+    self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[0]), 12)
+    self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[1]), 47)
+
+
   def test_if_num_weeks_edits_correctly(self):
-    pass
-  def test_if_begin_date_rejects_edit(self):
-    #Might be better for responses
-    pass
-  def test_if_day_rejects_edit(self):
-    #Might be better for responses
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 99, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
+
+    times =  decode_response(response)['Data']['Return_Times']
+
+    self.assertEqual(next(x['Num_Weeks'] for x in times if x['id'] == test.id), 99)
+
+
   def test_if_times_add_in_put(self):
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
+
+    times =  decode_response(response)['Data']['Return_Times']
+
+    self.assertEqual(len(times), 1)
+
+
+  def test_if_multiple_times_add_in_put(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
+
+    times =  decode_response(response)['Data']['Return_Times']
+
+    self.assertEqual(len(times), 2)
+
+
 
   def test_if_times_delete(self):
-    pass
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+
+    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
+
+    times =  decode_response(response)['Data']['Return_Times']
+
+    self.assertEqual(len(times), 0)
+
 
   def test_if_times_delete_when_card_deletes(self):
+    pass
+
+  def test_if_dates_return_in_proper_order(self):
     pass
     
 

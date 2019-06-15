@@ -293,7 +293,9 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       #Handle Edits:
 
       for key in validated_data['Times']['Edit']:
-        Date_Range.objects.filter(id = validated_data['Times']['Edit'][key]['id']).update(Begin_Time = validated_data['Times']['Edit'][key]['Begin_Time'], End_Time = validated_data['Times']['Edit'][key]['End_Time'], Num_Weeks =  validated_data['Times']['Edit'][key]['Num_Weeks'], Weeks_Skipped = validated_data['Times']['Edit'][key]['Weeks_Skipped']  )
+
+          
+        Date_Range.objects.filter(id = validated_data['Times']['Edit'][key]['id']).update(Begin_Time = validated_data['Times']['Edit'][key]['Begin_Time'], End_Time = validated_data['Times']['Edit'][key]['End_Time'], Num_Weeks =  validated_data['Times']['Edit'][key]['Num_Weeks'], Weeks_Skipped = validated_data['Times']['Edit'][key]['Weeks_Skipped'])
 
 
       #Handle Additions:
