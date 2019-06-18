@@ -13,6 +13,7 @@ class CardListSerializer(serializers.ListField):
   child = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
 
 
+#### Users Serializers
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -26,148 +27,7 @@ class UsersSerializer(serializers.ModelSerializer):
     return super().create(validated_data)
 
 
-
-class CreateCardTimesSerializer(serializers.ModelSerializer):
-  Begin_Date = serializers.DateField()
-
-
-  class Meta:
-    model = Date_Range
-    fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
-
-class EditCardTimesSerializer(serializers.ModelSerializer):
-  
-  class Meta:
-    model = Date_Range
-    fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped')
-
-
-class DeleteCardTimesSerializer(serializers.ListField):
-  child = serializers.CharField()
-
-
-class UpdateCardTimesSerializer(serializers.Serializer):
-  Edit = serializers.DictField(child = EditCardTimesSerializer(),)
-  Add = serializers.ListField(child = CreateCardTimesSerializer(),)
-  Delete = DeleteCardTimesSerializer()
-
-
-  class Meta:
-    model = Date_Range
-    # fields = ('Delete',)
-    exclude = ('Add', 'Edit')
-
-class CreateCardDataSerializer(serializers.ModelSerializer):
-  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
-  Position = serializers.IntegerField(required = False,)
-
-  class Meta: 
-    model = Card
-    fields = ('Name', 'Description', 'Topic', 'Position' )
-
-class UpdateCardSerializer(serializers.ModelSerializer):
-  Data = CreateCardDataSerializer()
-  Times = UpdateCardTimesSerializer(required = False,)
-
-  
-  def update(self, validated_data, pk, user):
-
-    info = validated_data['Data']
-    times = validated_data['Times']
-    temp = Card.objects.values('Topic', 'Position').filter(id = pk).first()
-
-    #If topic is the same. 
-    if temp['Topic'] == info['Topic'] :
-      #If Position has changed. 
-      if info['Position'] != -1:
-        #Find the position of the card to switch with. 
-        pos = Card.objects.values('Position').filter(id = info['Position']).first()
-        Card.objects.filter(id = info['Position']).update(Position = temp['Position'])
-        
-        Card.objects.filter(id = pk).update(Position = pos['Position'])
-    else :
-      #The topic has changed. 
-      pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-      #If there are no cards in the topic. 
-      if pos == None:
-        pos = 0
-      else :
-        pos = pos['Position']
-
-      Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'], Position = pos +1, Topic = info['Topic'])
-    
-    Card.objects.filter(id = pk).update(Description = info['Description'], Name = info['Name'])     
-
-    #Handle Deletions:
-
-    for key in times['Delete']:
-      Date_Range.objects.filter(id = key).delete()
-
-    #Handle Edits:
-
-    for key in times['Edit']:
-      Date_Range.objects.filter(id = key).update(Begin_Time = times['Edit'][key]['Begin_Time'], End_Time = times['Edit'][key]['End_Time'], Num_Weeks =  times['Edit'][key]['Num_Weeks'], Weeks_Skipped = times['Edit'][key]['Weeks_Skipped']  )
-
-
-    #Handle Additions:
-
-    for key in times['Add']:
-      ids = []
-      a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
-      ids.append(a.id)
-      
-    Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
-
-
-    return Return_Times
-
-  class Meta:
-    model = Card
-    fields = ('Data', 'Times')
-
-
-class CreateCardSerializer(serializers.ModelSerializer):
-
-  Data = CreateCardDataSerializer()
-  Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False)
-
-  def create(self, validated_data, user):
-    info = validated_data['Data']
-    pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
-    if pos == None:
-      pos = 0
-    else :
-      pos = pos['Position']
-    n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
-    res = {}
-
-    if validated_data.get('Times'):
-      
-      for times in validated_data['Times']:
-        ids = []
-        a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
-        ids.append(a.id)
-        res['Data'] = {'ids': ids}
-    res['Data']['id']= n.id
-    return (res)
-
-  class Meta:
-    model = Card
-    fields = ('Data', 'Times')
-
-class DeleteCardSerializer(serializers.ModelSerializer):
-  def destroy(self, pk):
-    #Delete any times associated with said card. 
-
-    Date_Range.objects.filter(Card_ID = Card.objects.get(id = pk)).delete()
-
-    Card.objects.get(id = pk).delete()
-    return 'Deleted'
-  
-  class Meta: 
-    model = Card
-    fields = ('id',)
-
+#### Topic Serializers
 
 class AddTopicSerializer(serializers.ModelSerializer):
   Name = serializers.CharField()
@@ -187,8 +47,6 @@ class AddTopicSerializer(serializers.ModelSerializer):
   class Meta:
     model = Topic
     fields =  ('Name', )
-
-
 
 class DeleteTopicSerializer(serializers.ModelSerializer):
   Empty = serializers.ReadOnlyField(required = False)
@@ -211,7 +69,7 @@ class EditTopicSerializer(serializers.ModelSerializer):
 
   def validate(self, data):
     if not 'switchPosition' in data and not 'Name' in data:
-        raise serializers.ValidationError("They are both required.")
+        raise serializers.ValidationError("One is required!.")
     return data
   
   def update(self, validated_data, pk):
@@ -253,6 +111,222 @@ class EditTopicSerializer(serializers.ModelSerializer):
     model = Topic
     fields = ('Name', 'switchPosition' )
     extra_kwargs = {'switchPosition': {'write_only': True}}
+
+
+
+#### Card Serializers
+
+
+class CreateCardDataSerializer(serializers.ModelSerializer):
+  Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all())
+
+  class Meta: 
+    model = Card
+    fields = ('Name', 'Description', 'Topic', )
+
+class CreateCardTimesSerializer(serializers.ModelSerializer):
+
+  Day = serializers.CharField()
+  Begin_Date = serializers.DateTimeField()
+  Num_Weeks = serializers.IntegerField(required = False, default = 0 )
+  Weeks_Skipped = serializers.IntegerField(required = False, default = 0)
+  Begin_Time = serializers.TimeField()
+  End_Time = serializers.TimeField()
+
+  def validate(self, data):
+    if not 'Day' in data or not 'Begin_Date' in data or not 'Begin_Time' in data or not 'End_Time' in data:
+      raise serializers.ValidationError('Invalid request')
+    valid_days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    if data['Day'] not in valid_days:
+      raise serializers.ValidationError('Must Enter a valid day')
+    return data
+
+  class Meta:
+    model = Date_Range
+    fields = ('Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time', )
+
+
+
+class CreateCardSerializer(serializers.ModelSerializer):
+
+  Data = CreateCardDataSerializer()
+  Times = serializers.ListField(child=CreateCardTimesSerializer(), required = False, allow_empty = False)
+
+  def create(self, validated_data, user):
+    info = validated_data['Data']
+
+
+    pos =  Card.objects.values('Position').filter(Topic = info['Topic']).order_by('-Position').first()
+    if pos == None:
+      pos = 0
+    else :
+      pos = pos['Position']
+    n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
+    res = {'Data': {'Name': n.Name, 'Description': n.Description}}
+
+    if validated_data.get('Times'):
+      for times in validated_data['Times']:
+        ids = []
+        a = Date_Range.objects.create(Day = times['Day'], Begin_Date = times['Begin_Date'], Num_Weeks = times['Num_Weeks'], Weeks_Skipped = times['Weeks_Skipped'], Begin_Time = times['Begin_Time'], End_Time = times['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = n.id) )
+        ids.append(a.id)
+        res['Data'] = {'ids': ids}
+
+    res['Data']['id'] = n.id
+    return (res)
+
+  class Meta:
+    model = Card
+    fields = ('Data', 'Times')
+
+
+class EditCardTimesSerializer(serializers.ModelSerializer):
+  Num_Weeks = serializers.IntegerField()
+  Weeks_Skipped = serializers.IntegerField()
+  Begin_Time = serializers.TimeField()
+  End_Time = serializers.TimeField()  
+  id = serializers.PrimaryKeyRelatedField(queryset = Date_Range.objects.all(),)
+
+  def validate(self, data):
+    if not 'Num_Weeks' in data or not 'Weeks_Skipped' in data or not 'Begin_Time' in data or not 'End_Time' in data or not 'id' in data:
+      raise serializers.ValidationError('Invalid request')
+    return data  
+
+  class Meta:
+    model = Date_Range
+    fields = ('Begin_Time', 'End_Time', 'Num_Weeks', 'Weeks_Skipped', 'id')
+
+
+class DeleteCardTimesSerializer(serializers.ListField):
+  child = serializers.PrimaryKeyRelatedField(queryset = Date_Range.objects.all(), )
+
+
+class UpdateCardTimesSerializer(serializers.Serializer):
+  Edit = serializers.DictField(child = EditCardTimesSerializer(),)
+  Add = serializers.ListField(child = CreateCardTimesSerializer(),)
+  Delete = DeleteCardTimesSerializer()
+
+
+  class Meta:
+    model = Date_Range
+    # fields = ('Delete',)
+    exclude = ('Add', 'Edit')
+
+
+class UpdateCardDataSerializer(serializers.ModelSerializer):
+  Switch_Topic = serializers.PrimaryKeyRelatedField(queryset = Topic.objects.all(), required = False)
+  Switch_Position = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), required = False)
+  Description = serializers.CharField(required = False,)
+  Name = serializers.CharField(required = False,)
+
+  def validate(self, data):
+    if not 'Name' in data and not 'Description' in data and not 'Switch_Topic' in data and not 'Switch_Position' in data:
+        raise serializers.ValidationError("Data cannot be empty.")
+    return data
+
+  class Meta: 
+    model = Card
+    fields = ('Name', 'Description', 'Switch_Topic', 'Switch_Position' )
+
+
+class UpdateCardSerializer(serializers.ModelSerializer):
+  Data = UpdateCardDataSerializer(required = False)
+  Times = UpdateCardTimesSerializer(required = False,)
+
+  def validate(self, data):
+    if not 'Data' in data and not 'Times' in data:
+        raise serializers.ValidationError("Either Data or Times are required.")
+    return data
+  
+  def update(self, validated_data, pk, user):
+    
+    temp =  get_object_or_404(Card, id = pk)
+    res = {}
+
+    if 'Data' in validated_data:
+      
+      #If there is a topic change. 
+
+      if 'Switch_Topic' in validated_data['Data']:
+
+        pos =  Card.objects.values('Position').filter(Topic = validated_data['Data']['Switch_Topic']).order_by('-Position').first()
+        #If there are no cards in the topic. 
+        if pos == None:
+          pos = 0
+        else :
+          pos = pos['Position'] +1        
+        Topic_Switch = Topic.objects.get(id = validated_data['Data']['Switch_Topic'])
+        temp.Topic = Topic_Switch
+        temp.Position = pos
+
+      #If there is a position change. 
+      
+      if 'Switch_Position' in validated_data['Data']:
+
+        switch = Card.objects.get(id = validated_data['Data']['Switch_Position'])
+        switch.Position, temp.Position = temp.Position, switch.Position
+        switch.save()
+
+        pass
+
+      if 'Name' in validated_data['Data']:
+        
+        temp.Name = validated_data['Data']['Name']
+      
+      if 'Description' in validated_data['Data']:
+
+        temp.Description = validated_data['Data']['Description']
+
+
+
+      temp.save()
+
+    res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
+
+    if 'Times' in validated_data:
+
+
+    #Handle Deletions:
+
+      for key in validated_data['Times']['Delete']:
+        Date_Range.objects.filter(id = key).delete()
+
+      #Handle Edits:
+
+      for key in validated_data['Times']['Edit']:
+
+          
+        Date_Range.objects.filter(id = validated_data['Times']['Edit'][key]['id']).update(Begin_Time = validated_data['Times']['Edit'][key]['Begin_Time'], End_Time = validated_data['Times']['Edit'][key]['End_Time'], Num_Weeks =  validated_data['Times']['Edit'][key]['Num_Weeks'], Weeks_Skipped = validated_data['Times']['Edit'][key]['Weeks_Skipped'])
+
+
+      #Handle Additions:
+
+      for key in validated_data['Times']['Add']:
+        ids = []
+        a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
+        ids.append(a.id)
+        
+      Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
+      res['Data']['Return_Times']= Return_Times
+    
+    return res
+
+  class Meta:
+    model = Card
+    fields = ('Data', 'Times')
+
+
+
+class DeleteCardSerializer(serializers.ModelSerializer):
+  def destroy(self, pk):
+    #Delete any times associated with said card. 
+    temp = get_object_or_404(Card, id = pk)
+    temp.delete()
+    return 'Deleted'
+  
+  class Meta: 
+    model = Card
+    fields = ('id',)
+
 
 
 class GetSubclassSerializer(serializers.ModelSerializer):

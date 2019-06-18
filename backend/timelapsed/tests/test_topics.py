@@ -10,9 +10,14 @@ import json
 
 from django.core.exceptions import ObjectDoesNotExist
 
+import datetime
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
 
-### NOTE: MIGRATE TO get_object_or_404 when searching for an item in the serializers ###
+
+
 
 ## Use decode_response do get object payload ##
 
@@ -21,45 +26,29 @@ def decode_response(res):
   return json.loads(d)
 
 
-class TestUsersResponses(APITestCase):
+class TopicModelTest(TestCase):
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+
+  def test_succeeds_with_proper_information(self):
+    Topic.objects.create(Name = 'first', Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
+    data = Topic.objects.values('Name', 'Position', 'Email').get(Name = 'first', Position = 1)
+    self.assertEquals(data['Name'], 'first')
+    self.assertEquals(data['Position'], 1)
+    self.assertEquals(data['Email'], 'test@test.com' )
 
 
-  def setUp(self):
-    #Runs before every test
+  def test_fails_when_incomplete(self):
 
-    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
-    user = User.objects.create_user('test@test.com', 'test@test.com')
-    self.client.force_authenticate(user)
-    ######################################################
+    with self.assertRaises(ValidationError):
+      Topic.objects.create(Position = 1, Email = Users.objects.get(Email = 'test@test.com'))
 
 
-  def tearDown(self):
-    #Runs after every test
-    pass
 
-  def test_if_rejects_get(self):
-    response = self.client.get('/api/user/')
-    self.assertEqual(response.status_code, 405)
-  
-  def test_if_rejects_put(self):
-    response = self.client.put('/api/user/')
-    self.assertEqual(response.status_code, 405)
 
-  def test_if_rejects_delete(self):
-    response = self.client.delete('/api/user/')
-    self.assertEqual(response.status_code, 405)
 
-  def test_if_accepts_post(self):
-    response = self.client.post('/api/user/', {'Email' : 'Test@test.com'})
-    self.assertEqual(response.status_code, 201)
 
-  def test_if_returns_200_when_valid(self):
-    Users.objects.create(Email = 'Test@test.com')
-    self.client.post('/api/user/', {'Email' : 'Test@test.com'}, format = 'json')    
-    response = self.client.post('/api/user/', {'Email' : 'Test@test.com'}, format = 'json')
-    self.assertEqual(response.status_code, 200)
-
-    ### The services response that we get here is found in test_services.py
 
 class TestTopicResponses(APITestCase):
 
@@ -285,105 +274,3 @@ class TestTopicFunctionality(APITestCase):
     self.client.put(f'/api/topic/{second_id}/', {'Name': 'First'})
     
     self.assertEqual(Topic.objects.get(id = decode_response(first)['Data']['id']).Name, Topic.objects.get(id = second_id).Name  )
-
-### Add test to ensure that all cards delete when a topic deletes. 
-
-
-
-class TestCardResponses(APITestCase):
-
-  # This class tests our post responses without considering our date/times. Use the date_range classes for that. 
-
-  topic_id = 0
-
-  def setUp(self):
-    #Runs before every test
-
-    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
-    user = User.objects.create_user('test@test.com', 'test@test.com')
-    self.client.force_authenticate(user)
-    ######################################################
-
-
-  @classmethod
-  def setUpTestData(cls):
-    Users.objects.create(Email = 'test@test.com')
-    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
-    cls.topic_id = set_up_topic.id
-
-  def test_for_topic_setup(self):
-    #Checks to make sure a topic ID was added
-    self.assertNotEqual(self.topic_id, 0)
-
-  def test_if_rejects_get(self):
-    pass
-  
-  def test_if_accepts_post(self):
-    pass
-
-  def test_if_rejects_Empty_post(self):
-    pass
-  
-  def test_if_rejects_wrong_post_name(self):
-    pass
-
-  def test_if_post_rejects_invalid_topic(self):
-    pass
-
-  def test_if_accepts_put(self):
-    pass
-
-  def test_if_rejects_empty_put(self):
-    pass
-
-  def test_if_put_rejects_invalid_id(self):
-    pass
-
-  def test_if_put_rejects_invalid_topic(self):
-    pass
-
-  def test_if_put_rejects_invalid_position(self):
-    pass
-  
-  def test_if_put_rejects_own_topic(self):
-    pass
-  
-  def test_if_put_rejects_own_position(self):
-    pass
-  
-  def test_if_accepts_delete(self):
-    pass
-
-  def test_if_delete_rejects_invalid_id(self):
-    pass
-
-
-class TestCardFunctionality(APITestCase):
-  topic_id = 0
-
-  def setUp(self):
-    #Runs before every test
-
-    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
-    user = User.objects.create_user('test@test.com', 'test@test.com')
-    self.client.force_authenticate(user)
-    ######################################################
-
-
-  @classmethod
-  def setUpTestData(cls):
-    Users.objects.create(Email = 'test@test.com')
-    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
-    cls.topic_id = set_up_topic.id
-
-  def test_for_topic_setup(self):
-    #Checks to make sure a topic ID was added
-    self.assertNotEqual(self.topic_id, 0)
-
-
-
-
-
-  # Add under cards. 
-  # def test_if_cards_delete_when_topic_deletes(self):
-  #   pass
