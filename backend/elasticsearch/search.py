@@ -8,6 +8,8 @@ from elasticsearch_dsl import Document, Date, Nested, Integer, Boolean, \
     analyzer, InnerDoc, Completion, Keyword, Text
 import datetime
 
+print('yo')
+
 connections.create_connection(alias='elastic_search', hosts=['localhost'], timeout=60)
 
 client = Elasticsearch()
@@ -34,4 +36,7 @@ class Card(Document):
 
   def save(self, ** kwargs):
       return super().save(** kwargs)
+
+
+Card.init()
 

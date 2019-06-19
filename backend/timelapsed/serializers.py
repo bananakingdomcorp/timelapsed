@@ -7,6 +7,7 @@ from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 
+
 class CardListSerializer(serializers.ListField):
 #Just a generic serializer for any lists of card ID's 
 
