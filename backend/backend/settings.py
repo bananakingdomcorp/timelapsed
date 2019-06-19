@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 
     #Apps
     'timelapsed',
-    'elasticsearch',
+    'searchapp',
 ]
 
 

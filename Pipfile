@@ -40,6 +40,7 @@ django-rest-framework-social-oauth2 = "*"
 elasticsearch-dsl = "*"
 django-elasticsearch-dsl = "*"
 django-elasticsearch-dsl-drf = "*"
+elasticsearch = "*"
 
 [requires]
 python_version = "3.6"

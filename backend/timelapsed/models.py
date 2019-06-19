@@ -109,7 +109,6 @@ class Date_Range(models.Model):
     def get_update_url(self):
         return reverse('timelapsed_daterange_update', args=(self.pk,))
 
-
 class Card(models.Model):
 
     # Fields
