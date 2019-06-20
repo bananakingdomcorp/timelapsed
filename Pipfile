@@ -37,10 +37,8 @@ wrapt = "*"
 django-braces = "*"
 django-oauth-toolkit = "*"
 django-rest-framework-social-oauth2 = "*"
-elasticsearch-dsl = "*"
-django-elasticsearch-dsl = "*"
-django-elasticsearch-dsl-drf = "*"
 elasticsearch = "*"
+elasticsearch-dsl = "*"
 
 [requires]
 python_version = "3.6"

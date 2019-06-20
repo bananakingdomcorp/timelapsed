@@ -6,6 +6,7 @@ from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships
 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
+from .search import *
 
 
 class CardListSerializer(serializers.ListField):
