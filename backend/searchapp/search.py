@@ -4,10 +4,10 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Document, Date, Nested, Integer, Boolean, analyzer, InnerDoc, Completion, Keyword, Text, Index,  connections, Search
 import datetime
 
-connections.create_connection(alias='default', hosts=['localhost'])
+connections.create_connection(alias='default', hosts=['localhost'], timeout = 60)
 
 
-class Card(Document):
+class ElasticSearchCard(Document):
   id = Integer()
   Name = Text()
   Name_Suggest = Completion()
@@ -22,9 +22,9 @@ class Card(Document):
   )
 
   class Index:
-     name = 'Timelapsed'
+     name = 'timelapsed'
 
   def save(self, ** kwargs):
       return super().save(** kwargs)
 
-Card.init()
+ElasticSearchCard.init()
