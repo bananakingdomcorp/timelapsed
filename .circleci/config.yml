@@ -11,13 +11,13 @@ jobs: # A basic unit of work in a run
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: timelapsed_test
-      - image: docker.elastic.co/elasticsearch/elasticsearch:6.8.0
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
         environment:
           - cluster.name: es-test-cluster
           - xpack.security.enabled: false
           - transport.host: localhost
           - network.host: 127.0.0.1
-          - http.port: 9250
+          - http.port: 9200
           - discovery.type: single-node
 
     steps: # steps that comprise the `build` job
@@ -29,7 +29,7 @@ jobs: # A basic unit of work in a run
             DOCKERIZE_VERSION: v0.3.0
       - run:
           name: Wait for db
-          command: dockerize -wait tcp://localhost:9250 -timeout 1m      
+          command: dockerize -wait tcp://localhost:9200 -timeout 1m      
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
       - restore_cache:
