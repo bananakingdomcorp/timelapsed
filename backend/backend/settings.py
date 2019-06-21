@@ -48,14 +48,12 @@ INSTALLED_APPS = [
     'rest_framework_social_oauth2',
     'corsheaders',
     'rest_framework',
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
     'social_django',
 
 
     #Apps
     'timelapsed',
-    'elastic_search'
+    'searchapp',
 ]
 
 

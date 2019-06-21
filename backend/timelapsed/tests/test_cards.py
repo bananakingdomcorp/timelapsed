@@ -13,7 +13,6 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
 
 
 ## Use decode_response do get object payload ##
@@ -372,3 +371,5 @@ class TestCardFunctionality(APITestCase):
 
     with self.assertRaises(ObjectDoesNotExist):
       Card.objects.get(id = first_id)
+
+
