@@ -34,8 +34,6 @@ INSTALLED_APPS = [
     'rest_framework_social_oauth2',
     'corsheaders',
     'rest_framework',
-    # 'django_elasticsearch_dsl',
-    # 'django_elasticsearch_dsl_drf',
     'social_django',
 
 
@@ -129,6 +127,13 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
+}
+
+
+ELASTICSEARCH_DSL = {
+    'test': {
+        'hosts': 'elasticsearch:9200'
+    },
 }
 
 # Password validation

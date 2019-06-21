@@ -28,4 +28,9 @@ class ElasticSearchCard(Document):
   def save(self, ** kwargs):
       return super().save(** kwargs)
 
+  def delete(self, ** kwargs):
+
+    # Fix me. 
+      return super().delete(** kwargs)
+
 ElasticSearchCard.init()

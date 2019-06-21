@@ -327,7 +327,9 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
 class DeleteCardSerializer(serializers.ModelSerializer):
   def destroy(self, pk):
-    #Delete any times associated with said card. 
+    #Deletes any times associated with said card via cascade. 
+    # search.ElasticSearchCard.delete(id = pk)
+
     temp = get_object_or_404(Card, id = pk)
     temp.delete()
     return 'Deleted'
