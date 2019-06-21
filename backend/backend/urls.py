@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from timelapsed import views
-from searchapp import search
 
 router = routers.DefaultRouter()    
 

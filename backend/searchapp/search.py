@@ -7,8 +7,9 @@ import datetime
 connections.create_connection(alias='default', hosts=['localhost'], timeout = 60)
 
 
+#### NOTE: ELASTICSEARCH ID SHOULD BE THE SAME AS THE ID USED BY POSTGRES ####
+
 class ElasticSearchCard(Document):
-  id = Integer()
   Name = Text()
   Name_Suggest = Completion()
   Description = Text()

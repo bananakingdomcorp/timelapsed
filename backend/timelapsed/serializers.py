@@ -6,6 +6,7 @@ from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships
 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
+from searchapp import search
 
 
 class CardListSerializer(serializers.ListField):
@@ -164,6 +165,14 @@ class CreateCardSerializer(serializers.ModelSerializer):
       pos = pos['Position']
     n =  Card.objects.create(Name = info['Name'], Description = info['Description'], Position = pos +1 , Email = Users.objects.get(Email = user), Topic = Topic.objects.get(id = info['Topic']))
     res = {'Data': {'Name': n.Name, 'Description': n.Description}}
+
+##Right now creating elasticsearch card before we create our times. We'll see how that works. 
+
+
+    esCard =  search.ElasticSearchCard(Name = n.Name, Description = n.Description, Topic = Topic.objects.get(id = info['Topic'].Name))
+    esCard.meta.id = n.id
+    esCard.save()
+
 
     if validated_data.get('Times'):
       for times in validated_data['Times']:
