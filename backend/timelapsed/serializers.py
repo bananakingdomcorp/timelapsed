@@ -168,8 +168,7 @@ class CreateCardSerializer(serializers.ModelSerializer):
 
 ##Right now creating elasticsearch card before we create our times. We'll see how that works. 
 
-
-    esCard =  search.ElasticSearchCard(Name = n.Name, Description = n.Description, Topic = Topic.objects.get(id = info['Topic'].Name))
+    esCard =  search.ElasticSearchCard(Name = n.Name, Description = n.Description, Topic = Topic.objects.get(id = info['Topic']).Name)
     esCard.meta.id = n.id
     esCard.save()
 

@@ -14,6 +14,7 @@ import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
+from searchapp import search
 
 
 ## Use decode_response do get object payload ##
@@ -372,3 +373,22 @@ class TestCardFunctionality(APITestCase):
 
     with self.assertRaises(ObjectDoesNotExist):
       Card.objects.get(id = first_id)
+
+
+class TestCardElasticSearch(APITestCase):
+  topic_id = 0
+
+  def setUp(self):
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    ######################################################
+
+
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.topic_id = set_up_topic.id
