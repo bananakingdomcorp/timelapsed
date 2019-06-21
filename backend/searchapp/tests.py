@@ -43,17 +43,31 @@ class TestCardElasticSearch(APITestCase):
     cls.topic_id = set_up_topic.id
 
   def test_if_creates_on_id(self):
+
+
     pass
   def test_if_creates_properly(self):
+    
+    
     pass
   def test_if_creates_suggestions_for_name(self):
+    
+    
     pass
   def test_if_creates_suggestions_for_descriptio(self):
+    
+    
     pass
   def test_if_creates_suggestions_for_topic(self):
+    
+    
     pass
   def test_if_deletes_properly(self):
+    
+    
     pass
   def test_if_updates_properly(self):
+    
+    
     pass
   
