@@ -16,6 +16,9 @@ from django.core.exceptions import ValidationError
 # Create your tests here.
 
 
+## Not really sure how to test ES at this point, maybe for later. 
+
+
 ## Use decode_response do get object payload ##
 
 def decode_response(res):
