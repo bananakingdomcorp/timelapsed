@@ -52,6 +52,14 @@ class TestSubclassResponses(APITestCase):
     pass
   def test_if_get_accepts_valid_subclass_id(self):
     pass
+  def test_if_accepts_valid_post(self):
+    pass
+  def test_if_rejects_without_head(self):
+    pass
+  def test_if_accepts_with_only_head(self):
+    pass
+  def tet_if_rejects_with_invalid_head(self):
+    pass
   
 
 
