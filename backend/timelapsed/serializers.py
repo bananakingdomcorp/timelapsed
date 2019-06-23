@@ -291,6 +291,10 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
     res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
 
+    change = search.ElasticSearchCard.get(id = pk)   
+    change.update(Name = temp.Name, Description = temp.Description, Topic = temp.Topic.Name )
+
+
     if 'Times' in validated_data:
 
 
@@ -328,10 +332,13 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 class DeleteCardSerializer(serializers.ModelSerializer):
   def destroy(self, pk):
     #Deletes any times associated with said card via cascade. 
-    # search.ElasticSearchCard.delete(id = pk)
 
     temp = get_object_or_404(Card, id = pk)
     temp.delete()
+
+    remove = search.ElasticSearchCard.get(id = pk)
+    remove.delete()
+
     return 'Deleted'
   
   class Meta: 
@@ -341,6 +348,7 @@ class DeleteCardSerializer(serializers.ModelSerializer):
 
 
 class GetSubclassSerializer(serializers.ModelSerializer):
+  id = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all())
 
   def get(self, validated_data):
 
@@ -359,7 +367,7 @@ class GetSubclassSerializer(serializers.ModelSerializer):
 class CreateSubclassSerializer(serializers.ModelSerializer):
 
   Head = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
-  Cards = serializers.ListField(child = CardListSerializer()) 
+  Cards = serializers.ListField(child = CardListSerializer(), required = False) 
 
 
   def create(self, validated_data, user):
