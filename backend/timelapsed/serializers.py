@@ -291,8 +291,8 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
     res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
 
-    # change = search.ElasticSearchCard.get(id = pk)   
-    # change.update(Name = temp.Name, Description = temp.Description, Topic = temp.Topic.Name )
+    change = search.ElasticSearchCard.get(id = pk)   
+    change.update(Name = temp.Name, Description = temp.Description, Topic = temp.Topic.Name )
 
 
     if 'Times' in validated_data:
@@ -335,7 +335,7 @@ class DeleteCardSerializer(serializers.ModelSerializer):
 
     temp = get_object_or_404(Card, id = pk)
     temp.delete()
-    
+
     remove = search.ElasticSearchCard.get(id = pk)
     remove.delete()
 
