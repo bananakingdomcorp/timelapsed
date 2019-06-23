@@ -48,6 +48,12 @@ class TestSubclassResponses(APITestCase):
     child_setup = Card.objects.create(Name = 'First Child', Description = 'First Child', Position = 2,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
     cls.first_child_id = child_setup.id
 
+  def test_if_get_rejects_invalid_subclass_id(self):
+    pass
+  def test_if_get_accepts_valid_subclass_id(self):
+    pass
+  
+
 
 
 

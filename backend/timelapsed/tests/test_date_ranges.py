@@ -163,7 +163,7 @@ class DateRangeModelTest(TestCase):
 
 
 class TestDateRangeResponses(APITestCase):
-  card_setup = 0
+  card_id = 0
   topic_id = 0  
 
   def setUp(self):
@@ -686,6 +686,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
     test_card_id =  decode_response(test_card)['Data']['id']
+    
   
     test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = test_card_id) )
 

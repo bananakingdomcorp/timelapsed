@@ -348,6 +348,7 @@ class DeleteCardSerializer(serializers.ModelSerializer):
 
 
 class GetSubclassSerializer(serializers.ModelSerializer):
+  id = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all())
 
   def get(self, validated_data):
 
