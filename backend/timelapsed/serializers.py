@@ -367,7 +367,7 @@ class GetSubclassSerializer(serializers.ModelSerializer):
 class CreateSubclassSerializer(serializers.ModelSerializer):
 
   Head = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
-  Cards = serializers.ListField(child = CardListSerializer()) 
+  Cards = serializers.ListField(child = CardListSerializer(), required = False) 
 
 
   def create(self, validated_data, user):

@@ -407,9 +407,12 @@ class TestDateRangeResponses(APITestCase):
     begin_timed = datetime.time(4, 25)
     end_timed = datetime.time(7, 59)
 
-    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = self.card_id) )
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']
 
-    response = self.client.put(f'/api/card/{self.card_id}/', {'Times': 
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = test_card_id)  )
+
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': 
     {'Edit' : {}, 
     'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 
     'Delete' : [test.id]} }, format = 'json')
