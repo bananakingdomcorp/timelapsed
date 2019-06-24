@@ -387,8 +387,8 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
 
 class EditSubclassSerializer(serializers.ModelSerializer):
 
-  Add = serializers.ListField(child = CardListSerializer()) 
-  Remove = serializers.ListField(child = CardListSerializer()) 
+  Add = serializers.ListField(child = CardListSerializer(), required = False) 
+  Remove = serializers.ListField(child = CardListSerializer(), required = False) 
 
   # Only edits from the perspective of the parent. There is both addition and removal. 
 
