@@ -107,6 +107,33 @@ class TestSubclassFunctionality(APITestCase):
     child_setup = Card.objects.create(Name = 'First Child', Description = 'First Child', Position = 2,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
     cls.first_child_id = child_setup.id
 
+  def test_if_correctly_returns_entire_subclass(self):
+    pass
+  def test_if_can_find_entire_subclass_from_child(self):
+    pass
+  def test_if_can_find_entire_subclass_from_head(self):
+    pass
+  def test_if_correctly_creates_head(self):
+    pass
+  def test_if_correctly_creates_children(self):
+    pass
+  def test_if_correctly_adds_on_put(self):
+    pass
+  def test_if_correctly_deletes_on_put(self):
+    pass
+  def test_if_fails_when_attempting_to_delete_head(self):
+    pass
+  def test_if_accepts_add_on_child_already_in_subclass(self):
+    pass
+  def test_if_correctly_deletes(self):
+    pass
+  def test_if_correctly_returns_subclass_after_deletion(self):
+    pass
+  
+
+  
+  
+
 
   
 
