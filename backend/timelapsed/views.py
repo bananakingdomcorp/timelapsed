@@ -132,11 +132,10 @@ class SubclassesView(viewsets.ModelViewSet):
   http_method_names = ['get', 'post', 'put', 'delete' ]
 
   def retrieve(self, request, pk):
-    print(request, pk, 'ahfsdjaiosdjlk')
     serializer = GetSubclassSerializer(data = request.data)
     if serializer.is_valid():
-      found = serializer.get(serializer.data)
-    return Response(found, 200)
+      found = serializer.get(pk)
+      return Response(found, 200)
 
     print(serializer.errors)
 
@@ -147,7 +146,7 @@ class SubclassesView(viewsets.ModelViewSet):
     serializer = CreateSubclassSerializer(data = request.data)
     if serializer.is_valid():
       created = serializer.create(serializer.data, request.user.email)
-    return Response(created, 201)
+      return Response(created, 201)
     
     print(serializer.errors)
 
@@ -158,7 +157,7 @@ class SubclassesView(viewsets.ModelViewSet):
     serializer = EditSubclassSerializer(data = request.data)
     if serializer.is_valid():
       serializer.update(serializer.data, pk, request.user.email)
-    return Response('Updated', 200)
+      return Response('Updated', 200)
 
     print(serializer.errors)
 
@@ -170,7 +169,7 @@ class SubclassesView(viewsets.ModelViewSet):
     serializer = DeleteSubclassSerializer(data = request.data)
     if serializer.is_valid():
       serializer.destroy(pk)
-    return Response('Deleted', 204)
+      return Response('Deleted', 204)
 
     print(serializer.errors)
 

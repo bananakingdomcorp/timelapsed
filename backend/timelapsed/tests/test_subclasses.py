@@ -51,25 +51,29 @@ class TestSubclassResponses(APITestCase):
   def test_if_get_rejects_invalid_subclass_id(self):
     response =  self.client.get('/api/subclass/8000/')
 
-    self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.status_code, 404)
 
   def test_if_get_accepts_valid_subclass_id(self):
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.get(f'/api/subclass/{test.id}/')
+
+    self.assertEqual(response.status_code, 200)
 
 
+  def test_if_accepts_valid_post(self):
 
-   
-   
-    pass
-  def test_if_post_accepts_valid_post(self):
+    response = self.client.post('/api/subclass/', {'Head': self.parent_id})
 
+    self.assertEqual(response.status_code, 201)
 
-
-
-    pass
   def test_if_post_rejects_without_head(self):
-    pass
-  def test_if_post_accepts_with_only_head(self):
-    pass
+
+    response = self.client.post('/api/subclass/', {'Cards': self.first_child_id})
+
+    self.assertEqual(response.status_code, 400)
+
+
   def test_if_post_rejects_with_invalid_head(self):
     pass
   def test_if_post_rejects_with_invalid_children(self):
