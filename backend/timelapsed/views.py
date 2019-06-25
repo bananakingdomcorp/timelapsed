@@ -131,7 +131,8 @@ class SubclassesView(viewsets.ModelViewSet):
   permission_classes = (IsAuthenticated, )
   http_method_names = ['get', 'post', 'put', 'delete' ]
 
-  def get(self, request):
+  def retrieve(self, request, pk):
+    print(request, pk, 'ahfsdjaiosdjlk')
     serializer = GetSubclassSerializer(data = request.data)
     if serializer.is_valid():
       found = serializer.get(serializer.data)
