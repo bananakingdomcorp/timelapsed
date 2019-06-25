@@ -347,21 +347,17 @@ class DeleteCardSerializer(serializers.ModelSerializer):
 
 
 
-class GetSubclassSerializer(serializers.ModelSerializer):
-  id = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all())
+class GetSubclassSerializer(serializers.Serializer):
 
-  def get(self, validated_data):
+  def get(self, pk):
+    
+    sub = get_object_or_404(Subclass,id =  pk)
 
-    res = [i for i in Subclass_Relationships.objects.values('Child_ID',).filter(Subclass = Subclass.objects.get(id = validated_data['id'])) ]
+    res = [i for i in Subclass_Relationships.objects.values('Child_ID',).filter(Subclass = sub) ]
 
 # Returns all of the Card ID's in a certain subclass. 
 
     return res
-
-
-  class Meta:
-    model = Subclass
-    fields = ('id')
 
 
 class CreateSubclassSerializer(serializers.ModelSerializer):
@@ -372,10 +368,11 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
 
-    sub = Subclass.objects.create(Head = validated_data['Head'],  Email = Users.objects.get(Email = user))
+    sub = Subclass.objects.create(Head = Card.objects.get(id = validated_data['Head']),  Email = Users.objects.get(Email = user))
+    if 'Cards' in validated_data:
 
-    for i in validated_data['Cards']:
-      Subclass_Relationships.objects.create(Subclass = sub.id, Email = Users.objects.get(Email = user), Child_ID = i)
+      for i in validated_data['Cards']:
+        Subclass_Relationships.objects.create(Subclass = sub.id, Email = Users.objects.get(Email = user), Child_ID = i)
 
     return
 
@@ -387,23 +384,24 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
 
 class EditSubclassSerializer(serializers.ModelSerializer):
 
-  Add = serializers.ListField(child = CardListSerializer()) 
-  Remove = serializers.ListField(child = CardListSerializer()) 
+  Add = serializers.ListField(child = CardListSerializer(), required = False) 
+  Remove = serializers.ListField(child = CardListSerializer(), required = False) 
 
   # Only edits from the perspective of the parent. There is both addition and removal. 
 
   def update(self, validated_data, pk, user):
     # PK is the ID of the subclass.     
 
+    sub = get_object_or_404(Subclass, id = pk)
     #First add...
 
     for i in validated_data['Add']:
-      Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = Subclass.objects.get(id = pk), Child_ID = i)
+      Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = i)
 
     #Then Delete
 
     for j in validated_data['Remove']:
-      Subclass_Relationships.objects.filter(Subclass = Subclass.objects.get(id = pk), Child_ID = i ).delete()
+      Subclass_Relationships.objects.filter(Subclass = sub, Child_ID = i ).delete()
 
     return 
 
