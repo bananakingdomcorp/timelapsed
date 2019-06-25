@@ -175,15 +175,18 @@ class SubclassesView(viewsets.ModelViewSet):
 
     return Response('Bad Request', 400)
 
+class CardRelationshipsView(viewsets.ModelViewSet):
+  serializer_class= CardRelationshipsSerializer
+  queryset= Card_Relationships.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['post', 'put', 'delete' ]
 
-
-# class SubclassRelationshipsView(viewsets.ModelViewSet):
-
-
-
-
-
-
+  def create(self, request):
+    return
+  def update(self, request):
+    return
+  def destroy(self, request):
+    return
 
 
 class TopicRelationshipsView(viewsets.ModelViewSet):
@@ -194,19 +197,6 @@ class TopicRelationshipsView(viewsets.ModelViewSet):
 
   def create(self, request):
     
-    return
-  def update(self, request):
-    return
-  def destroy(self, request):
-    return
-
-class CardRelationshipsView(viewsets.ModelViewSet):
-  serializer_class= CardRelationshipsSerializer
-  queryset= Card_Relationships.objects.all()
-  permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', 'put', 'delete' ]
-
-  def create(self, request):
     return
   def update(self, request):
     return

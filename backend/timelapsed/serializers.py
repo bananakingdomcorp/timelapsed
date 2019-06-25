@@ -392,15 +392,16 @@ class EditSubclassSerializer(serializers.ModelSerializer):
   def update(self, validated_data, pk, user):
     # PK is the ID of the subclass.     
 
+    sub = get_object_or_404(Subclass, id = pk)
     #First add...
 
     for i in validated_data['Add']:
-      Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = Subclass.objects.get(id = pk), Child_ID = i)
+      Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = i)
 
     #Then Delete
 
     for j in validated_data['Remove']:
-      Subclass_Relationships.objects.filter(Subclass = Subclass.objects.get(id = pk), Child_ID = i ).delete()
+      Subclass_Relationships.objects.filter(Subclass = sub, Child_ID = i ).delete()
 
     return 
 

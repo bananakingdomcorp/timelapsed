@@ -75,18 +75,34 @@ class TestSubclassResponses(APITestCase):
 
 
   def test_if_post_rejects_with_invalid_head(self):
-    pass
+
+    response = self.client.post('/api/subclass/', {'Head': 85000})
+
+    self.assertEqual(response.status_code, 400)
+
+
   def test_if_post_rejects_with_invalid_children(self):
-    pass
+
+    response = self.client.post('/api/subclass/', {'Head': self.parent_id, 'Cards': 85000000})    
+    
+    self.assertEqual(response.status_code, 400)
+
+
   def test_if_put_rejects_with_invalid_pk(self):
-    pass
+    
+    response = self.client.put('/api/subclass/80000000/')
+
+    self.assertEqual(response.status_code, 404)
+
   def test_if_put_accepts_with_valid_information(self):
+
+
     pass
   def test_if_put_accepts_with_only_adds(self):
     pass
   def test_if_put_accepts_with_only_deletions(self):
     pass
-  def test_if_put_empty(self):
+  def test_if_rejects_empty_put(self):
     pass
   def test_if_put_rejects_with_invalid_adds(self):
     pass
