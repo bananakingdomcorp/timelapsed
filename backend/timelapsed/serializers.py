@@ -389,6 +389,11 @@ class EditSubclassSerializer(serializers.ModelSerializer):
 
   # Only edits from the perspective of the parent. There is both addition and removal. 
 
+  def validate(self, data):
+    if not 'Add' in data and not 'Remove' in data:
+        raise serializers.ValidationError("One is required!.")
+    return data  
+
   def update(self, validated_data, pk, user):
     # PK is the ID of the subclass.     
 

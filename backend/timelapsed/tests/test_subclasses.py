@@ -97,7 +97,7 @@ class TestSubclassResponses(APITestCase):
   def test_if_put_accepts_with_only_adds(self):
     test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    response = self.client.put(f'/api/subclass/{test.id}', {'Add' : [first_child_id]})
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Add' : [first_child_id]})
 
     self.assertEqual(response.status_code, 200)
 
@@ -108,23 +108,53 @@ class TestSubclassResponses(APITestCase):
 
     relationship = Subclass_Relationships.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Subclass = Subclass.objects.get(id = test.id), Child_ID = Card.objects.get(id = first_child_id))
     
-    response = self.client.put(f'/api/subclass/{test.id}', {'Remove' : [first_child_id]})
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Remove' : [first_child_id]})
 
     self.assertEqual(response.status_code, 200)
 
   def test_if_rejects_empty_put(self):
 
-    
-    pass
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.put(f'/api/subclass/{test.id}/', {})
+
+    self.assertEqual(response.status_code, 400 )
+
 
   def test_if_put_rejects_with_invalid_adds(self):
-    pass
+
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Add': 90000000})
+
+    self.assertEqual(response.status_code, 400 )
+
+
   def test_if_put_rejects_with_invalid_deletes(self):
-    pass
+  
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Remove': 90000000})
+
+    self.assertEqual(response.status_code, 400 ) 
+
   def test_if_delete_accepts(self):
-    pass
+
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.delete(f'/api/subclass/{test.id}/')  
+
+    self.assertEqual(response.status_code, 204)
+
   def test_if_delete_rejects_with_invalid_pk(self):
-    pass
+
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.delete(f'/api/subclass/8000000/')  
+
+    self.assertEqual(response.status_code, 400)
+
+  
 
   
 
