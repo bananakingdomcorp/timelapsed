@@ -156,7 +156,7 @@ class TestSubclassResponses(APITestCase):
 
   
 
-  
+
 
 class TestSubclassFunctionality(APITestCase):
   parent_id = 0
@@ -182,11 +182,10 @@ class TestSubclassFunctionality(APITestCase):
     child_setup = Card.objects.create(Name = 'First Child', Description = 'First Child', Position = 2,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
     cls.first_child_id = child_setup.id
 
-  def test_if_correctly_returns_entire_subclass(self):
-    pass
-  def test_if_can_find_entire_subclass_from_child(self):
-    pass
-  def test_if_can_find_entire_subclass_from_head(self):
+  def test_if_get_correctly_returns_entire_subclass(self):
+
+    
+
     pass
   def test_if_correctly_creates_head(self):
     pass

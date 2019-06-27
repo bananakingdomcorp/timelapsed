@@ -351,7 +351,7 @@ class GetSubclassSerializer(serializers.Serializer):
 
   def get(self, pk):
     
-    sub = get_object_or_404(Subclass,id =  pk)
+    sub = get_object_or_404(Subclass, id =  pk)
 
     res = [i for i in Subclass_Relationships.objects.values('Child_ID',).filter(Subclass = sub) ]
 
