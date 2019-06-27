@@ -94,16 +94,29 @@ class TestSubclassResponses(APITestCase):
 
     self.assertEqual(response.status_code, 404)
 
-  def test_if_put_accepts_with_valid_information(self):
-
-
-    pass
   def test_if_put_accepts_with_only_adds(self):
-    pass
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    response = self.client.put(f'/api/subclass/{test.id}', {'Add' : [first_child_id]})
+
+    self.assertEqual(response.status_code, 200)
+
+
   def test_if_put_accepts_with_only_deletions(self):
-    pass
+
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+    relationship = Subclass_Relationships.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Subclass = Subclass.objects.get(id = test.id), Child_ID = Card.objects.get(id = first_child_id))
+    
+    response = self.client.put(f'/api/subclass/{test.id}', {'Remove' : [first_child_id]})
+
+    self.assertEqual(response.status_code, 200)
+
   def test_if_rejects_empty_put(self):
+
+    
     pass
+
   def test_if_put_rejects_with_invalid_adds(self):
     pass
   def test_if_put_rejects_with_invalid_deletes(self):
@@ -162,6 +175,9 @@ class TestSubclassFunctionality(APITestCase):
   def test_if_correctly_returns_subclass_after_deletion(self):
     pass
   def test_if_subclass_deletes_if_head_removed(self):
+    pass
+
+  def test_if_does_not_add_a_second_subclass_relationship_when_given_existing_relationship(self):
     pass
 
   
