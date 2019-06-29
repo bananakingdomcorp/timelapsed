@@ -417,20 +417,17 @@ class EditSubclassSerializer(serializers.ModelSerializer):
     fields = ('Add', 'Remove')
 
 
-class DeleteSubclassSerializer(serializers.ModelSerializer):
-  Empty = serializers.ReadOnlyField(required = False)
+class DeleteSubclassSerializer(serializers.Serializer):
 
   def destroy(self, pk):
 
     #Destroys the subclass. 
 
-    Subclass.objects.filter(id = pk).delete()
+    to_destroy = get_object_or_404(Subclass, id = pk)
+
+    to_destroy.delete()
 
     return
-
-  class Meta:
-    model = Subclass
-    fields = ('Empty')
 
 
 class GetSubclassRelationshipSerializer(serializers.ModelSerializer):

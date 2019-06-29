@@ -139,21 +139,21 @@ class TestSubclassResponses(APITestCase):
 
     self.assertEqual(response.status_code, 400 ) 
 
-  # def test_if_delete_accepts(self):
+  def test_if_delete_accepts(self):
 
-  #   test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-  #   response = self.client.delete(f'/api/subclass/{test.id}/')  
+    response = self.client.delete(f'/api/subclass/{test.id}/')  
 
-  #   self.assertEqual(response.status_code, 204)
+    self.assertEqual(response.status_code, 204)
 
-  # def test_if_delete_rejects_with_invalid_pk(self):
+  def test_if_delete_rejects_with_invalid_pk(self):
 
-  #   test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-  #   response = self.client.delete(f'/api/subclass/8000000/')  
+    response = self.client.delete(f'/api/subclass/8000000/')  
 
-  #   self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.status_code, 404)
 
   
 
