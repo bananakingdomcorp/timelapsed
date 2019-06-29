@@ -92,12 +92,15 @@ class TestSubclassResponses(APITestCase):
     
     response = self.client.put('/api/subclass/80000000/')
 
-    self.assertEqual(response.status_code, 404)
+    self.assertEqual(response.status_code, 400)
 
   def test_if_put_accepts_with_only_adds(self):
     test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    response = self.client.put(f'/api/subclass/{test.id}/', {'Add' : [first_child_id]})
+
+    print(test.id, 'GISAOFJLKDSFJSIOA')
+
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Add' : [ self.first_child_id ]})
 
     self.assertEqual(response.status_code, 200)
 
@@ -106,9 +109,9 @@ class TestSubclassResponses(APITestCase):
 
     test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    relationship = Subclass_Relationships.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Subclass = Subclass.objects.get(id = test.id), Child_ID = Card.objects.get(id = first_child_id))
+    relationship = Subclass_Relationships.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Subclass = Subclass.objects.get(id = test.id), Child_ID = Card.objects.get(id = self.first_child_id))
     
-    response = self.client.put(f'/api/subclass/{test.id}/', {'Remove' : [first_child_id]})
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Remove' : [self.first_child_id]})
 
     self.assertEqual(response.status_code, 200)
 
@@ -125,7 +128,7 @@ class TestSubclassResponses(APITestCase):
 
     test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    response = self.client.put(f'/api/subclass/{test.id}/', {'Add': 90000000})
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Add': [90000000]})
 
     self.assertEqual(response.status_code, 400 )
 
@@ -134,25 +137,25 @@ class TestSubclassResponses(APITestCase):
   
     test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    response = self.client.put(f'/api/subclass/{test.id}/', {'Remove': 90000000})
+    response = self.client.put(f'/api/subclass/{test.id}/', {'Remove': [90000000]})
 
     self.assertEqual(response.status_code, 400 ) 
 
-  def test_if_delete_accepts(self):
+  # def test_if_delete_accepts(self):
 
-    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+  #   test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    response = self.client.delete(f'/api/subclass/{test.id}/')  
+  #   response = self.client.delete(f'/api/subclass/{test.id}/')  
 
-    self.assertEqual(response.status_code, 204)
+  #   self.assertEqual(response.status_code, 204)
 
-  def test_if_delete_rejects_with_invalid_pk(self):
+  # def test_if_delete_rejects_with_invalid_pk(self):
 
-    test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+  #   test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
-    response = self.client.delete(f'/api/subclass/8000000/')  
+  #   response = self.client.delete(f'/api/subclass/8000000/')  
 
-    self.assertEqual(response.status_code, 400)
+  #   self.assertEqual(response.status_code, 400)
 
   
 
@@ -169,6 +172,10 @@ class TestSubclassFunctionality(APITestCase):
     ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
     user = User.objects.create_user('test@test.com', 'test@test.com')
     self.client.force_authenticate(user)
+    parent_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    self.parent_id =  decode_response(parent_card)['Data']['id'] 
+    first_child_card = self.client.post('/api/card/', {'Data': {'Name': 'Second', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    self.first_child_id =  decode_response(first_child_card)['Data']['id']    
     ######################################################
 
 
@@ -177,20 +184,32 @@ class TestSubclassFunctionality(APITestCase):
     Users.objects.create(Email = 'test@test.com')
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
     cls.topic_id = set_up_topic.id
-    card_setup = Card.objects.create(Name = 'Parent', Description = 'Parent', Position = 1,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
-    cls.parent_id = card_setup.id
-    child_setup = Card.objects.create(Name = 'First Child', Description = 'First Child', Position = 2,  Topic = Topic.objects.get(Name = 'UseForTesting'), Email = Users.objects.get(Email = 'test@test.com'))
-    cls.first_child_id = child_setup.id
 
-  def test_if_get_correctly_returns_entire_subclass(self):
-
+  def test_if_correctly_creates_head(self):
     
 
-    pass
-  def test_if_correctly_creates_head(self):
+
+    
     pass
   def test_if_correctly_creates_children(self):
     pass
+
+  def test_if_get_correctly_returns_entire_subclass(self):
+
+    # test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
+
+
+    # Subclass_Relationships.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Subclass = Subclass.objects.get(id = test.id), Child_ID = Card.objects.get(id = first_child_id))
+    # second_child_card = self.client.post('/api/card/', {'Data': {'Name': 'Third', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    # second_child_id =  decode_response(second_child_card)['Data']['id']   
+    # Subclass_Relationships.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Subclass = Subclass.objects.get(id = test.id), Child_ID = Card.objects.get(id = second_child_id))        
+
+    # response = self.client.get(f'/api/subclass/{test.id}/')
+    # response_data =  decode_response(response)['Data']['res']     
+
+    # self.assertEqual(response_data, [first_child_id, second_child_id])
+    pass
+
   def test_if_correctly_adds_on_put(self):
     pass
   def test_if_correctly_deletes_on_put(self):

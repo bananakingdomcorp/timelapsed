@@ -384,14 +384,14 @@ class CreateSubclassSerializer(serializers.ModelSerializer):
 
 class EditSubclassSerializer(serializers.ModelSerializer):
 
-  Add = serializers.ListField(child = CardListSerializer(), required = False) 
-  Remove = serializers.ListField(child = CardListSerializer(), required = False) 
+  Add = CardListSerializer(required = False)
+  Remove = CardListSerializer(required = False)
 
   # Only edits from the perspective of the parent. There is both addition and removal. 
 
   def validate(self, data):
     if not 'Add' in data and not 'Remove' in data:
-        raise serializers.ValidationError("One is required!.")
+        raise serializers.ValidationError("One is required!")
     return data  
 
   def update(self, validated_data, pk, user):
@@ -399,14 +399,17 @@ class EditSubclassSerializer(serializers.ModelSerializer):
 
     sub = get_object_or_404(Subclass, id = pk)
     #First add...
-
-    for i in validated_data['Add']:
-      Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = i)
+    if 'Add' in validated_data:
+      for i in validated_data['Add']:
+        print(i, 'GRASJIOFRJIOaa')
+        Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = i)
 
     #Then Delete
 
-    for j in validated_data['Remove']:
-      Subclass_Relationships.objects.filter(Subclass = sub, Child_ID = i ).delete()
+    if 'Remove' in validated_data:
+
+      for j in validated_data['Remove']:
+        Subclass_Relationships.objects.filter(Subclass = sub, Child_ID = i ).delete()
 
     return 
 

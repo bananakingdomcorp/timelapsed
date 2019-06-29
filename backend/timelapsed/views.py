@@ -159,7 +159,7 @@ class SubclassesView(viewsets.ModelViewSet):
       serializer.update(serializer.data, pk, request.user.email)
       return Response('Updated', 200)
 
-    print(serializer.errors)
+    print(serializer.errors, 'WTF')
 
     return Response('Bad Request', 400)
 
