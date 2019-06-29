@@ -401,15 +401,14 @@ class EditSubclassSerializer(serializers.ModelSerializer):
     #First add...
     if 'Add' in validated_data:
       for i in validated_data['Add']:
-        print(i, 'GRASJIOFRJIOaa')
-        Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = i)
+        Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = Card.objects.get(id = i))
 
     #Then Delete
 
     if 'Remove' in validated_data:
 
       for j in validated_data['Remove']:
-        Subclass_Relationships.objects.filter(Subclass = sub, Child_ID = i ).delete()
+        Subclass_Relationships.objects.get(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = j ).delete()
 
     return 
 

@@ -98,8 +98,6 @@ class TestSubclassResponses(APITestCase):
     test = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = Card.objects.get(id = self.parent_id) )
 
 
-    print(test.id, 'GISAOFJLKDSFJSIOA')
-
     response = self.client.put(f'/api/subclass/{test.id}/', {'Add' : [ self.first_child_id ]})
 
     self.assertEqual(response.status_code, 200)
