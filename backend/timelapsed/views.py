@@ -156,10 +156,10 @@ class SubclassesView(viewsets.ModelViewSet):
   def update(self, request, pk):
     serializer = EditSubclassSerializer(data = request.data)
     if serializer.is_valid():
-      serializer.update(serializer.data, pk, request.user.email)
-      return Response('Updated', 200)
+      updated = serializer.update(serializer.data, pk, request.user.email)
+      return Response(updated, 200)
 
-    print(serializer.errors, 'WTF')
+    print(serializer.errors)
 
     return Response('Bad Request', 400)
 

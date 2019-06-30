@@ -353,7 +353,7 @@ class GetSubclassSerializer(serializers.Serializer):
     
     sub = get_object_or_404(Subclass, id =  pk)
 
-    res = [i for i in Subclass_Relationships.objects.values('Child_ID',).filter(Subclass = sub) ]
+    res = [i['Child_ID'] for i in Subclass_Relationships.objects.values('Child_ID',).filter(Subclass = sub) ]
 
 # Returns all of the Card ID's in a certain subclass. 
 
@@ -363,18 +363,23 @@ class GetSubclassSerializer(serializers.Serializer):
 class CreateSubclassSerializer(serializers.ModelSerializer):
 
   Head = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
-  Cards = serializers.ListField(child = CardListSerializer(), required = False) 
+  Cards = CardListSerializer(required = False)
 
 
   def create(self, validated_data, user):
 
     sub = Subclass.objects.create(Head = Card.objects.get(id = validated_data['Head']),  Email = Users.objects.get(Email = user))
+
+    res = {'Data': {'id' : sub.id} }
+
     if 'Cards' in validated_data:
-
+      temp = []
       for i in validated_data['Cards']:
-        Subclass_Relationships.objects.create(Subclass = sub.id, Email = Users.objects.get(Email = user), Child_ID = i)
+        created = Subclass_Relationships.objects.create(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = i))
+        temp.append(created.id)
+      res['Data']['Children'] = temp
 
-    return
+    return res
 
 
   class Meta:
@@ -392,25 +397,27 @@ class EditSubclassSerializer(serializers.ModelSerializer):
   def validate(self, data):
     if not 'Add' in data and not 'Remove' in data:
         raise serializers.ValidationError("One is required!")
+
     return data  
 
   def update(self, validated_data, pk, user):
     # PK is the ID of the subclass.     
 
     sub = get_object_or_404(Subclass, id = pk)
-    #First add...
-    if 'Add' in validated_data:
-      for i in validated_data['Add']:
-        Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = Card.objects.get(id = i))
-
-    #Then Delete
 
     if 'Remove' in validated_data:
-
       for j in validated_data['Remove']:
-        Subclass_Relationships.objects.get(Email = Users.objects.get(Email = user), Subclass = sub, Child_ID = j ).delete()
+        deleted = Subclass_Relationships.objects.get(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = j) ).delete()
 
-    return 
+    if 'Add' in validated_data:
+      temp = []
+      for i in validated_data['Add']:
+        if Card.objects.get(id = i) != sub.Head:
+          created = Subclass_Relationships.objects.create(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = i))
+          temp.append(created.id)
+      return temp
+    
+    return
 
   class Meta:
     model = Subclass
