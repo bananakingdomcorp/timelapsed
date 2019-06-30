@@ -412,7 +412,7 @@ class EditSubclassSerializer(serializers.ModelSerializer):
     if 'Add' in validated_data:
       temp = []
       for i in validated_data['Add']:
-        if Card.objects.get(id = i) != sub.Head:
+        if Card.objects.get(id = i) != sub.Head or Subclass_Relationships.objects.filter(Subclass =  Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user),Child_ID = Card.objects.get(id = i)).count() > 0:
           created = Subclass_Relationships.objects.create(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = i))
           temp.append(created.id)
       return temp

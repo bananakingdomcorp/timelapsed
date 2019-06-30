@@ -249,11 +249,20 @@ class TestSubclassFunctionality(APITestCase):
 
     subclass_cards = decode_response(response)
 
-    self.assertEqual(len(subclass_cards), 0)  
+    self.assertEqual(len(subclass_cards), 0)
 
 
-  def test_if_accepts_add_on_child_already_in_subclass(self):
-    pass
+  def test_if_does_not_add_child_already_in_subclass(self):
+
+    setup = self.client.post('/api/subclass/', {'Head': self.parent_id})
+    subclass_id = decode_response(setup)['Data']['id']
+
+    response = self.client.put(f'/api/subclass/{subclass_id}/', {'Add': [self.parent_id]})
+
+    subclass_cards = decode_response(response)
+
+    self.assertEqual(len(subclass_cards), 0)
+
   def test_if_correctly_deletes(self):
     pass
   def test_if_correctly_returns_subclass_after_deletion(self):
