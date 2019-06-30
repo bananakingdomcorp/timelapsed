@@ -264,15 +264,26 @@ class TestSubclassFunctionality(APITestCase):
     self.assertEqual(len(subclass_cards), 0)
 
   def test_if_correctly_deletes(self):
-    pass
-  def test_if_correctly_returns_subclass_after_deletion(self):
-    pass
+    setup = self.client.post('/api/subclass/', {'Head': self.parent_id})
+    subclass_id = decode_response(setup)['Data']['id']
+
+    response = self.client.delete(f'/api/subclass/{subclass_id}/')  
+
+    with self.assertRaises(ObjectDoesNotExist):
+      Subclass.objects.get(id = subclass_id)          
+
+
   def test_if_subclass_deletes_if_head_removed(self):
-    pass
 
-  def test_if_does_not_add_a_second_subclass_relationship_when_given_existing_relationship(self):
-    pass
+    setup = self.client.post('/api/subclass/', {'Head': self.parent_id, 'Cards': [self.first_child_id]})    
+    subclass_id = decode_response(setup)['Data']['id']
+    subclass_relationship_id = decode_response(setup)['Data']['Children'][0]
+  
+    response = self.client.delete(f'/api/subclass/{subclass_id}/')  
 
+    with self.assertRaises(ObjectDoesNotExist):
+      Subclass_Relationships.objects.get(id = subclass_relationship_id)        
+  
   
   
 
