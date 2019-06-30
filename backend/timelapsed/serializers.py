@@ -437,50 +437,15 @@ class DeleteSubclassSerializer(serializers.Serializer):
     return
 
 
-class GetSubclassRelationshipSerializer(serializers.ModelSerializer):
-  Card = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
-
-  # Gets both subclasses that start with this card as well as subclasses this card is a part of. 
-
-  
+class CardRelationshipsSerializer(serializers.ModelSerializer):
 
   class Meta:
-    model = Subclass_Relationships
-    fields = ('Card')
+    model = Card_Relationships
+    fields = ('Type', 'Parent_ID', 'Child_ID')
 
 
 
 
-class CreateSubclassRelationshipSerializer(serializers.ModelSerializer):
-
-  Subclass = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all())
-  Child_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all())
-
-
-  def create(self, validated_data, user):
-
-    Subclass_Relationships.objects.create(Email = Users.objects.get(Email = user), Subclass = validated_data['Subclass'], Child_ID = validated_data['Child_ID'])
-
-    return
-
-  class Meta:
-    model = Subclass_Relationships
-    fields = ('Subclass', 'Child_ID')
-
-
-class RemoveSubclassRelationshipSerializer(serializers.ModelSerializer):
-  Empty = serializers.Field(required = False)
-
-  def destroy(self, pk):
-    
-    Subclass_Relationships.objects.get(id = pk).delete()
-
-    return
-
-
-  class Meta:
-    model = Subclass_Relationships
-    fields  = ('Empty')
 
 
 class TopicRelationshipsSerializer(serializers.ModelSerializer):
@@ -489,10 +454,4 @@ class TopicRelationshipsSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Topic_Relationships
-    fields = ('Type', 'Parent_ID', 'Child_ID')
-
-class CardRelationshipsSerializer(serializers.ModelSerializer):
-
-  class Meta:
-    model = Card_Relationships
     fields = ('Type', 'Parent_ID', 'Child_ID')
