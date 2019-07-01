@@ -182,6 +182,12 @@ class CardRelationshipsView(viewsets.ModelViewSet):
   http_method_names = ['post', 'put', 'delete' ]
 
   def create(self, request):
+
+    #Allows for the following arguments: Positional, Move, Delete, Subclass, Tag
+
+    
+
+
     return
   def update(self, request):
     return

@@ -219,29 +219,27 @@ class Subclass_Relationships(models.Model):
 
 
 
-class Card_Relationships(models.Model):
+class Card_Relationship_Parent_Action(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
-    Type = models.TextField()
+    # Type = models.TextField()  ACTION HERE
 
     # Relationship Fields
     Email = models.ForeignKey(
         'timelapsed.Users',
-        on_delete=models.CASCADE, related_name="card_relationships", 
+        on_delete=models.CASCADE, related_name="card_relationship_parent_email", 
     )
     Parent_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationships_parent", null=True
-    )
-    Child_ID = models.ForeignKey(
-      'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationships_child", null=True
+      on_delete=models.CASCADE, related_name="card_relationships_parent_id", null=True
     )
 
+    # Action Fields
+
+
+
     def save(self, *args, **kwargs):
-      if self.Parent_ID == self.Child_ID:
-        raise Exception("You cannot have a relationship with yourself")   
       super().full_clean()           
       super().save(*args, **kwargs)
 
@@ -252,10 +250,193 @@ class Card_Relationships(models.Model):
         return u'%s' % self.pk
 
     def get_absolute_url(self):
-        return reverse('timelapsed_card_relationships_detail', args=(self.pk,))
+        return reverse('timelapsed_parent_relationships_detail', args=(self.pk,))
 
     def get_update_url(self):
-        return reverse('timelapsed_card_relationships_update', args=(self.pk,))
+        return reverse('timelapsed_parent_relationships_update', args=(self.pk,))
+
+
+class Card_Relationship_Child_Action(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+    Type = models.TextField()
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="card_relationship_child_email", 
+    )
+    Child_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="card_relationship_child_id", null=True
+    )
+
+    # Action Fields
+
+
+
+    def save(self, *args, **kwargs):
+      super().full_clean()           
+      super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_child_relationships_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_child_relationships_update', args=(self.pk,))
+
+
+class Card_Relationship_Move_Action(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="card_relationship_move_email", 
+    )
+    Card_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="card_relationship_move_id", null=True
+    )
+
+    Topic_ID = models.ForeignKey(
+      'timelapsed.Topic',
+      on_delete=models.CASCADE, related_name="card_relationship_topic_id", null=True      
+    )
+
+    def save(self, *args, **kwargs):
+      super().full_clean()           
+      super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_card_move_action_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_card_move_action_update', args=(self.pk,))
+
+
+class Card_Relationship_In_Same_Action(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="card_relationship_same_email", 
+    )
+    Card_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="card_relationship_same_first_id", null=True
+    )
+
+    Child_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="card_relationship_same_second_id", null=True
+    )
+    def save(self, *args, **kwargs):
+      super().full_clean()           
+      super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_card_same_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_card_same_update', args=(self.pk,))
+
+
+
+class Card_Relationship_Delete_Action(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="card_relationship_delete_email", 
+    )
+    Card_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="card_relationship_delete_id", null=True
+    )
+
+    def save(self, *args, **kwargs):
+      super().full_clean()           
+      super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_card_delete_action_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_card_delete_action_update', args=(self.pk,))
+
+
+class Card_Relationship_Subclass_Action(models.Model):
+
+    # Fields
+    id = models.BigAutoField(primary_key=True)
+
+    # Relationship Fields
+    Email = models.ForeignKey(
+        'timelapsed.Users',
+        on_delete=models.CASCADE, related_name="card_relationship_subclass_email", 
+    )
+    Card_ID = models.ForeignKey(
+      'timelapsed.Card',
+      on_delete=models.CASCADE, related_name="card_relationship_subclass_card_id", null=True
+    )
+
+    Subclass_ID = models.ForeignKey(
+      'timelapsed.Subclass',
+        on_delete=models.CASCADE, related_name="card_relationship_subclass_id", null=True
+    )
+
+    def save(self, *args, **kwargs):
+      super().full_clean()           
+      super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('timelapsed_card_subclass_action_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('timelapsed_card_subclass_action_update', args=(self.pk,))
+
+
+## Class for tagging, not yet implemented
 
 
 

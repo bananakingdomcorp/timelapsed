@@ -437,13 +437,30 @@ class DeleteSubclassSerializer(serializers.Serializer):
     return
 
 
-class CardRelationshipsSerializer(serializers.ModelSerializer):
+class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
+
+  
+
+
+
+  class Meta:
+    model = Card_Relationships
+    fields = ('Must_Come_Before', 'Must_Be_In_Same_Topic', 'Moves', 'Deletes', 'Subclasses', 'Tags' )
+
+
+class UpdateCardRelationshipsSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Card_Relationships
     fields = ('Type', 'Parent_ID', 'Child_ID')
 
 
+
+class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Card_Relationships
+    fields = ('Type', 'Parent_ID', 'Child_ID')
 
 
 
