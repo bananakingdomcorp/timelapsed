@@ -287,7 +287,6 @@ class Card_Relationship_Child_Action(models.Model):
 
     # Fields
     id = models.BigAutoField(primary_key=True)
-    Type = models.TextField()
 
     # Relationship Fields
     Email = models.ForeignKey(
@@ -297,6 +296,11 @@ class Card_Relationship_Child_Action(models.Model):
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
       on_delete=models.CASCADE, related_name="card_relationship_child_id", null=True
+    )
+
+    Parent_Action = models.ForeignKey(
+      'timelapsed.Card_Relationship_Parent_Action', 
+      on_delete=models.CASCADE, related_name="card_relationship_relationship_id", null=True      
     )
 
     # Action Fields

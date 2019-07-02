@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships,  Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships
 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
@@ -436,20 +436,36 @@ class DeleteSubclassSerializer(serializers.Serializer):
 
     return
 
+class CardRelationshipsParentSerializer(serializers.Serializer):
 
-# class UpdateCardRelationshipsSerializer(serializers.ModelSerializer):
-
-#   class Meta:
-#     model = Card_Relationships
-#     fields = ('Type', 'Parent_ID', 'Child_ID')
+  def validate(self, data):
+    return data
 
 
+class CardRelationshipsChildSerializer(serializers.Serializer):
+  
+  def validate(self, data):
+    return data
 
-# class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
 
-#   class Meta:
-#     model = Card_Relationships
-#     fields = ('Type', 'Parent_ID', 'Child_ID')
+class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
+  Parent_Action = CardRelationshipsParentSerializer()
+  Child_Action = CardRelationshipsChildSerializer()
+
+  def create(self, validated_data, user):
+
+    return
+
+  class Meta:
+    model = Card_Relationship_Parent_Action
+    fields = ('Parent_Action', 'Child_Action' )
+
+
+class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Card_Relationship_Parent_Action
+    fields = ('Type', 'Parent_ID', 'Child_ID')
 
 
 

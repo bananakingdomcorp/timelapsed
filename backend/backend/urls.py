@@ -16,7 +16,7 @@ router.register(r'subclass', views.SubclassesView, basename = 'subclass')
 
 router.register(r'topic_relationship', views.TopicRelationshipsView, basename = 'topic_relationship')
 
-# router.register(r'card_relationship', views.CardRelationshipsView, basename = 'card_relationship')
+router.register(r'card_relationship', views.CardRelationshipsView, basename = 'card_relationship')
 
 
 urlpatterns = [

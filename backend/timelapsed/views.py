@@ -9,7 +9,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships, Card_Relationship_Parent_Action
 
 from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer 
 
@@ -175,24 +175,23 @@ class SubclassesView(viewsets.ModelViewSet):
 
     return Response('Bad Request', 400)
 
-# class CardRelationshipsView(viewsets.ModelViewSet):
-#   serializer_class= CardRelationshipsSerializer
-#   queryset= Card_Relationships.objects.all()
-#   permission_classes = (IsAuthenticated, )
-#   http_method_names = ['post', 'put', 'delete' ]
+class CardRelationshipsView(viewsets.ModelViewSet):
+  queryset= Card_Relationship_Parent_Action.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['post', 'delete' ]
 
-#   def create(self, request):
+  def create(self, request):
 
-#     #Allows for the following arguments: Positional, Move, Delete, Subclass, Tag
+    #Allows for the following arguments: Positional, Move, Delete, Subclass, Tag
 
     
 
 
-#     return
-#   def update(self, request):
-#     return
-#   def destroy(self, request):
-#     return
+    return
+  def update(self, request):
+    return
+  def destroy(self, request):
+    return
 
 
 class TopicRelationshipsView(viewsets.ModelViewSet):
