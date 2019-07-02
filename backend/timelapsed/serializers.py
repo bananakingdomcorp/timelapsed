@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships,  Subclass_Relationships
 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
@@ -437,30 +437,19 @@ class DeleteSubclassSerializer(serializers.Serializer):
     return
 
 
-class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
+# class UpdateCardRelationshipsSerializer(serializers.ModelSerializer):
 
-  
-
-
-
-  class Meta:
-    model = Card_Relationships
-    fields = ('Must_Come_Before', 'Must_Be_In_Same_Topic', 'Moves', 'Deletes', 'Subclasses', 'Tags' )
-
-
-class UpdateCardRelationshipsSerializer(serializers.ModelSerializer):
-
-  class Meta:
-    model = Card_Relationships
-    fields = ('Type', 'Parent_ID', 'Child_ID')
+#   class Meta:
+#     model = Card_Relationships
+#     fields = ('Type', 'Parent_ID', 'Child_ID')
 
 
 
-class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
+# class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
 
-  class Meta:
-    model = Card_Relationships
-    fields = ('Type', 'Parent_ID', 'Child_ID')
+#   class Meta:
+#     model = Card_Relationships
+#     fields = ('Type', 'Parent_ID', 'Child_ID')
 
 
 

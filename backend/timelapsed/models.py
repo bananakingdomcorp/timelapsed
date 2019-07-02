@@ -237,12 +237,37 @@ class Card_Relationship_Parent_Action(models.Model):
 
     # Action Fields
 
+    Move_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_Move_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_parent_move_id", null=True      
+    )
+
+    Same_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_In_Same_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_parent_same_id", null=True      
+    )
+
+    Delete_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_Delete_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_parent_delete_id", null=True      
+    )
+
+    Subclass_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_Subclass_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_child_parent_id", null=True      
+    )
 
 
     def save(self, *args, **kwargs):
-      super().full_clean()           
-      super().save(*args, **kwargs)
 
+      if self.Move_ID or self.Same_ID or self.Delete_ID or Subclass_ID:
+
+        super().full_clean()           
+        super().save(*args, **kwargs)
+      else :
+        raise Exception("Enter one card relationship type")
+
+      
     class Meta:
         ordering = ('-pk',)
 
@@ -254,6 +279,8 @@ class Card_Relationship_Parent_Action(models.Model):
 
     def get_update_url(self):
         return reverse('timelapsed_parent_relationships_update', args=(self.pk,))
+
+
 
 
 class Card_Relationship_Child_Action(models.Model):
@@ -274,11 +301,36 @@ class Card_Relationship_Child_Action(models.Model):
 
     # Action Fields
 
+    Move_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_Move_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_child_move_id", null=True      
+    )
+
+    Same_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_In_Same_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_child_same_id", null=True      
+    )
+
+    Delete_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_Delete_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_child_delete_id", null=True      
+    )
+
+    Subclass_ID = models.ForeignKey(
+      'timelapsed.Card_Relationship_Subclass_Action',
+      on_delete=models.CASCADE, related_name="card_relationship_child_subclass_id", null=True      
+    )
 
 
     def save(self, *args, **kwargs):
-      super().full_clean()           
-      super().save(*args, **kwargs)
+
+      if self.Move_ID or self.Same_ID or self.Delete_ID or Subclass_ID:
+
+        super().full_clean()           
+        super().save(*args, **kwargs)
+      else :
+        raise Exception("Enter one card relationship type")
+
 
     class Meta:
         ordering = ('-pk',)
