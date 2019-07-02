@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 
 from django.contrib.auth.models import User
 
-from timelapsed.models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
+from timelapsed.models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships,  Subclass_Relationships
 
 from django.test import TestCase
 

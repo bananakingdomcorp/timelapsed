@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 
 from django.contrib.auth.models import User
 
-from ..models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships,  Subclass_Relationships
+from ..models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships,  Subclass_Relationships
 
 
 ###### AS THIS IS A TEST THAT WILL HAVE TO BE FREQUENTLY UPDATED TO PRESERVE THE INTEGRITY OF THE DATA MODEL, IT IS IN IT'S OWN FILE

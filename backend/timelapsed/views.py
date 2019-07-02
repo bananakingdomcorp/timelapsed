@@ -9,9 +9,9 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationships, Topic_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, CardRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateSubclassRelationshipSerializer 
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer 
 
 import  timelapsed.services as services
 
@@ -175,18 +175,24 @@ class SubclassesView(viewsets.ModelViewSet):
 
     return Response('Bad Request', 400)
 
-class CardRelationshipsView(viewsets.ModelViewSet):
-  serializer_class= CardRelationshipsSerializer
-  queryset= Card_Relationships.objects.all()
-  permission_classes = (IsAuthenticated, )
-  http_method_names = ['post', 'put', 'delete' ]
+# class CardRelationshipsView(viewsets.ModelViewSet):
+#   serializer_class= CardRelationshipsSerializer
+#   queryset= Card_Relationships.objects.all()
+#   permission_classes = (IsAuthenticated, )
+#   http_method_names = ['post', 'put', 'delete' ]
 
-  def create(self, request):
-    return
-  def update(self, request):
-    return
-  def destroy(self, request):
-    return
+#   def create(self, request):
+
+#     #Allows for the following arguments: Positional, Move, Delete, Subclass, Tag
+
+    
+
+
+#     return
+#   def update(self, request):
+#     return
+#   def destroy(self, request):
+#     return
 
 
 class TopicRelationshipsView(viewsets.ModelViewSet):
