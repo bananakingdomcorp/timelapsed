@@ -436,13 +436,40 @@ class DeleteSubclassSerializer(serializers.Serializer):
 
     return
 
+
+# CARD RELATIONSHIP SERIALIZERS
+
+class CardRelationshipsMoveSerializer(serializers.Serializer):
+  #pass
+
+
+class CardRelationshipsSameSerializer(serializers.Serializer):  
+  #pass
+
+class CardRelationshipsDeleteSerializer(serializers.Serializer):
+  #pass
+
+class CardRelationshipsSubclassSerializer(serializers.Serializer):
+  #pass
+
 class CardRelationshipsParentSerializer(serializers.Serializer):
+
+  # Move = 
+  # Same = 
+  # Delete = 
+  # Subclass =
+
 
   def validate(self, data):
     return data
 
 
 class CardRelationshipsChildSerializer(serializers.Serializer):
+
+  # Move = 
+  # Same = 
+  # Delete = 
+  # Subclass =  
   
   def validate(self, data):
     return data
