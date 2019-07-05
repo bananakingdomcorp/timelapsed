@@ -1,6 +1,6 @@
 #Add in services/functionality here
 
-from .models import Users, Topic, Date_Range, Card
+from .models import Users, Topic, Date_Range, Card, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action 
 from collections import OrderedDict 
 
 def get_user_information(data):
@@ -22,3 +22,25 @@ def get_user_information(data):
     
 
   return arr
+
+
+
+def create_card_relationship(data):
+
+  if 'Move' in data:
+
+    
+
+
+    return
+  if 'Same' in data:
+
+    return
+  if 'Delete' in data:
+
+    return
+  if 'Subclass' in data:
+
+    return
+
+  return

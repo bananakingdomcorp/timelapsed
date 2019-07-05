@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action
 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
@@ -491,10 +491,22 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
   Parent_Action = CardRelationshipsParentSerializer()
   Child_Action = CardRelationshipsChildSerializer(required = False,)
 
-  def create(self, validated_data, user):
+  def validate(self, data):
     if not 'Same' in Parent_Action and not Child_Action:
       raise serializers.ValidationError('Must have child action!')
+
     return data
+
+  def create(self, validated_data, user):
+
+    #Create parent action...
+
+    #Create child action...
+
+
+
+
+    return
 
   class Meta:
     model = Card_Relationship_Parent_Action
