@@ -440,48 +440,61 @@ class DeleteSubclassSerializer(serializers.Serializer):
 # CARD RELATIONSHIP SERIALIZERS
 
 class CardRelationshipsMoveSerializer(serializers.Serializer):
-  #pass
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+  Topic_ID = serializers.PrimaryKeyRelatedField(queryset =  Topic.objects.all(), )
+
 
 
 class CardRelationshipsSameSerializer(serializers.Serializer):  
-  #pass
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+  Child_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )  
+
 
 class CardRelationshipsDeleteSerializer(serializers.Serializer):
-  #pass
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+
 
 class CardRelationshipsSubclassSerializer(serializers.Serializer):
-  #pass
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+  Subclass_ID = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all, )
+
 
 class CardRelationshipsParentSerializer(serializers.Serializer):
 
-  # Move = 
-  # Same = 
-  # Delete = 
-  # Subclass =
+  Move = CardRelationshipsMoveSerializer(required = False,)
+  Same = CardRelationshipsSameSerializer(required = False,)
+  Delete = CardRelationshipsDeleteSerializer(required = False,)
+  Subclass = CardRelationshipsSubclassSerializer(required = False,)
 
 
   def validate(self, data):
-    return data
+    if 'Move' in data or 'Same' in data or 'Delete' in data or 'Subclass' in data:
+      return data
+    else:
+      raise serializers.ValidationError('Choose one')
 
 
 class CardRelationshipsChildSerializer(serializers.Serializer):
 
-  # Move = 
-  # Same = 
-  # Delete = 
-  # Subclass =  
+  Move = CardRelationshipsMoveSerializer(required = False,)
+  Delete = CardRelationshipsDeleteSerializer(required = False,)
+  Subclass = CardRelationshipsSubclassSerializer(required = False,)
   
   def validate(self, data):
-    return data
+    if 'Move' in data or 'Same' in data or 'Delete' in data or 'Subclass' in data:
+      return data
+    else:
+      raise serializers.ValidationError('Choose one')    
 
 
 class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
   Parent_Action = CardRelationshipsParentSerializer()
-  Child_Action = CardRelationshipsChildSerializer()
+  Child_Action = CardRelationshipsChildSerializer(required = False,)
 
   def create(self, validated_data, user):
-
-    return
+    if not 'Same' in Parent_Action and not Child_Action:
+      raise serializers.ValidationError('Must have child action!')
+    return data
 
   class Meta:
     model = Card_Relationship_Parent_Action
