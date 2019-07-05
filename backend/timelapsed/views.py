@@ -182,7 +182,7 @@ class CardRelationshipsView(viewsets.ModelViewSet):
 
   def create(self, request):
 
-    #Allows for the following arguments: Positional, Move, Delete, Subclass, Tag
+    #Allows for the following arguments: Move, Same, Delete, Subclass, Tag
 
     
 
