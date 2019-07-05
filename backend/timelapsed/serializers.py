@@ -441,6 +441,8 @@ class DeleteSubclassSerializer(serializers.Serializer):
 
 # CARD RELATIONSHIP SERIALIZERS
 
+
+
 class CardRelationshipsMoveSerializer(serializers.Serializer):
   Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
   Topic_ID = serializers.PrimaryKeyRelatedField(queryset =  Topic.objects.all(), )
@@ -502,6 +504,8 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
   def create(self, validated_data, user):
 
     res = {'Parent' : -1, 'Child' : -1}
+
+    #The -1 is only returned when we are using same. 
 
     # If Same...
     if 'Same' in validated_data['Parent_Action']:
