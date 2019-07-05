@@ -1,6 +1,6 @@
 #Add in services/functionality here
 
-from .models import Users, Topic, Date_Range, Card, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action 
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action
 from collections import OrderedDict 
 
 def get_user_information(data):
@@ -25,22 +25,32 @@ def get_user_information(data):
 
 
 
-def create_card_relationship(data):
+def create_card_relationship(data, user):
+  
+  res = {}
+
+
 
   if 'Move' in data:
 
-    
+    move_topic = Topic.objects.get(id = data['Move']['Topic_ID'])
+    move_card = Card.objects.get(id = data['Move']['Card_ID'])
+
+    res['id'] = Card_Relationship_Move_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = move_card, Topic_ID = move_topic )
+    res['str'] = f'{move_card.Name} is moved to {move_topic.Name}'
+
+    return res
 
 
-    return
   if 'Same' in data:
 
-    return
+    
+    return Card_Relationship_In_Same_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = data['Same']['Card_ID']), Child_ID = Card.objects.get(id = data['Same']['Child_ID']) )
+
   if 'Delete' in data:
 
-    return
+    return Card_Relationship_Delete_Action(Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = data['Delete']['Card_ID']))
+
   if 'Subclass' in data:
 
-    return
-
-  return
+    return Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = data['Subclass']['Card_ID']), Subclass_ID = Subclass.objects.get(id = data['Subclass']['Subclass_ID']))

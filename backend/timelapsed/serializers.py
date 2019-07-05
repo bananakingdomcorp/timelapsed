@@ -8,6 +8,8 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from searchapp import search
 
+from .services import create_card_relationship
+
 
 class CardListSerializer(serializers.ListField):
 #Just a generic serializer for any lists of card ID's 
@@ -499,14 +501,22 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data, user):
 
+    res = {'Parent' : -1, 'Child' : -1}
+
+    # If Same...
+    if 'Same' in validated_data['Parent_Action']:
+      res['Parent']['ID'] = create_card_relationship(validated_data['Parent_Action'], user).id
+
+    return res
+
+    #Else...
+
     #Create parent action...
+    res['Parent_ID'] = create_card_relationship(validated_data['Parent_Action'], user).id
 
     #Create child action...
+    res['Child_Action'] = create_card_relationship(validated_data['Child_Action'], user).id
 
-
-
-
-    return
 
   class Meta:
     model = Card_Relationship_Parent_Action
