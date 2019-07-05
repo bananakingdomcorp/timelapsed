@@ -29,8 +29,6 @@ def create_card_relationship(data, user):
   
   res = {}
 
-
-
   if 'Move' in data:
 
     move_topic = Topic.objects.get(id = data['Move']['Topic_ID'])
@@ -43,14 +41,24 @@ def create_card_relationship(data, user):
 
 
   if 'Same' in data:
+    same_card = Card.objects.get(id = data['Same']['Card_ID'])
+    same_child = Card.objects.get(id = data['Same']['Child_ID'])
 
-    
-    return Card_Relationship_In_Same_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = data['Same']['Card_ID']), Child_ID = Card.objects.get(id = data['Same']['Child_ID']) )
+    res['id'] = Card_Relationship_In_Same_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = same_card, Child_ID = same_child ).id
+    res['str'] = f'{same_card.Name} must be in the same topic as {same_child.Name}'
+
+    return res
 
   if 'Delete' in data:
+    delete_card = Card.objects.get(id = data['Delete']['Card_ID'])
 
-    return Card_Relationship_Delete_Action(Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = data['Delete']['Card_ID']))
+    res['id'] = Card_Relationship_Delete_Action(Email = Users.objects.get(Email = user), Card_ID = delete_card ).id
+    res['str'] = f'{delete_card.Name} is deleted'
 
   if 'Subclass' in data:
 
-    return Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = data['Subclass']['Card_ID']), Subclass_ID = Subclass.objects.get(id = data['Subclass']['Subclass_ID']))
+    subclass_card = Card.objects.get(id = data['Subclass']['Card_ID'])
+    subclass = Card.objects.get(id = data['Subclass']['Subclass_ID'])
+
+    res['id'] = Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
+    res['str'] = f'{subclass_card.Name} is added to subclass {subclass.Name}'

@@ -512,10 +512,13 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
     #Else...
 
     #Create parent action...
-    res['Parent_ID'] = create_card_relationship(validated_data['Parent_Action'], user).id
+    res['Parent'] = create_card_relationship(validated_data['Parent_Action'], user)
 
     #Create child action...
-    res['Child_Action'] = create_card_relationship(validated_data['Child_Action'], user).id
+    res['Child'] = create_card_relationship(validated_data['Child_Action'], user)
+
+
+    return res
 
 
   class Meta:
@@ -523,13 +526,12 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
     fields = ('Parent_Action', 'Child_Action' )
 
 
-class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
+class DeleteCardRelationshipsSerializer(serializers.Serializer):
 
-  class Meta:
-    model = Card_Relationship_Parent_Action
-    fields = ('Type', 'Parent_ID', 'Child_ID')
-
-
+  def destroy(self, pk):
+    to_delete = get_object_or_404(Card_Relationship_Parent_Action, id = pk)
+    to_delete.delete()
+    return
 
 
 class TopicRelationshipsSerializer(serializers.ModelSerializer):
