@@ -62,3 +62,34 @@ def create_card_relationship(data, user):
 
     res['id'] = Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
     res['str'] = f'{subclass_card.Name} is added to subclass {subclass.Name}'
+
+
+
+  def peform_child_action(child_action):
+
+    if child_action.Move_ID is not None:
+      move = child_action.Move_ID
+      move_card = move.Child_ID
+      move_card.Topic = move.Topic_ID
+
+      return
+
+    if child_action.Delete_ID is not None:
+
+      
+      
+      
+      pass
+
+    if child_action.Subclass_ID is not None:
+      
+      
+      pass
+
+    if child_action.Tag_ID is not None:
+
+
+      pass
+
+
+    pass
