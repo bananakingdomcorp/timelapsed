@@ -10,6 +10,8 @@ from searchapp import search
 
 from .services import create_card_relationship
 
+from django.core.cache.backends import locmem
+
 
 class CardListSerializer(serializers.ListField):
 #Just a generic serializer for any lists of card ID's 

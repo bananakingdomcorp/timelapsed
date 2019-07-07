@@ -1,15 +1,13 @@
 # Directions:
 
 #Locmemcache ase will be used as a caching service. When we make changes in our signals we will write that data into locmemcache. 
-
-#When we are ready to return a response we will build a response from our memcached service and return it. This allows us to return 
-
+#When we are ready to return a response we will build a response from our lomemcache and return it. This allows us to return 
 #any and all changes to cards in one response. 
-
 
 
 from ..models import Card, Subclass_Relationships, Card_Relationship_Move_Action, Topic, Card_Relationship_Parent_Action, Card_Relationship_Child_Action
 from ..services import peform_child_action
+from django.core.cache.backends import locmem
 
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
