@@ -136,6 +136,15 @@ DATABASES = {
     }
 }
 
+# Local Memory Cache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'timelapsed-requests',
+    }
+}
+
 # ElasticSearch Configuration
 
 ELASTICSEARCH_DSL = {

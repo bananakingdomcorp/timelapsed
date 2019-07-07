@@ -1,6 +1,6 @@
 # Directions:
 
-#Memcached will be used as a caching service. When we make changes in our signals we will write that data into memcached. 
+#Locmemcache ase will be used as a caching service. When we make changes in our signals we will write that data into locmemcache. 
 
 #When we are ready to return a response we will build a response from our memcached service and return it. This allows us to return 
 
