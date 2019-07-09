@@ -6,8 +6,10 @@
 
 
 from ..models import Card, Subclass_Relationships, Card_Relationship_Move_Action, Topic, Card_Relationship_Parent_Action, Card_Relationship_Child_Action
-from ..services import peform_child_action
+# from ..services import peform_child_action
+import  timelapsed.services as services
 from django.core.cache.backends import locmem
+from django.core.signals import request_finished
 
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -34,7 +36,7 @@ def move_signal(sender, instance, *args, update_fields, **kwargs):
       for j in parent_actions:
         try:
              child_action = Card_Relationship_Child_Action(Parent_Action = j)
-             peform_child_action(child_action)
+             services.peform_child_action(child_action)
         except Card_Relationship_Child_Action.DoesNotExist:
             continue       
 
