@@ -2,11 +2,15 @@
 
 from rest_framework import serializers
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships,  Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action
 
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from searchapp import search
+
+from .services import create_card_relationship
+
+from django.core.cache.backends import locmem
 
 
 class CardListSerializer(serializers.ListField):
@@ -437,21 +441,103 @@ class DeleteSubclassSerializer(serializers.Serializer):
     return
 
 
-# class UpdateCardRelationshipsSerializer(serializers.ModelSerializer):
-
-#   class Meta:
-#     model = Card_Relationships
-#     fields = ('Type', 'Parent_ID', 'Child_ID')
+# CARD RELATIONSHIP SERIALIZERS
 
 
 
-# class DeleteCardRelationshipsSerializer(serializers.ModelSerializer):
-
-#   class Meta:
-#     model = Card_Relationships
-#     fields = ('Type', 'Parent_ID', 'Child_ID')
+class CardRelationshipsMoveSerializer(serializers.Serializer):
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+  Topic_ID = serializers.PrimaryKeyRelatedField(queryset =  Topic.objects.all(), )
 
 
+
+class CardRelationshipsSameSerializer(serializers.Serializer):  
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+  Child_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )  
+
+
+class CardRelationshipsDeleteSerializer(serializers.Serializer):
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+
+
+class CardRelationshipsSubclassSerializer(serializers.Serializer):
+  Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+  Subclass_ID = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all, )
+
+
+class CardRelationshipsParentSerializer(serializers.Serializer):
+
+  Move = CardRelationshipsMoveSerializer(required = False,)
+  Same = CardRelationshipsSameSerializer(required = False,)
+  Delete = CardRelationshipsDeleteSerializer(required = False,)
+  Subclass = CardRelationshipsSubclassSerializer(required = False,)
+
+
+  def validate(self, data):
+    if 'Move' in data or 'Same' in data or 'Delete' in data or 'Subclass' in data:
+      return data
+    else:
+      raise serializers.ValidationError('Choose one')
+
+
+class CardRelationshipsChildSerializer(serializers.Serializer):
+
+  Move = CardRelationshipsMoveSerializer(required = False,)
+  Delete = CardRelationshipsDeleteSerializer(required = False,)
+  Subclass = CardRelationshipsSubclassSerializer(required = False,)
+  
+  def validate(self, data):
+    if 'Move' in data or 'Same' in data or 'Delete' in data or 'Subclass' in data:
+      return data
+    else:
+      raise serializers.ValidationError('Choose one')    
+
+
+class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
+  Parent_Action = CardRelationshipsParentSerializer()
+  Child_Action = CardRelationshipsChildSerializer(required = False,)
+
+  def validate(self, data):
+    if not 'Same' in Parent_Action and not Child_Action:
+      raise serializers.ValidationError('Must have child action!')
+
+    return data
+
+  def create(self, validated_data, user):
+
+    res = {'Parent' : -1, 'Child' : -1}
+
+    #The -1 is only returned when we are using same. 
+
+    # If Same...
+    if 'Same' in validated_data['Parent_Action']:
+      res['Parent']['ID'] = create_card_relationship(validated_data['Parent_Action'], user).id
+
+    return res
+
+    #Else...
+
+    #Create parent action...
+    res['Parent'] = create_card_relationship(validated_data['Parent_Action'], user)
+
+    #Create child action...
+    res['Child'] = create_card_relationship(validated_data['Child_Action'], user)
+
+
+    return res
+
+
+  class Meta:
+    model = Card_Relationship_Parent_Action
+    fields = ('Parent_Action', 'Child_Action' )
+
+
+class DeleteCardRelationshipsSerializer(serializers.Serializer):
+
+  def destroy(self, pk):
+    to_delete = get_object_or_404(Card_Relationship_Parent_Action, id = pk)
+    to_delete.delete()
+    return
 
 
 class TopicRelationshipsSerializer(serializers.ModelSerializer):
