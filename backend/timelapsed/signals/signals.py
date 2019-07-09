@@ -45,21 +45,23 @@ def move_signal(sender, instance, *args, update_fields, **kwargs):
 
 @receiver(pre_save, sender = Card)
 def delete_signal(sender, instance, *args, **kwargs):
-  print('DELETE FOUND')
+  # print('DELETE FOUND')
 
-  print(sender)
-  print(instance)
+  # print(sender)
+  # print(instance)
+  pass
 
 
 #Subclass
 
 @receiver(pre_save, sender = Subclass_Relationships)
 def move_signal(sender, instance, *args, update_fields, **kwargs):
-  print('SUBCLASS FOUND')
+  # print('SUBCLASS FOUND')
 
-  print(sender)
-  print(instance)
-  print(update_fields)
+  # print(sender)
+  # print(instance)
+  # print(update_fields)
+  pass
 
 
 #Tag
