@@ -11,57 +11,61 @@ import  timelapsed.services as services
 from django.core.cache.backends import locmem
 from django.core.signals import request_finished
 
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
 
 #Move
 
 @receiver(pre_save, sender = Card)
-def move_signal(sender, instance, *args, update_fields, **kwargs):
-  print('SIGNAL FOUND')
+def move_signal(sender, instance, *args, **kwargs):
 
-  print(sender)
-  print(instance)
-  print(update_fields)
+
+  if instance.id != None:
+
+    instance_in_DB = Card.objects.get(id = instance.id)
+  #Move
+
+
+    if instance_in_DB.Topic != instance.Topic:
+      print('changed Topic!')
+
+
+  else:
+    pass
+
 
   #If we find this move what we will do is find the child action and do it as well. 
 
-  if 'Topic' in update_fields:
-    relationships =  Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = Topic.objects.get(id = update_fields['Topic']) )
+  # if 'Topic' in update_fields:
+  #   relationships =  Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = Topic.objects.get(id = update_fields['Topic']) )
 
-    for i in relationships:
-      print(i)
+  #   for i in relationships:
+  #     print(i)
 
-      parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)
-      for j in parent_actions:
-        try:
-             child_action = Card_Relationship_Child_Action(Parent_Action = j)
-             services.peform_child_action(child_action)
-        except Card_Relationship_Child_Action.DoesNotExist:
-            continue       
+  #     parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)
+  #     for j in parent_actions:
+  #       try:
+  #            child_action = Card_Relationship_Child_Action(Parent_Action = j)
+  #            services.peform_child_action(child_action)
+  #       except Card_Relationship_Child_Action.DoesNotExist:
+  #           continue       
 
 
 #Delete
 
-@receiver(pre_save, sender = Card)
-def delete_signal(sender, instance, *args, **kwargs):
-  # print('DELETE FOUND')
+@receiver(pre_delete, sender = Card)
+def delete_signal(sender, instance, **kwargs):
+  print('FOUND DELETE')
 
-  # print(sender)
-  # print(instance)
   pass
+
 
 
 #Subclass
 
 @receiver(pre_save, sender = Subclass_Relationships)
-def move_signal(sender, instance, *args, update_fields, **kwargs):
-  # print('SUBCLASS FOUND')
-
-  # print(sender)
-  # print(instance)
-  # print(update_fields)
-  pass
+def subclass_signal(sender, instance, *args, update_fields, **kwargs):
+  print('IN SUBCLASS SIGNAL')
 
 
 #Tag
