@@ -39,8 +39,6 @@ def move_signal(sender, instance, *args, update_fields, **kwargs):
             continue       
 
 
-
-
 #Delete
 
 @receiver(pre_save, sender = Card)

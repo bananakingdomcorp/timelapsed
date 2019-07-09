@@ -2,6 +2,7 @@
 
 from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action
 from collections import OrderedDict 
+from django.core.cache.backends import locmem
 
 def get_user_information(data):
 
@@ -76,7 +77,7 @@ def create_card_relationship(data, user):
 
     if child_action.Delete_ID is not None:
 
-      
+
       
       
       pass
