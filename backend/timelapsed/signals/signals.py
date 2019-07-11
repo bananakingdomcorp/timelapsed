@@ -23,8 +23,9 @@ def perform_card_relationship_lookup(relationship):
       try:
         child_action = Card_Relationship_Child_Action(Parent_Action = j)
         services.peform_child_action(child_action)
-      except Card_Relationship_Child_Action.DoesNotExist:
-          continue   
+        child_action.delete()
+      finally:
+        j.delete()
 
 
 
