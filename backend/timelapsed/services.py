@@ -73,6 +73,7 @@ def create_card_relationship(data, user):
       move_card = move.Child_ID
       move_card.Topic = move.Topic_ID
 
+      #Add to elasticache/response here. 
       return
 
     if child_action.Delete_ID is not None:
@@ -91,6 +92,3 @@ def create_card_relationship(data, user):
 
 
       pass
-
-
-    pass
