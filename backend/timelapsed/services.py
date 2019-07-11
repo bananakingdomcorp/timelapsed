@@ -69,28 +69,32 @@ def create_card_relationship(data, user):
   def peform_child_action(child_action):
 
     if child_action.Move_ID is not None:
-      move = child_action.Move_ID
-      move_card = move.Child_ID
-      move_card.Topic = move.Topic_ID
+      # Perform, then delete our action. 
 
+      move_action = child_action.Move_ID
+      move_action_card = move_action.Child_ID
+      move_action_card.Topic = move_action.Topic_ID
+      move_action_card.save()
+
+
+      #Add to elasticache/response here. 
       return
 
     if child_action.Delete_ID is not None:
 
+      
 
-      
-      
       pass
 
     if child_action.Subclass_ID is not None:
       
+
       
       pass
 
     if child_action.Tag_ID is not None:
 
 
+
+
       pass
-
-
-    pass
