@@ -4,6 +4,8 @@
 #When we are ready to return a response we will build a response from our lomemcache and return it. This allows us to return 
 #any and all changes to cards in one response. 
 
+#Need to think a lot about thread safety and especially locks in this function. 
+
 
 from ..models import Card, Subclass_Relationships, Card_Relationship_Move_Action, Topic, Card_Relationship_Parent_Action, Card_Relationship_Child_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action
 # from ..services import peform_child_action
@@ -26,6 +28,8 @@ def perform_card_relationship_lookup(relationship):
         child_action.delete()
       finally:
         j.delete()
+
+        #This deletion should also cascade to delete the card action model as well. 
 
 
 
