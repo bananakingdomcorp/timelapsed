@@ -82,20 +82,21 @@ def create_card_relationship(data, user):
 
       #Add to elasticache/response here. 
 
-      # May have to add in return_times here. 
-
-      response_builder.edit(move_action_card)
+      card_response_builder.edit(move_action_card)
 
       return
+
 
     if child_action.Delete_ID is not None:
 
       delete_action = child_action.Delete_ID
       delete_action_card = delete_action.Card_ID
       
-      response_builder.delete(delete_action_card.id)
+      card_response_builder.delete(delete_action_card.id)
 
       delete_action_card.delete()
+
+      return
 
     if child_action.Subclass_ID is not None:
 
@@ -105,7 +106,7 @@ def create_card_relationship(data, user):
       
       #Change elasticache/response here. 
 
-      response_builder.subclass()
+      card_response_builder.subclass()
 
       return 
 

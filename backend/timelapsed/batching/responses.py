@@ -2,9 +2,15 @@
 
 from searchapp import search #Elasticsearch
 from django.core.cache.backends import locmem #local caching. 
+from ..models import Card, Topic, Date_Range
 
 
 # Builds card responses.
+
+
+def edit_builder(card):
+
+  return {'Name' : card.Name, 'Description': card.Description, 'Position': card.Position, 'Topic': Topic.objects.get(id = card.id).id,  'Return_Times' : [j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = card.id)).order_by('Begin_Date') ]   }
 
 class card_response_builder:
 
@@ -21,13 +27,12 @@ class card_response_builder:
 
     edits = locmem.get('edit')
 
-    edits.append(info)
+    if info.id not in edits:
+      edits[info.id] = edit_builder(info)
 
     locmem.set('edit', edits)
 
-    
-    pass
-
+    return
 
   def delete(self, id):
 
@@ -40,7 +45,7 @@ class card_response_builder:
 
     locmem.set('delete', deletes)
 
-    
+    return
 
 
   def return_response(self):

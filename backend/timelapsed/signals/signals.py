@@ -15,6 +15,7 @@ from django.core.signals import request_finished
 
 from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
+from ..batching.responses import card_response_builder
 
 #Move
 
@@ -34,9 +35,9 @@ def perform_card_relationship_lookup(relationship):
 
 
 @receiver(pre_save, sender = Card)
-def move_signal(sender, instance, *args, **kwargs):
+def card_save_signal(sender, instance, *args, **kwargs):
 
-
+  #If Move
   if instance.id != None:
 
     instance_in_DB = Card.objects.get(id = instance.id)
@@ -44,6 +45,13 @@ def move_signal(sender, instance, *args, **kwargs):
     if instance_in_DB.Topic != instance.Topic:
 
       perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ))
+
+    else:
+      card_response_builder(instance)
+
+  else:
+
+    return
 
 
 
