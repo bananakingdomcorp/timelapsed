@@ -3,24 +3,40 @@
 from searchapp import search #Elasticsearch
 from django.core.cache.backends import locmem #local caching. 
 
+
+# Builds card responses.
+
 class response_builder:
 
 
   def __init__(self):
     pass
 
-  def update(self):
-    pass
+  def add(self, info):
 
-  def subclass(self):
-    pass
+    if 'add' not in locmem.keys():
+      locmem.set('add', [])
 
-  def edit(self, card):
+    adds = locmem.get('add')
+
+    adds.append(info)
+
+    locmem.set('add', adds)
+
+
+  def edit(self, info):
 
     #Reset locmem. 
 
+    if 'edit' not in locmem.keys():
+      locmem.set('edit', [])
+
+
     edits = locmem.get('edit')
 
+    edits.append(info)
+
+    locmem.set('edit', edits)
 
     
     pass
@@ -29,6 +45,10 @@ class response_builder:
     pass
 
   def subclass(self):
+
+    #Subclass ID, then 'Adds'
+
+    
     pass
 
   def return_response(self):

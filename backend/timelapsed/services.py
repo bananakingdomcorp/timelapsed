@@ -78,6 +78,8 @@ def create_card_relationship(data, user):
 
       #Add to elasticache/response here. 
 
+      # May have to add in return_times here. 
+
       response_builder.edit(move_action_card)
 
       return
