@@ -1,8 +1,8 @@
 #Add in services/functionality here
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action, Subclass_Relationships
 from collections import OrderedDict 
-from django.core.cache.backends import locmem
+from .batching.responses import response_builder
 
 def get_user_information(data):
 
@@ -69,7 +69,6 @@ def create_card_relationship(data, user):
   def peform_child_action(child_action):
 
     if child_action.Move_ID is not None:
-      # Perform, then delete our action. 
 
       move_action = child_action.Move_ID
       move_action_card = move_action.Child_ID
@@ -78,23 +77,38 @@ def create_card_relationship(data, user):
 
 
       #Add to elasticache/response here. 
+
+      # May have to add in return_times here. 
+
+      response_builder.edit(move_action_card)
+
       return
 
     if child_action.Delete_ID is not None:
 
-      
+      delete_action = child_action.Delete_ID
+      delete_action_card = delete_action.Card_ID
+      delete_action_card.delete()
 
-      pass
+      #Change elasticache/response here. 
+
+      response_builder.delete()
 
     if child_action.Subclass_ID is not None:
-      
 
+      subclass_action = child_action.Subclass_ID
+      subclass_action_card = subclass_action.Card_ID
+      Subclass_Relationships.objects.create(Email = subclass_action.Email, subclass = subclass_action.Subclass_ID, Child_ID = subclass_action_card)
       
-      pass
+      #Change elasticache/response here. 
+
+      response_builder.subclass()
+
+      return 
 
     if child_action.Tag_ID is not None:
 
-
+      # Fill in later. 
 
 
       pass
