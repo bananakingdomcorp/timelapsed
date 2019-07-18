@@ -1,0 +1,2 @@
+#checks relationships for circularity. 
+

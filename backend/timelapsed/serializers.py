@@ -10,6 +10,8 @@ from searchapp import search
 
 from .services import create_card_relationship
 
+from .batching.responses import card_response_builder
+
 from django.core.cache.backends import locmem
 
 
@@ -324,6 +326,11 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
       res['Data']['Return_Times']= Return_Times
     
+    #Response Builder usage. 
+
+
+
+
     return res
 
   class Meta:

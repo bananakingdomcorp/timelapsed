@@ -6,7 +6,7 @@ from django.core.cache.backends import locmem #local caching.
 
 # Builds card responses.
 
-class response_builder:
+class card_response_builder:
 
 
   def __init__(self):
@@ -34,6 +34,12 @@ class response_builder:
     if 'delete' not in locmem.keys():
       locmem.set('delete', [])
 
+    deletes = locmem.get('delete')
+
+    deletes.append(id)
+
+    locmem.set('delete', deletes)
+
     
 
 
@@ -42,5 +48,21 @@ class response_builder:
 
     #Response is built, but then cleared to ensure it doesn't get reused. 
 
-    locmem.clear()
+    Elasticsearch_batching.write()
+
+
+    locmem.clear()    
+    pass
+
+
+class Elasticsearch_batching:
+  def __init__(self):
+    pass
+
+  def add(self):
+    pass
+  def delete(self):
+    pass
+
+  def write(self):
     pass
