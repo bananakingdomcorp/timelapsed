@@ -159,15 +159,6 @@ class TestCardResponses(APITestCase):
     response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Topic': switch_topic.id}}, format= 'json')    
 
     self.assertEqual(response.status_code, 200)
-
-
-
-  def test_if_put_rejects_invalid_topic(self):
-    first = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
-    first_id = decode_response(first)['Data']['id']
-    response = self.client.put(f'/api/card/{first_id}/', {'Data':{'Switch_Topic': 8000}}, format= 'json')    
-
-    self.assertEqual(response.status_code, 400)
   
   def test_if_put_accepts_own_topic(self):
     #Yes it's dumb, but there may be issues (especially with concurrency) where you may have this situation. 

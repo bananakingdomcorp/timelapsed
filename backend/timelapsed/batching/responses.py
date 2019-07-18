@@ -12,21 +12,8 @@ class response_builder:
   def __init__(self):
     pass
 
-  def add(self, info):
-
-    if 'add' not in locmem.keys():
-      locmem.set('add', [])
-
-    adds = locmem.get('add')
-
-    adds.append(info)
-
-    locmem.set('add', adds)
-
 
   def edit(self, info):
-
-    #Reset locmem. 
 
     if 'edit' not in locmem.keys():
       locmem.set('edit', [])
@@ -41,15 +28,14 @@ class response_builder:
     
     pass
 
-  def delete(self):
-    pass
 
-  def subclass(self):
+  def delete(self, id):
 
-    #Subclass ID, then 'Adds'
+    if 'delete' not in locmem.keys():
+      locmem.set('delete', [])
 
     
-    pass
+
 
   def return_response(self):
 
