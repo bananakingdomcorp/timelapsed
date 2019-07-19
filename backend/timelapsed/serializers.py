@@ -10,6 +10,8 @@ from searchapp import search
 
 from .services import create_card_relationship
 
+from .batching.responses import card_response_builder
+
 from django.core.cache.backends import locmem
 
 
@@ -318,13 +320,13 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       #Handle Additions:
 
       for key in validated_data['Times']['Add']:
-        ids = []
+        
         a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
-        ids.append(a.id)
         
       Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
       res['Data']['Return_Times']= Return_Times
-    
+
+
     return res
 
   class Meta:

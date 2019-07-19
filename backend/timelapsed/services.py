@@ -2,7 +2,7 @@
 
 from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action, Subclass_Relationships
 from collections import OrderedDict 
-from .batching.responses import response_builder
+from .batching.responses import card_response_builder
 
 def get_user_information(data):
 
@@ -56,6 +56,8 @@ def create_card_relationship(data, user):
     res['id'] = Card_Relationship_Delete_Action(Email = Users.objects.get(Email = user), Card_ID = delete_card ).id
     res['str'] = f'{delete_card.Name} is deleted'
 
+    return res
+
   if 'Subclass' in data:
 
     subclass_card = Card.objects.get(id = data['Subclass']['Card_ID'])
@@ -64,9 +66,13 @@ def create_card_relationship(data, user):
     res['id'] = Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
     res['str'] = f'{subclass_card.Name} is added to subclass {subclass.Name}'
 
+    return res
+
 
 
   def peform_child_action(child_action):
+
+    #card_response_builder found in batching/responses. 
 
     if child_action.Move_ID is not None:
 
@@ -78,21 +84,21 @@ def create_card_relationship(data, user):
 
       #Add to elasticache/response here. 
 
-      # May have to add in return_times here. 
-
-      response_builder.edit(move_action_card)
+      card_response_builder.edit(move_action_card)
 
       return
+
 
     if child_action.Delete_ID is not None:
 
       delete_action = child_action.Delete_ID
       delete_action_card = delete_action.Card_ID
+      
+      card_response_builder.delete(delete_action_card.id)
+
       delete_action_card.delete()
 
-      #Change elasticache/response here. 
-
-      response_builder.delete()
+      return
 
     if child_action.Subclass_ID is not None:
 
@@ -102,7 +108,7 @@ def create_card_relationship(data, user):
       
       #Change elasticache/response here. 
 
-      response_builder.subclass()
+      card_response_builder.subclass()
 
       return 
 
