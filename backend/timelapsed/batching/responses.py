@@ -1,7 +1,7 @@
 # This file is desgined for response batching. We need this so that we an update multiple items when we have card chains. 
 
 from searchapp import search #Elasticsearch
-from django.core.cache.backends import locmem #local caching. 
+from django.core.cache import cache #local caching. 
 from ..models import Card, Topic, Date_Range
 
 
@@ -18,29 +18,31 @@ class card_response_builder:
   @staticmethod
   def edit(info):
 
-    if 'edit' not in locmem:
-      locmem.set('edit', [])
+    if 'edit' not in cache:
+      cache.set('edit', [])
 
 
-    edits = locmem.get('edit')
+    edits = cache.get('edit')
 
     if info.id not in edits:
       edits[info.id] = edit_builder(info)
 
-    locmem.set('edit', edits)
+    cache.set('edit', edits)
 
     return
+
+
   @staticmethod
   def delete(id):
 
     if 'delete' in locmem:
       locmem.set('delete', [])
 
-    deletes = locmem.get('delete')
+    deletes = cache.get('delete')
 
     deletes.append(id)
 
-    locmem.set('delete', deletes)
+    cache.set('delete', deletes)
 
     return
 
@@ -51,14 +53,14 @@ class card_response_builder:
     #Response is built, but then cleared to ensure it doesn't get reused. 
     res = {}
 
-    if 'edit' in locmem:
-      res['edit'] = locmem.get('edit')
+    if 'edit' in cache:
+      res['edit'] = cache.get('edit')
 
-    if 'delete' in locmem:
-      res['delete'] = locmem.get('delete')
+    if 'delete' in cache:
+      res['delete'] = cache.get('delete')
 
 
-    locmem.clear()    
+    cache.clear()    
 
     return res
 
