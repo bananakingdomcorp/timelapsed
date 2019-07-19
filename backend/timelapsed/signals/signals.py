@@ -54,8 +54,8 @@ def card_save_signal(sender, instance, *args, **kwargs):
 
     #NOTE: I am aware this is a non-optimal configuration, a better solution using the ES bulk api needs to be built. This will work for now. 
 
-    # change = search.ElasticSearchCard.get(id = instance.pk)   
-    # change.update(Name = instance.Name, Description = instance.Description, Topic = instance.Topic.Name )
+    change = search.ElasticSearchCard.get(id = instance.pk)   
+    change.update(Name = instance.Name, Description = instance.Description, Topic = instance.Topic.Name )
 
   else:
 
@@ -70,8 +70,8 @@ def delete_signal(sender, instance, **kwargs):
 
   #NON-OPTIMAL CONFIGURATION, BUILD ES BATCHING SERVICE 
 
-  # remove = search.ElasticSearchCard.get(id = instance.pk)
-  # remove.delete()
+  remove = search.ElasticSearchCard.get(id = instance.pk)
+  remove.delete()
 
 
 
