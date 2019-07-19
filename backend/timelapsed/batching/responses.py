@@ -14,13 +14,9 @@ def edit_builder(card):
 
 
 class card_response_builder:
-
-
-  def __init__(self):
-    pass
-
-
-  def edit(self, info):
+  
+  @staticmethod
+  def edit(info):
 
     if 'edit' not in locmem.keys():
       locmem.set('edit', [])
@@ -34,8 +30,8 @@ class card_response_builder:
     locmem.set('edit', edits)
 
     return
-
-  def delete(self, id):
+  @staticmethod
+  def delete(id):
 
     if 'delete' not in locmem.keys():
       locmem.set('delete', [])
@@ -48,8 +44,8 @@ class card_response_builder:
 
     return
 
-
-  def return_response(self):
+  @staticmethod
+  def return_response():
 
 
     #Response is built, but then cleared to ensure it doesn't get reused. 
