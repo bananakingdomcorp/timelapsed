@@ -10,7 +10,7 @@ from ..models import Card, Topic, Date_Range
 
 def edit_builder(card):
 
-  return {'Name' : card.Name, 'Description': card.Description, 'Position': card.Position, 'Topic': Topic.objects.get(id = card.id).id,  'Return_Times' : [j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = card.id)).order_by('Begin_Date') ]   }
+  return {'Name' : card.Name, 'Description': card.Description, 'Position': card.Position, 'Topic': card.Topic,  'Return_Times' : [j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = card.id)).order_by('Begin_Date') ]   }
 
 
 class card_response_builder:
@@ -19,7 +19,7 @@ class card_response_builder:
   def edit(info):
 
     if 'edit' not in cache:
-      cache.set('edit', [])
+      cache.set('edit', {})
 
 
     edits = cache.get('edit')
@@ -35,8 +35,8 @@ class card_response_builder:
   @staticmethod
   def delete(id):
 
-    if 'delete' in locmem:
-      locmem.set('delete', [])
+    if 'delete' in cache:
+      cache.set('delete', [])
 
     deletes = cache.get('delete')
 
