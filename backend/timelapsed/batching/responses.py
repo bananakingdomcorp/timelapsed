@@ -18,7 +18,7 @@ class card_response_builder:
   @staticmethod
   def edit(info):
 
-    if 'edit' not in locmem.keys():
+    if 'edit' not in locmem:
       locmem.set('edit', [])
 
 
@@ -33,7 +33,7 @@ class card_response_builder:
   @staticmethod
   def delete(id):
 
-    if 'delete' not in locmem.keys():
+    if 'delete' in locmem:
       locmem.set('delete', [])
 
     deletes = locmem.get('delete')
@@ -51,10 +51,10 @@ class card_response_builder:
     #Response is built, but then cleared to ensure it doesn't get reused. 
     res = {}
 
-    if 'edit' in locmem.keys():
+    if 'edit' in locmem:
       res['edit'] = locmem.get('edit')
 
-    if 'delete' in locmem.keys():
+    if 'delete' in locmem:
       res['delete'] = locmem.get('delete')
 
 
