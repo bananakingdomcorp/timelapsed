@@ -72,6 +72,8 @@ def create_card_relationship(data, user):
 
   def peform_child_action(child_action):
 
+    #card_response_builder found in batching/responses. 
+
     if child_action.Move_ID is not None:
 
       move_action = child_action.Move_ID

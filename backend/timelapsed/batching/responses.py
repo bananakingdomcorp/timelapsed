@@ -12,6 +12,7 @@ def edit_builder(card):
 
   return {'Name' : card.Name, 'Description': card.Description, 'Position': card.Position, 'Topic': Topic.objects.get(id = card.id).id,  'Return_Times' : [j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = card.id)).order_by('Begin_Date') ]   }
 
+
 class card_response_builder:
 
 
@@ -52,22 +53,16 @@ class card_response_builder:
 
 
     #Response is built, but then cleared to ensure it doesn't get reused. 
+    res = {}
 
-    Elasticsearch_batching.write()
+    if 'edit' in locmem.keys():
+      res['edit'] = locmem.get('edit')
+
+    if 'delete' in locmem.keys():
+      res['delete'] = locmem.get('delete')
 
 
     locmem.clear()    
-    pass
 
+    return res
 
-class Elasticsearch_batching:
-  def __init__(self):
-    pass
-
-  def add(self):
-    pass
-  def delete(self):
-    pass
-
-  def write(self):
-    pass
