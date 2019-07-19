@@ -255,7 +255,6 @@ class UpdateCardSerializer(serializers.ModelSerializer):
   def update(self, validated_data, pk, user):
     
     temp =  get_object_or_404(Card, id = pk)
-    res = {}
 
     if 'Data' in validated_data:
       
@@ -295,11 +294,6 @@ class UpdateCardSerializer(serializers.ModelSerializer):
 
       temp.save()
 
-    res['Data'] = {'Name' : temp.Name, 'Description' : temp.Description}
-
-    change = search.ElasticSearchCard.get(id = pk)   
-    change.update(Name = temp.Name, Description = temp.Description, Topic = temp.Topic.Name )
-
 
     if 'Times' in validated_data:
 
@@ -323,11 +317,9 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         
         a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
         
-      Return_Times =[j for j in Date_Range.objects.values('id', 'Day', 'Begin_Date', 'Num_Weeks', 'Weeks_Skipped', 'Begin_Time', 'End_Time').filter(Card_ID = Card.objects.get(id = pk)).order_by('Begin_Date') ]
-      res['Data']['Return_Times']= Return_Times
 
 
-    return res
+    return card_response_builder.return_response()
 
   class Meta:
     model = Card
@@ -342,10 +334,7 @@ class DeleteCardSerializer(serializers.ModelSerializer):
     temp = get_object_or_404(Card, id = pk)
     temp.delete()
 
-    remove = search.ElasticSearchCard.get(id = pk)
-    remove.delete()
-
-    return 'Deleted'
+    return card_response_builder.return_response()
   
   class Meta: 
     model = Card
