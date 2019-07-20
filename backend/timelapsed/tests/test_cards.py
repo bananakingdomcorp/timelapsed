@@ -257,14 +257,14 @@ class TestCardFunctionality(APITestCase):
 
     self.assertEqual(decode_response(second)['Data']['Name'], 'Changed')
 
-  def test_card_updates_description_correctly(self):
+  # def test_card_updates_description_correctly(self):
 
-    response = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
-    response_id = decode_response(response)['Data']['id']  
+  #   response = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')
+  #   response_id = decode_response(response)['Data']['id']  
 
-    second =  self.client.put(f'/api/card/{response_id}/', {'Data': {'Description': 'Changed'}}, format = 'json' )
+  #   second =  self.client.put(f'/api/card/{response_id}/', {'Data': {'Description': 'Changed'}}, format = 'json' )
 
-    self.assertEqual(decode_response(second)['Data']['Description'], 'Changed')    
+  #   self.assertEqual(decode_response(second)['Data']['Description'], 'Changed')    
 
   def test_card_names_not_unique(self):
 

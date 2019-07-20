@@ -318,7 +318,6 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
         
 
-
     return card_response_builder.return_response()
 
   class Meta:
