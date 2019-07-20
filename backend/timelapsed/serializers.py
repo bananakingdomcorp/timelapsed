@@ -390,7 +390,7 @@ class EditSubclassSerializer(serializers.ModelSerializer):
   def validate(self, data):
     if not 'Add' in data and not 'Remove' in data:
         raise serializers.ValidationError("One is required!")
-
+        
     return data  
 
   def update(self, validated_data, pk, user):
