@@ -20,9 +20,9 @@ router.register(r'card_relationship', views.CardRelationshipsView, basename = 'c
 
 router.register(r'circularity', views.CircularityCheckView, basename = 'circularity_check')
 
-router.register(r'circularity/cut', views.CircularityCutView, basename = 'circularity_cut')
+router.register(r'circularity/cut', views.CircularityCheckCut, basename = 'circularity_cut')
 
-router.register(r'circularity/prune', views.CircularityPruneView, basename = 'circularity_Prune')
+router.register(r'circularity/prune', views.CircularityCheckPrune, basename = 'circularity_Prune')
 
 
 
