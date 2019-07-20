@@ -20,16 +20,16 @@ class card_response_builder:
   @staticmethod
   def edit(info):
 
-    if 'edit' not in cache:
-      cache.set('edit', {})
+    if 'Edit' not in cache:
+      cache.set('Edit', {})
 
 
-    edits = cache.get('edit')
+    edits = cache.get('Edit')
 
     if info.id not in edits:
       edits[info.id] = edit_builder(info)
 
-    cache.set('edit', edits)
+    cache.set('Edit', edits)
 
     return
 
@@ -37,14 +37,14 @@ class card_response_builder:
   @staticmethod
   def delete(id):
 
-    if 'delete' not in cache:
-      cache.set('delete', [])
+    if 'Delete' not in cache:
+      cache.set('Delete', [])
 
-    deletes = cache.get('delete')
+    deletes = cache.get('Delete')
 
     deletes.append(id)
 
-    cache.set('delete', deletes)
+    cache.set('Delete', deletes)
 
     return
 
@@ -53,19 +53,19 @@ class card_response_builder:
 
     subclass_info = subclass_builder(info)
 
-    if 'subclass' not in cache:
-      cache.set('subclass', {})
+    if 'Subclass' not in cache:
+      cache.set('Subclass', {})
 
-    subclasses = cache.get('subclass')
+    subclasses = cache.get('Subclass')
 
-    if 'add' not in subclasses:
-      subclasses['add'] = {}
+    if 'Add' not in subclasses:
+      subclasses['Add'] = {}
 
 
-    if subclass_info['Subclass'] not in subclasses['add']:
-      subclasses['add'][subclass_info['Subclass']] = [subclass_info['Child_ID']]
+    if subclass_info['Subclass'] not in subclasses['Add']:
+      subclasses['Add'][subclass_info['Subclass']] = [subclass_info['Child_ID']]
     else:
-      subclasses['add'][subclass_info['Subclass']].append(subclass_info['Child_ID'])
+      subclasses['Add'][subclass_info['Subclass']].append(subclass_info['Child_ID'])
 
 
     return
@@ -84,14 +84,14 @@ class card_response_builder:
     #Response is built, but then cleared to ensure it doesn't get reused. 
     res = {}
 
-    if 'edit' in cache:
-      res['edit'] = cache.get('edit')
+    if 'Edit' in cache:
+      res['Edit'] = cache.get('Edit')
 
-    if 'delete' in cache:
-      res['delete'] = cache.get('delete')
+    if 'Delete' in cache:
+      res['Delete'] = cache.get('Delete')
 
-    if 'subclass' in cache:
-      res['subclass'] = cache.get('subclass')
+    if 'Subclass' in cache:
+      res['Subclass'] = cache.get('Subclass')
 
 
     cache.clear()    
