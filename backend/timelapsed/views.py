@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships, Card_Relationship_Parent_Action
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateCardRelationshipsSerializer, CircularityCheckSerializer, CircularityCutSerializer, CircularityPruneSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateCardRelationshipsSerializer, CircularityCheckSerializer, CircularityCutSerializer, CircularityPruneSerializer, DeleteCardRelationshipsSerializer
 
 import  timelapsed.services as services
 
@@ -183,14 +183,24 @@ class CardRelationshipsView(viewsets.ModelViewSet):
   def create(self, request):
 
     serializer = CreateCardRelationshipsSerializer(data = request.data)
+    if serializer.is_valid():
+      created = serializer.create(serializer.data)
+      return Response(created, 201)
 
+    return Response('Bad Request', 400)
 
 
     #Allows for the following arguments: Move, Same, Delete, Subclass, Tag
 
     return
-  def destroy(self, request):
-    return
+  def destroy(self, request, pk):
+
+    serializer = DeleteCardRelationshipsSerializer(data = request.data)
+    if serializer.is_valid():
+      serializer.destroy(pk)
+      return Response('Deleted', 204)
+
+    return Response('Bad Request', 400)
 
 
 class TopicRelationshipsView(viewsets.ModelViewSet):
