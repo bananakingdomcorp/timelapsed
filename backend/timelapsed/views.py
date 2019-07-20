@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships, Card_Relationship_Parent_Action
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer 
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateCardRelationshipsSerializer
 
 import  timelapsed.services as services
 
@@ -182,13 +182,12 @@ class CardRelationshipsView(viewsets.ModelViewSet):
 
   def create(self, request):
 
+    serializer = CreateCardRelationshipsSerializer(data = request.data)
+      
+
+
     #Allows for the following arguments: Move, Same, Delete, Subclass, Tag
 
-    
-
-
-    return
-  def update(self, request):
     return
   def destroy(self, request):
     return
