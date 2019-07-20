@@ -316,6 +316,10 @@ class UpdateCardSerializer(serializers.ModelSerializer):
       for key in validated_data['Times']['Add']:
         
         a = Date_Range.objects.create(Day = key['Day'], Begin_Date = key['Begin_Date'], Num_Weeks = key['Num_Weeks'], Weeks_Skipped = key['Weeks_Skipped'], Begin_Time = key['Begin_Time'], End_Time = key['End_Time'], Email = Users.objects.get(Email = user), Card_ID = Card.objects.get(id = pk) )
+
+    if 'Times' in validated_data and 'Data' not in validated_data:
+      
+      card_response_builder.edit(temp)
         
 
     return card_response_builder.return_response()

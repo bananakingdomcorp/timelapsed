@@ -605,98 +605,97 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : change_begin_time, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-    print(decode_response(response), 'YAHOOOOOOOOOOOOO')
 
     times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(int(str.split(next(x['Begin_Time'] for x in times if x['id'] == test.id), ':' )[0]), 5)
     self.assertEqual(int(str.split(next(x['Begin_Time'] for x in times if x['id'] == test.id), ':' )[1]), 19)
 
-  # def test_if_end_time_edits_correctly(self):
-  #   begin = datetime.datetime(1999, 4, 14)
-  #   begin_timed = datetime.time(4, 25)
-  #   end_timed = datetime.time(7, 59)
+  def test_if_end_time_edits_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-  #   change_end_time = datetime.time(12, 47)
+    change_end_time = datetime.time(12, 47)
 
-  #   test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
-  #   test_card_id =  decode_response(test_card)['Data']['id']  
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']  
 
-  #   test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = test_card_id) )
-
-
-  #   response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': change_end_time, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
-
-  #   times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
-
-  #   self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[0]), 12)
-  #   self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[1]), 47)
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = test_card_id) )
 
 
-  # def test_if_num_weeks_edits_correctly(self):
-  #   begin = datetime.datetime(1999, 4, 14)
-  #   begin_timed = datetime.time(4, 25)
-  #   end_timed = datetime.time(7, 59)
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': change_end_time, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-  #   test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
-  #   test_card_id =  decode_response(test_card)['Data']['id']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
-  #   test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'),  Card_ID = Card.objects.get(id = test_card_id) )
-
-  #   response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 99, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
-
-  #   times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
-
-  #   self.assertEqual(next(x['Num_Weeks'] for x in times if x['id'] == test.id), 99)
+    self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[0]), 12)
+    self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[1]), 47)
 
 
-  # def test_if_times_add_in_put(self):
-  #   begin = datetime.datetime(1999, 4, 14)
-  #   begin_timed = datetime.time(4, 25)
-  #   end_timed = datetime.time(7, 59)
+  def test_if_num_weeks_edits_correctly(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-  #   test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
-  #   test_card_id =  decode_response(test_card)['Data']['id']
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']
 
-  #   response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'),  Card_ID = Card.objects.get(id = test_card_id) )
 
-  #   times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 99, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-  #   self.assertEqual(len(times), 1)
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
-
-  # def test_if_multiple_times_add_in_put(self):
-  #   begin = datetime.datetime(1999, 4, 14)
-  #   begin_timed = datetime.time(4, 25)
-  #   end_timed = datetime.time(7, 59)
+    self.assertEqual(next(x['Num_Weeks'] for x in times if x['id'] == test.id), 99)
 
 
-  #   test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
-  #   test_card_id =  decode_response(test_card)['Data']['id']
+  def test_if_times_add_in_put(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-  #   response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']
 
-  #   times =  decode_response(response)['Data']['Return_Times']
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
 
-  #   self.assertEqual(len(times), 2)
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
+
+    self.assertEqual(len(times), 1)
+
+
+  def test_if_multiple_times_add_in_put(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
+
+
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']
+
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
+
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
+
+    self.assertEqual(len(times), 2)
 
 
 
-  # def test_if_times_delete(self):
-  #   begin = datetime.datetime(1999, 4, 14)
-  #   begin_timed = datetime.time(4, 25)
-  #   end_timed = datetime.time(7, 59)
+  def test_if_times_delete(self):
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-  #   test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
-  #   test_card_id =  decode_response(test_card)['Data']['id']
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']
 
-  #   test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = test_card_id))
+    test = Date_Range.objects.create(Day = 'Saturday', Begin_Date = begin, Num_Weeks = 0, Weeks_Skipped = 0, Begin_Time = begin_timed, End_Time = end_timed, Email = Users.objects.get(Email = 'test@test.com'), Card_ID = Card.objects.get(id = test_card_id))
 
-  #   response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
 
-  #   times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
-  #   self.assertEqual(len(times), 0)
+    self.assertEqual(len(times), 0)
 
 
   def test_if_times_delete_when_card_deletes(self):
@@ -717,24 +716,24 @@ class TestDateRangeFunctionality(APITestCase):
 
 
 
-  # def test_if_dates_return_in_proper_order(self):
+  def test_if_dates_return_in_proper_order(self):
 
-  #   begin = datetime.datetime(1999, 4, 14)
-  #   begin_timed = datetime.time(4, 25)
-  #   end_timed = datetime.time(7, 59)
+    begin = datetime.datetime(1999, 4, 14)
+    begin_timed = datetime.time(4, 25)
+    end_timed = datetime.time(7, 59)
 
-  #   begin_earlier =datetime.datetime(1979, 1, 23)
+    begin_earlier =datetime.datetime(1979, 1, 23)
 
-  #   test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
-  #   test_card_id =  decode_response(test_card)['Data']['id']
+    test_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    test_card_id =  decode_response(test_card)['Data']['id']
 
-  #   response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin_earlier, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
+    response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin_earlier, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
 
-  #   times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
-  #   # Earlier times are less than later times. 
+    # Earlier times are less than later times. 
 
 
-  #   self.assertLess(times[0]['Begin_Date'],  times[1]['Begin_Date'])
+    self.assertLess(times[0]['Begin_Date'],  times[1]['Begin_Date'])
 
   
