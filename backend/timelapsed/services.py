@@ -81,9 +81,6 @@ def create_card_relationship(data, user):
       move_action_card.Topic = move_action.Topic_ID
       move_action_card.save()
 
-
-      #Add to elasticache/response here. 
-
       card_response_builder.edit(move_action_card)
 
       return
@@ -104,17 +101,16 @@ def create_card_relationship(data, user):
 
       subclass_action = child_action.Subclass_ID
       subclass_action_card = subclass_action.Card_ID
-      Subclass_Relationships.objects.create(Email = subclass_action.Email, subclass = subclass_action.Subclass_ID, Child_ID = subclass_action_card)
+      new_relationship = Subclass_Relationships.objects.create(Email = subclass_action.Email, Subclass = subclass_action.Subclass_ID, Child_ID = subclass_action_card)
       
-      #Change elasticache/response here. 
 
-      card_response_builder.subclass()
+      card_response_builder.subclass(new_relationship)
 
       return 
 
     if child_action.Tag_ID is not None:
 
-      # Fill in later. 
+      # Fill in later once tags are finished. 
 
 
-      pass
+      return
