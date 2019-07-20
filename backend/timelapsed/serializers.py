@@ -1,18 +1,13 @@
 # Serialize to/from JSON here
 
 from rest_framework import serializers
-
 from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action
-
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from searchapp import search
-
 from .services import create_card_relationship
-
 from .batching.responses import card_response_builder
-
-from django.core.cache.backends import locmem
+from .validation.circularity_check import circularity_checker
 
 
 class CardListSerializer(serializers.ListField):
@@ -395,7 +390,7 @@ class EditSubclassSerializer(serializers.ModelSerializer):
   def validate(self, data):
     if not 'Add' in data and not 'Remove' in data:
         raise serializers.ValidationError("One is required!")
-
+        
     return data  
 
   def update(self, validated_data, pk, user):
@@ -495,6 +490,8 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
     if not 'Same' in Parent_Action and not Child_Action:
       raise serializers.ValidationError('Must have child action!')
 
+
+
     return data
 
   def create(self, validated_data, user):
@@ -541,3 +538,16 @@ class TopicRelationshipsSerializer(serializers.ModelSerializer):
   class Meta:
     model = Topic_Relationships
     fields = ('Type', 'Parent_ID', 'Child_ID')
+
+
+class CircularityCheckSerializer(serializers.Serializer):
+  Head_Card = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+
+class CircularityCutSerializer(serializers.Serializer):
+  Relationship = serializers.PrimaryKeyRelatedField(queryset = Card_Relationship_Parent_Action.objects.all(), )
+
+class CircularityPruneSerializer(serializers.Serializer):
+  Relationship = serializers.PrimaryKeyRelatedField(queryset = Card_Relationship_Parent_Action.objects.all(), )
+
+
+
