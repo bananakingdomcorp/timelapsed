@@ -605,7 +605,8 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : change_begin_time, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(int(str.split(next(x['Begin_Time'] for x in times if x['id'] == test.id), ':' )[0]), 5)
     self.assertEqual(int(str.split(next(x['Begin_Time'] for x in times if x['id'] == test.id), ':' )[1]), 19)
@@ -625,7 +626,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': change_end_time, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[0]), 12)
     self.assertEqual(int(str.split(next(x['End_Time'] for x in times if x['id'] == test.id), ':' )[1]), 47)
@@ -643,7 +644,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {1: {'Num_Weeks': 99, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time': end_timed, 'id': test.id }}, 'Add' : [], 'Delete' : []} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(next(x['Num_Weeks'] for x in times if x['id'] == test.id), 99)
 
@@ -658,7 +659,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(len(times), 1)
 
@@ -674,7 +675,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(len(times), 2)
 
@@ -692,7 +693,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [], 'Delete' : [test.id]} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     self.assertEqual(len(times), 0)
 
@@ -728,7 +729,7 @@ class TestDateRangeFunctionality(APITestCase):
 
     response = self.client.put(f'/api/card/{test_card_id}/', {'Times': {'Edit' : {}, 'Add' : [{'Day': 'Thursday', 'Begin_Date' : begin_earlier, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}, {'Day': 'Thursday', 'Begin_Date' : begin, 'Num_Weeks' : 0, 'Weeks_Skipped' : 0, 'Begin_Time' : begin_timed, 'End_Time' : end_timed}], 'Delete' : []} }, format = 'json')
 
-    times =  decode_response(response)['Data']['Return_Times']
+    times =  decode_response(response)['Edit'][f'{test_card_id}']['Return_Times']
 
     # Earlier times are less than later times. 
 

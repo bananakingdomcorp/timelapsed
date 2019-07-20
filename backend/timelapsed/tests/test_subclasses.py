@@ -15,6 +15,10 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 
+#Now that we are returning subclasses in our response, we need to test for that. 
+
+
+
 
 ## Use decode_response do get object payload ##
 

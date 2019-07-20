@@ -255,7 +255,7 @@ class TestCardFunctionality(APITestCase):
 
     second =  self.client.put(f'/api/card/{response_id}/', {'Data': {'Name': 'Changed'}}, format = 'json' )
 
-    self.assertEqual(decode_response(second)['Data']['Name'], 'Changed')
+    self.assertEqual(decode_response(second)['Edit'][f'{response_id}']['Name'], 'Changed')
 
   def test_card_updates_description_correctly(self):
 
@@ -264,7 +264,7 @@ class TestCardFunctionality(APITestCase):
 
     second =  self.client.put(f'/api/card/{response_id}/', {'Data': {'Description': 'Changed'}}, format = 'json' )
 
-    self.assertEqual(decode_response(second)['Data']['Description'], 'Changed')    
+    self.assertEqual(decode_response(second)['Edit'][f'{response_id}']['Description'], 'Changed')   
 
   def test_card_names_not_unique(self):
 
