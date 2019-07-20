@@ -538,3 +538,16 @@ class TopicRelationshipsSerializer(serializers.ModelSerializer):
   class Meta:
     model = Topic_Relationships
     fields = ('Type', 'Parent_ID', 'Child_ID')
+
+
+class CircularityCheckSerializer(serializers.Serializer):
+  Head_Card = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
+
+class CircularityCutSerializer(serializers.Serializer):
+  Relationship = serializers.PrimaryKeyRelatedField(queryset = Card_Relationship_Parent_Action.objects.all(), )
+
+class CircularityPruneSerializer(serializers.Serializer):
+  Relationship = serializers.PrimaryKeyRelatedField(queryset = Card_Relationship_Parent_Action.objects.all(), )
+
+
+

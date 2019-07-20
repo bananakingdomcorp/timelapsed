@@ -11,7 +11,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Users, Topic, Date_Range, Card, Subclass, Topic_Relationships, Card_Relationship_Parent_Action
 
-from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateCardRelationshipsSerializer
+from .serializers import UsersSerializer, AddTopicSerializer, CreateCardSerializer, EditTopicSerializer , DeleteTopicSerializer, DeleteCardSerializer, UpdateCardSerializer, CreateSubclassSerializer, TopicRelationshipsSerializer, EditSubclassSerializer, DeleteSubclassSerializer, GetSubclassSerializer, CreateCardRelationshipsSerializer, CircularityCheckSerializer, CircularityCutSerializer, CircularityPruneSerializer
 
 import  timelapsed.services as services
 
@@ -183,7 +183,7 @@ class CardRelationshipsView(viewsets.ModelViewSet):
   def create(self, request):
 
     serializer = CreateCardRelationshipsSerializer(data = request.data)
-      
+
 
 
     #Allows for the following arguments: Move, Same, Delete, Subclass, Tag
@@ -208,4 +208,36 @@ class TopicRelationshipsView(viewsets.ModelViewSet):
     return
 
 
+class CircularityCheckView(viewsets.ModelViewSet):
+  serializer_class= CircularityCheckSerializer
+  queryset= Card.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['get']
 
+  def retrieve(self, request):
+
+    #checks for circularity from a card.
+
+    #If no circularity, then returns a 200.
+
+    #If circularity, will return the option to either cut or prune. 
+
+    #Cutting simply removes a bad relationship, the existing relationships are split at the bad relationship. 
+
+    #Pruning deletes a relationship and every relationship afterwards. 
+
+
+    return
+
+class CircularityCheckCut(viewsets.ModelViewSet):
+  serializer_class= CircularityCutSerializer
+  queryset= Card.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['get']
+
+
+class CircularityCheckPrune(viewsets.ModelViewSet):
+  serializer_class= CircularityPruneSerializer
+  queryset= Card.objects.all()
+  permission_classes = (IsAuthenticated, )
+  http_method_names = ['get']

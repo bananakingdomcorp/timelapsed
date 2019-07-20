@@ -18,6 +18,13 @@ router.register(r'topic_relationship', views.TopicRelationshipsView, basename = 
 
 router.register(r'card_relationship', views.CardRelationshipsView, basename = 'card_relationship')
 
+router.register(r'circularity', views.CircularityCheckView, basename = 'circularity_check')
+
+router.register(r'circularity/cut', views.CircularityCutView, basename = 'circularity_cut')
+
+router.register(r'circularity/prune', views.CircularityPruneView, basename = 'circularity_Prune')
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),  
