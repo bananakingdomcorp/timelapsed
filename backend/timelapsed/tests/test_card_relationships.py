@@ -48,10 +48,29 @@ class TestCardRelationshipResponses(APITestCase):
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
     cls.topic_id = set_up_topic.id
 
+  def test_if_rejects_empty_parent_post(self):
+    pass
   
-
-
-
+  def test_if_rejects_multiple_parent_relationships(self):
+    pass
+  def test_if_accepts_moves(self):
+    pass
+  def test_if_accepts_valid_parent_same(self):
+    pass
+  def test_if_accepts_valid_deletes(self):
+    pass
+  def test_if_accepts_valid_subclasses(self):
+    pass
+  def test_if_rejects_same_with_child_actions(self):
+    pass
+  def test_if_rejects_multiple_child_relationships(self):
+    pass
+  def test_if_rejects_empty_child_actions(self):
+    pass
+  def test_if_rejects_with_only_child(self):
+    pass
+  def test_if_rejects_actions_on_same_card(self):
+    pass
 
 
 

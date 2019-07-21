@@ -476,7 +476,7 @@ class CardRelationshipsChildSerializer(serializers.Serializer):
   Subclass = CardRelationshipsSubclassSerializer(required = False,)
   
   def validate(self, data):
-    if 'Move' in data or 'Same' in data or 'Delete' in data or 'Subclass' in data:
+    if 'Move' in data or 'Delete' in data or 'Subclass' in data:
       return data
     else:
       raise serializers.ValidationError('Choose one')    
