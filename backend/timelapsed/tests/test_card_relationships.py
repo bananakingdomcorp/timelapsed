@@ -27,7 +27,8 @@ def decode_response(res):
 class TestCardRelationshipResponses(APITestCase):
   parent_id = 0
   first_child_id = 0
-  topic_id = 0  
+  first_topic_id = 0  
+  second_topic_id = 1
 
   def setUp(self):
     #Runs before every test
@@ -47,20 +48,23 @@ class TestCardRelationshipResponses(APITestCase):
     Users.objects.create(Email = 'test@test.com')
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
     cls.topic_id = set_up_topic.id
+    set_up_second_topic = Topic.objects.create(Name = 'UseForTesting2', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.second_topic_id = set_up_second_topic.id
 
   def test_if_rejects_empty_parent_post(self):
     
-    response = self.client.post('/api/card_relationship/', {'Child_Action': {'Delete': self.parent_id}}, format = 'json')
+    response = self.client.post('/api/card_relationship/', {'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json')
 
     self.assertEqual(response.status_code, 400)
 
-    
-    pass
   
   def test_if_rejects_multiple_parent_relationships(self):
+    
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.second_topic_id}, 'Delete': {'Card_ID': self.first_child_id} }, 'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json')
+
+    self.assertEqual(response.status_code, 400)
 
 
-    pass
   def test_if_accepts_moves(self):
     pass
   def test_if_accepts_valid_parent_same(self):

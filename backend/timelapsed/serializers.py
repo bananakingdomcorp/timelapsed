@@ -462,11 +462,6 @@ class CardRelationshipsParentSerializer(serializers.Serializer):
   Subclass = CardRelationshipsSubclassSerializer(required = False,)
 
 
-  def validate(self, data):
-    if 'Move' in data or 'Same' in data or 'Delete' in data or 'Subclass' in data:
-      return data
-    else:
-      raise serializers.ValidationError('Choose one')
 
 
 class CardRelationshipsChildSerializer(serializers.Serializer):
@@ -475,22 +470,20 @@ class CardRelationshipsChildSerializer(serializers.Serializer):
   Delete = CardRelationshipsDeleteSerializer(required = False,)
   Subclass = CardRelationshipsSubclassSerializer(required = False,)
   
-  def validate(self, data):
-    if 'Move' in data or 'Delete' in data or 'Subclass' in data:
-      return data
-    else:
-      raise serializers.ValidationError('Choose one')    
-
 
 class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
   Parent_Action = CardRelationshipsParentSerializer()
   Child_Action = CardRelationshipsChildSerializer(required = False,)
 
   def validate(self, data):
-    if not 'Same' in Parent_Action and not Child_Action:
+    if not 'Same' in data['Parent_Action'] and not data['Child_Action']:
       raise serializers.ValidationError('Must have child action!')
 
+    if len(data['Parent_Action']) > 1 :
+      raise serializers.ValidationError('Must only have one parent action.')
 
+    if 'Same' not in  data['Parent_Action'] and len(data['Child_Action']) > 1:
+      raise serializers.ValidationError('Must only have on child action')
 
     return data
 
