@@ -49,9 +49,17 @@ class TestCardRelationshipResponses(APITestCase):
     cls.topic_id = set_up_topic.id
 
   def test_if_rejects_empty_parent_post(self):
+    
+    response = self.client.post('/api/card_relationship/', {'Child_Action': {'Delete': self.parent_id}}, format = 'json')
+
+    self.assertEqual(response.status_code, 400)
+
+    
     pass
   
   def test_if_rejects_multiple_parent_relationships(self):
+
+
     pass
   def test_if_accepts_moves(self):
     pass
