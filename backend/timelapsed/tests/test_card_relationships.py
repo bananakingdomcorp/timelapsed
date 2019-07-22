@@ -71,6 +71,22 @@ class TestCardRelationshipResponses(APITestCase):
     pass
   def test_if_rejects_actions_on_same_card(self):
     pass
+  def test_if_move_rejects_with_invalid_card_id(self):
+    pass
+  def test_if_move_rejects_with_invalid_topic_id(self):
+    pass
+  def test_if_same_rejects_with_invalid_card_id(self):
+    pass
+  def test_if_same_rejects_with_invalid_child_id(self):
+    pass
+  def test_if_same_rejects_if_child_and_card_are_same(self):
+    pass
+  def test_if_delete_rejects_with_invalid_card_id(self):
+    pass
+  def test_if_subclass_rejects_with_invalid_card_id(self):
+    pass
+  def test_if_subclass_rejects_with_invalid_subclass_id(self):
+    pass
 
 
 
@@ -98,3 +114,16 @@ class TestCardRelationshipFunctionality(APITestCase):
     Users.objects.create(Email = 'test@test.com')
     set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
     cls.topic_id = set_up_topic.id
+
+  def test_if_properly_creates_move_relationship(self):
+    pass
+  def test_if_properly_creates_same_relationship(self):
+    pass
+  def test_if_properly_creates_subclass_relationship(self):
+    pass
+  def test_if_properly_moves_child_card(self):
+    pass
+  def test_if_deletes_same_if_either_card_is_deleted(self):
+    pass
+  
+  
