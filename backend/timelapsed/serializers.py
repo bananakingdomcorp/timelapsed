@@ -476,14 +476,15 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
   Child_Action = CardRelationshipsChildSerializer(required = False,)
 
   def validate(self, data):
-    if not 'Same' in data['Parent_Action'] and not data['Child_Action']:
-      raise serializers.ValidationError('Must have child action!')
+    if not 'Same' in data['Parent_Action']:
+      if  not 'Child_Action' in data:
+        raise serializers.ValidationError('Must have child action!')
+      if len(data['Child_Action']) > 1:
+        raise serializers.ValidationError('Must only have one child action')
+      
 
     if len(data['Parent_Action']) > 1 :
       raise serializers.ValidationError('Must only have one parent action.')
-
-    if 'Same' not in  data['Parent_Action'] and len(data['Child_Action']) > 1:
-      raise serializers.ValidationError('Must only have on child action')
 
     return data
 
@@ -495,7 +496,7 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
 
     # If Same...
     if 'Same' in validated_data['Parent_Action']:
-      res['Parent']['ID'] = create_card_relationship(validated_data['Parent_Action'], user).id
+      res['Parent']= create_card_relationship(validated_data['Parent_Action'], user)
 
     return res
 

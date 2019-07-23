@@ -64,12 +64,31 @@ class TestCardRelationshipResponses(APITestCase):
 
     self.assertEqual(response.status_code, 400)
 
+  def test_if_rejects_with_non_same_parent_and_no_child(self):
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.second_topic_id}}}, format = 'json'  )
+
+    self.assertEqual(response.status_code, 400)
+
 
   def test_if_accepts_moves(self):
-    pass
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.second_topic_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
+
+    self.assertEqual(response.status_code, 201)
+
+
   def test_if_accepts_valid_parent_same(self):
-    pass
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Same': {'Card_ID': self.parent_id, 'Child_ID': self.first_child_id}}}, format = 'json')
+
+
+    self.assertEqual(response.status_code, 201)
+
   def test_if_accepts_valid_deletes(self):
+    
+
+
     pass
   def test_if_accepts_valid_subclasses(self):
     pass
