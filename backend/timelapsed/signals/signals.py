@@ -20,6 +20,55 @@ from searchapp import search
 
 
 
+
+def peform_child_action(child_action):
+
+  #card_response_builder found in batching/responses. 
+
+  if child_action.Move_ID is not None:
+
+    move_action = child_action.Move_ID
+    move_action_card = move_action.Child_ID
+    move_action_card.Topic = move_action.Topic_ID
+    move_action_card.save()
+
+    card_response_builder.edit(move_action_card)
+
+    return
+
+
+  if child_action.Delete_ID is not None:
+
+    delete_action = child_action.Delete_ID
+    delete_action_card = delete_action.Card_ID
+    
+    card_response_builder.delete(delete_action_card.id)
+
+    delete_action_card.delete()
+
+    return
+
+  if child_action.Subclass_ID is not None:
+
+    subclass_action = child_action.Subclass_ID
+    subclass_action_card = subclass_action.Card_ID
+    new_relationship = Subclass_Relationships.objects.create(Email = subclass_action.Email, Subclass = subclass_action.Subclass_ID, Child_ID = subclass_action_card)
+    
+
+    card_response_builder.subclass(new_relationship)
+
+    return 
+
+  if child_action.Tag_ID is not None:
+
+    # Fill in later once tags are finished. 
+
+
+    return
+
+
+
+
 def perform_card_relationship_lookup(relationship):
   for i in relationship:
     parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)
@@ -27,12 +76,15 @@ def perform_card_relationship_lookup(relationship):
       try:
         child_action = Card_Relationship_Child_Action(Parent_Action = j)
         #Class that performs this action found in services. 
-        services.peform_child_action(child_action)
+        peform_child_action(child_action)
         child_action.delete()
       finally:
         j.delete()
 
         #This deletion should also cascade to delete the card action model as well. 
+
+
+
 
 
 

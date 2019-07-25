@@ -1,6 +1,6 @@
 #Add in services/functionality here
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action, Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action, Subclass_Relationships
 from collections import OrderedDict 
 from .batching.responses import card_response_builder
 
@@ -35,7 +35,7 @@ def create_card_relationship(data, user):
     move_topic = Topic.objects.get(id = data['Move']['Topic_ID'])
     move_card = Card.objects.get(id = data['Move']['Card_ID'])
 
-    res['id'] = Card_Relationship_Move_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = move_card, Topic_ID = move_topic )
+    res['id'] = Card_Relationship_Move_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = move_card, Topic_ID = move_topic ).id
     res['str'] = f'{move_card.Name} is moved to {move_topic.Name}'
 
     return res
@@ -60,57 +60,11 @@ def create_card_relationship(data, user):
 
   if 'Subclass' in data:
 
+
     subclass_card = Card.objects.get(id = data['Subclass']['Card_ID'])
-    subclass = Card.objects.get(id = data['Subclass']['Subclass_ID'])
+    subclass = Subclass.objects.get(id = data['Subclass']['Subclass_ID'])
 
     res['id'] = Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
-    res['str'] = f'{subclass_card.Name} is added to subclass {subclass.Name}'
+    res['str'] = f'{subclass_card.Name} is added to subclass on card {subclass.Head.Name}'
 
     return res
-
-
-
-  def peform_child_action(child_action):
-
-    #card_response_builder found in batching/responses. 
-
-    if child_action.Move_ID is not None:
-
-      move_action = child_action.Move_ID
-      move_action_card = move_action.Child_ID
-      move_action_card.Topic = move_action.Topic_ID
-      move_action_card.save()
-
-      card_response_builder.edit(move_action_card)
-
-      return
-
-
-    if child_action.Delete_ID is not None:
-
-      delete_action = child_action.Delete_ID
-      delete_action_card = delete_action.Card_ID
-      
-      card_response_builder.delete(delete_action_card.id)
-
-      delete_action_card.delete()
-
-      return
-
-    if child_action.Subclass_ID is not None:
-
-      subclass_action = child_action.Subclass_ID
-      subclass_action_card = subclass_action.Card_ID
-      new_relationship = Subclass_Relationships.objects.create(Email = subclass_action.Email, Subclass = subclass_action.Subclass_ID, Child_ID = subclass_action_card)
-      
-
-      card_response_builder.subclass(new_relationship)
-
-      return 
-
-    if child_action.Tag_ID is not None:
-
-      # Fill in later once tags are finished. 
-
-
-      return
