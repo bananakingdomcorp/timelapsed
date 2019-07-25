@@ -15,6 +15,10 @@ def edit_builder(card):
 def subclass_builder(card):
   return {'Subclass': card.Subclass.id, 'Child_ID': card.Child_ID.id}
 
+
+
+
+
 class card_response_builder:
   
   @staticmethod

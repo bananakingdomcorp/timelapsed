@@ -187,6 +187,49 @@ class TestCardRelationshipResponses(APITestCase):
 
 
 
+class TestCardRelationshipCreation(APITestCase):
+  parent_id = 0
+  first_child_id = 0
+  first_topic_id = 0  
+  second_topic_id = 1
+  first_subclass_id = 0
+
+  def setUp(self):
+    #Runs before every test
+
+    ###USE THE FOLLOWING BOILERPLATE BEFORE EVERY REQUEST###
+    user = User.objects.create_user('test@test.com', 'test@test.com')
+    self.client.force_authenticate(user)
+    parent_card = self.client.post('/api/card/', {'Data': {'Name': 'First', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    self.parent_id =  decode_response(parent_card)['Data']['id'] 
+    first_child_card = self.client.post('/api/card/', {'Data': {'Name': 'Second', 'Description': 'Test', 'Topic': self.topic_id}}, format = 'json')    
+    self.first_child_id =  decode_response(first_child_card)['Data']['id']    
+    ######################################################
+
+
+  @classmethod
+  def setUpTestData(cls):
+    Users.objects.create(Email = 'test@test.com')
+    set_up_topic = Topic.objects.create(Name = 'UseForTesting', Position = 1, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.topic_id = set_up_topic.id
+    set_up_second_topic = Topic.objects.create(Name = 'UseForTesting2', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
+    cls.second_topic_id = set_up_second_topic.id
+    subclass_head = Card.objects.create(Name = 'Subclass_Head', Description = 'Head For Subclass', Position = 1, Email = Users.objects.get(Email = 'test@test.com'), Topic = set_up_topic)
+    first_subclass = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = subclass_head)
+    cls.first_subclass_id = first_subclass.id
+
+  def test_if_properly_creates_move_relationship(self):
+
+    
+
+    pass
+  def test_if_properly_creates_same_relationship(self):
+    pass
+  def test_if_properly_creates_subclass_relationship(self):
+    pass
+
+
+
 
 class TestCardRelationshipFunctionality(APITestCase):
   parent_id = 0
@@ -219,12 +262,7 @@ class TestCardRelationshipFunctionality(APITestCase):
     first_subclass = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = subclass_head)
     cls.first_subclass_id = first_subclass.id
 
-  def test_if_properly_creates_move_relationship(self):
-    pass
-  def test_if_properly_creates_same_relationship(self):
-    pass
-  def test_if_properly_creates_subclass_relationship(self):
-    pass
+
   def test_if_properly_moves_child_card(self):
     pass
   def test_if_properly_moves_multiple_chained_cards(self):
