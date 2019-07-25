@@ -184,8 +184,10 @@ class CardRelationshipsView(viewsets.ModelViewSet):
 
     serializer = CreateCardRelationshipsSerializer(data = request.data)
     if serializer.is_valid():
-      created = serializer.create(serializer.data)
+      created = serializer.create(serializer.data, request.user.email)
       return Response(created, 201)
+
+    print(serializer.errors)
 
     return Response('Bad Request', 400)
 
