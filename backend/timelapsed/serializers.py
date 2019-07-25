@@ -534,7 +534,6 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
 
     res = {'Parent' : -1, 'Child' : -1}
 
-    return res
 
 
     #The -1 is only returned when we are using same. 

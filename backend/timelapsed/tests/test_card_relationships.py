@@ -220,9 +220,9 @@ class TestCardRelationshipCreation(APITestCase):
 
   def test_if_properly_creates_move_relationship(self):
 
-    
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.second_topic_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
 
-    pass
+    print(decode_response(response) )
   def test_if_properly_creates_same_relationship(self):
     pass
   def test_if_properly_creates_subclass_relationship(self):
