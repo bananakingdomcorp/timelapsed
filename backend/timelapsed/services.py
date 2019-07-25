@@ -1,6 +1,6 @@
 #Add in services/functionality here
 
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action, Subclass_Relationships
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action, Card_Relationship_In_Same_Action, Subclass_Relationships
 from collections import OrderedDict 
 from .batching.responses import card_response_builder
 
@@ -35,7 +35,7 @@ def create_card_relationship(data, user):
     move_topic = Topic.objects.get(id = data['Move']['Topic_ID'])
     move_card = Card.objects.get(id = data['Move']['Card_ID'])
 
-    res['id'] = Card_Relationship_Move_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = move_card, Topic_ID = move_topic )
+    res['id'] = Card_Relationship_Move_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = move_card, Topic_ID = move_topic ).id
     res['str'] = f'{move_card.Name} is moved to {move_topic.Name}'
 
     return res

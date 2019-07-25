@@ -1,7 +1,7 @@
 # Serialize to/from JSON here
 
 from rest_framework import serializers
-from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships, Card_Relationship_Move_Action, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action
+from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_Parent_Action, Topic_Relationships,  Subclass_Relationships, Card_Relationship_Move_Action, Card_Relationship_Delete_Action, Card_Relationship_Subclass_Action
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from searchapp import search
@@ -541,12 +541,12 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
     # If Same...
     if 'Same' in validated_data['Parent_Action']:
       res['Parent']= create_card_relationship(validated_data['Parent_Action'], user)
-
-    return res
+      return res
 
     #Else...
 
     #Create parent action...
+
     res['Parent'] = create_card_relationship(validated_data['Parent_Action'], user)
 
     #Create child action...
