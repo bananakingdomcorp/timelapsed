@@ -29,6 +29,7 @@ class TestCardRelationshipResponses(APITestCase):
   first_child_id = 0
   first_topic_id = 0  
   second_topic_id = 1
+  first_subclass_id = 0
 
   def setUp(self):
     #Runs before every test
@@ -50,6 +51,9 @@ class TestCardRelationshipResponses(APITestCase):
     cls.topic_id = set_up_topic.id
     set_up_second_topic = Topic.objects.create(Name = 'UseForTesting2', Position = 2, Email = Users.objects.get(Email = 'test@test.com') )
     cls.second_topic_id = set_up_second_topic.id
+    subclass_head = Card.objects.create(Name = 'Subclass_Head', Description = 'Head For Subclass', Position = 1, Email = Users.objects.get(Email = 'test@test.com'), Topic = set_up_topic)
+    first_subclass = Subclass.objects.create(Email = Users.objects.get(Email = 'test@test.com'), Head = subclass_head)
+    cls.first_subclass_id = first_subclass.id
 
   def test_if_rejects_empty_parent_post(self):
     
@@ -87,10 +91,17 @@ class TestCardRelationshipResponses(APITestCase):
 
   def test_if_accepts_valid_deletes(self):
     
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Delete': {'Card_ID': self.parent_id}}, 'Child_Action': {'Delete': {'Card_ID': self.first_child_id}} }, format = 'json')
 
 
-    pass
+    self.assertEqual(response.status_code, 201)
+
+
   def test_if_accepts_valid_subclasses(self):
+
+
+
+
     pass
   def test_if_rejects_same_with_child_actions(self):
     pass
