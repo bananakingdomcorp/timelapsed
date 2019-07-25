@@ -444,6 +444,12 @@ class CardRelationshipsSameSerializer(serializers.Serializer):
   Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
   Child_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )  
 
+  def validate(self, data):
+    if data['Card_ID'] == data['Child_ID']:
+      raise serializers.ValidationError('Card and Child in same must be different.')      
+
+    return data
+
 
 class CardRelationshipsDeleteSerializer(serializers.Serializer):
   Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )

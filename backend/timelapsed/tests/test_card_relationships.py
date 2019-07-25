@@ -156,13 +156,34 @@ class TestCardRelationshipResponses(APITestCase):
 
 
   def test_if_same_rejects_if_child_and_card_are_same(self):
-    pass
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Same': {'Card_ID': self.parent_id, 'Child_ID': self.parent_id}}}, format = 'json')
+
+
+    self.assertEqual(response.status_code, 400)
+
   def test_if_delete_rejects_with_invalid_card_id(self):
-    pass
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Delete': {'Card_ID': 8000000000000000}}, 'Child_Action': {'Delete': {'Card_ID': self.first_child_id}} }, format = 'json')
+
+
+    self.assertEqual(response.status_code, 400)
+
+
   def test_if_subclass_rejects_with_invalid_card_id(self):
-    pass
+
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': 800000000000, 'Subclass_ID': self.first_subclass_id}}, 'Child_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
+
+
+    self.assertEqual(response.status_code, 400)    
+
   def test_if_subclass_rejects_with_invalid_subclass_id(self):
-    pass
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': self.parent_id, 'Subclass_ID': 8000000000}}, 'Child_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
+
+
+    self.assertEqual(response.status_code, 400)    
 
 
 
