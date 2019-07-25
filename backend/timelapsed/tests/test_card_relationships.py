@@ -99,12 +99,10 @@ class TestCardRelationshipResponses(APITestCase):
 
   def test_if_accepts_valid_subclasses(self):
 
-    # response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}}, 'Child_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}}, 'Child_Action': {'Subclass': {'Card_ID': self.parent_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
 
 
-    # self.assertEqual(response.status_code, 201)    
-
-    pass
+    self.assertEqual(response.status_code, 201)    
 
 
   def test_if_rejects_multiple_child_relationships(self):
@@ -222,9 +220,10 @@ class TestCardRelationshipCreation(APITestCase):
 
   def test_if_properly_creates_move_relationship(self):
 
-    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.parent_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
+    # response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.parent_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
 
-    print(decode_response(response) )
+    # print(decode_response(response) )
+    pass
   def test_if_properly_creates_same_relationship(self):
     pass
   def test_if_properly_creates_subclass_relationship(self):

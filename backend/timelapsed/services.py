@@ -60,10 +60,11 @@ def create_card_relationship(data, user):
 
   if 'Subclass' in data:
 
+
     subclass_card = Card.objects.get(id = data['Subclass']['Card_ID'])
-    subclass = Card.objects.get(id = data['Subclass']['Subclass_ID'])
+    subclass = Subclass.objects.get(id = data['Subclass']['Subclass_ID'])
 
     res['id'] = Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
-    res['str'] = f'{subclass_card.Name} is added to subclass {subclass.Name}'
+    res['str'] = f'{subclass_card.Name} is added to subclass on card {subclass.Head.Name}'
 
     return res
