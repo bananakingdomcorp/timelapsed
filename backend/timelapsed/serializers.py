@@ -451,7 +451,7 @@ class CardRelationshipsDeleteSerializer(serializers.Serializer):
 
 class CardRelationshipsSubclassSerializer(serializers.Serializer):
   Card_ID = serializers.PrimaryKeyRelatedField(queryset = Card.objects.all(), )
-  Subclass_ID = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all, )
+  Subclass_ID = serializers.PrimaryKeyRelatedField(queryset = Subclass.objects.all(), )
 
 
 class CardRelationshipsParentSerializer(serializers.Serializer):
@@ -481,16 +481,55 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError('Must have child action!')
       if len(data['Child_Action']) > 1:
         raise serializers.ValidationError('Must only have one child action')
+
+      #Check to ensure not performing actions on the same card. 
+
+      parent_action_card_id = None
+      child_action_card_id = None
+
+      if 'Move' in data['Parent_Action']:
+
+        parent_action_card_id = data['Parent_Action']['Move']['Card_ID']
       
+      if 'Delete' in data['Parent_Action']:
+
+        parent_action_card_id = data['Parent_Action']['Delete']['Card_ID']
+
+      if 'Subclass' in data['Parent_Action']:
+
+        parent_action_card_id = data['Parent_Action']['Subclass']['Card_ID']
+
+
+      if 'Move' in data['Child_Action']:
+        
+        child_action_card_id = data['Child_Action']['Move']['Card_ID']
+
+      if 'Delete' in data['Child_Action']:
+
+        child_action_card_id = data['Child_Action']['Delete']['Card_ID']
+
+      if 'Subclass' in data['Child_Action']:
+
+        child_action_card_id = data['Child_Action']['Subclass']['Card_ID']
+
+      if parent_action_card_id == child_action_card_id:
+       raise serializers.ValidationError('Cannot perform parent and child actions on the same card.')        
+
 
     if len(data['Parent_Action']) > 1 :
       raise serializers.ValidationError('Must only have one parent action.')
+
+
+
 
     return data
 
   def create(self, validated_data, user):
 
     res = {'Parent' : -1, 'Child' : -1}
+
+    return res
+
 
     #The -1 is only returned when we are using same. 
 
