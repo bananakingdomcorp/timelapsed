@@ -185,6 +185,9 @@ class TestCardRelationshipResponses(APITestCase):
 
     self.assertEqual(response.status_code, 400)    
 
+  def test_if_move_rejects_if_already_in_that_topic(self):
+    pass
+
   #Add tests for deletion
 
 
@@ -260,14 +263,16 @@ class TestCardRelationshipCreation(APITestCase):
    
     delete_relationship_id = decode_response(response)['Parent']['id']
 
-    self.assertEqual(delete_relationship_id.Card_ID.id, self.parent_id)
+    delete_relationship = Card_Relationship_Delete_Action.objects.get(id = delete_relationship_id)
+
+    self.assertEqual(delete_relationship.Card_ID.id, self.parent_id)
 
 
 
 class TestCardRelationshipFunctionality(APITestCase):
   parent_id = 0
   first_child_id = 0
-  first_topic_id = 0  
+  topic_id = 0  
   second_topic_id = 1
   first_subclass_id = 0
 
@@ -297,7 +302,30 @@ class TestCardRelationshipFunctionality(APITestCase):
 
 
   def test_if_properly_moves_child_card(self):
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.parent_id, 'Topic_ID' : self.second_topic_id}},'Child_Action': {'Move': {'Card_ID': self.first_child_id, 'Topic_ID': self.second_topic_id}}}, format = 'json'  )
+
+    second = self.client.put(f'/api/card/{self.parent_id}/', {'Data': {'Switch_Topic': self.second_topic_id}}, format = 'json' )    
+
+    print(second.status_code) 
+
+    second_response =  decode_response(second)
+
+    print(second_response, 'HELOOOOOOOOOO NURSE')
+
+
+    #Test that we have the proper response.
+    print(self.topic_id, 'original topic')
+
+    print(self.second_topic_id, 'topic to move to!')
+
+
+
+    #Test that the card has been accuratley moved. 
     
+    self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
+
+
 
 
     pass

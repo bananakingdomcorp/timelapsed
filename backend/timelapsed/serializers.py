@@ -275,8 +275,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         switch.Position, temp.Position = temp.Position, switch.Position
         switch.save()
 
-        pass
-
+        
       if 'Name' in validated_data['Data']:
         
         temp.Name = validated_data['Data']['Name']

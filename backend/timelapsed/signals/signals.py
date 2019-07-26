@@ -93,6 +93,7 @@ def card_save_signal(sender, instance, *args, **kwargs):
 
   #If Move
   if instance.id != None:
+    print('IN OUR MOVE FUNCTION')
 
     instance_in_DB = Card.objects.get(id = instance.id)
 
