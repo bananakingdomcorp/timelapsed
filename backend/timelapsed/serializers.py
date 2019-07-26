@@ -275,7 +275,7 @@ class UpdateCardSerializer(serializers.ModelSerializer):
         switch.Position, temp.Position = temp.Position, switch.Position
         switch.save()
 
-        
+
       if 'Name' in validated_data['Data']:
         
         temp.Name = validated_data['Data']['Name']
@@ -446,7 +446,6 @@ class CardRelationshipsSameSerializer(serializers.Serializer):
   def validate(self, data):
     if data['Card_ID'] == data['Child_ID']:
       raise serializers.ValidationError('Card and Child in same must be different.')      
-
     return data
 
 
@@ -539,17 +538,17 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
 
     # If Same...
     if 'Same' in validated_data['Parent_Action']:
-      res['Parent']= create_card_relationship(validated_data['Parent_Action'], user)
+      res['Parent']= create_card_relationship(validated_data['Parent_Action'],'Parent', user)
       return res
 
     #Else...
 
     #Create parent action...
 
-    res['Parent'] = create_card_relationship(validated_data['Parent_Action'], user)
+    res['Parent'] = create_card_relationship(validated_data['Parent_Action'],'Parent', user)
 
     #Create child action...
-    res['Child'] = create_card_relationship(validated_data['Child_Action'], user)
+    res['Child'] = create_card_relationship(validated_data['Child_Action'],'Child', user)
 
 
     return res

@@ -232,35 +232,35 @@ class Card_Relationship_Parent_Action(models.Model):
     )
     Parent_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationships_parent_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationships_parent_id", 
     )
 
     # Action Fields
 
     Move_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Move_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_parent_move_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_parent_move_id", blank=True      
     )
 
     Same_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_In_Same_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_parent_same_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_parent_same_id", blank=True      
     )
 
     Delete_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Delete_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_parent_delete_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_parent_delete_id", blank=True      
     )
 
     Subclass_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Subclass_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_parent_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_parent_id", blank=True      
     )
 
 
     def save(self, *args, **kwargs):
 
-      if self.Move_ID or self.Same_ID or self.Delete_ID or Subclass_ID:
+      if self.Move_ID or self.Same_ID or self.Delete_ID or self.Subclass_ID:
 
         super().full_clean()           
         super().save(*args, **kwargs)
@@ -295,40 +295,40 @@ class Card_Relationship_Child_Action(models.Model):
     )
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_child_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationship_child_id", 
     )
 
     Parent_Action = models.ForeignKey(
       'timelapsed.Card_Relationship_Parent_Action', 
-      on_delete=models.CASCADE, related_name="card_relationship_relationship_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_relationship_id",    
     )
 
     # Action Fields
 
     Move_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Move_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_move_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_move_id", blank=True      
     )
 
     Same_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_In_Same_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_same_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_same_id", blank=True      
     )
 
     Delete_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Delete_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_delete_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_delete_id", blank=True      
     )
 
     Subclass_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Subclass_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_subclass_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_subclass_id", blank=True      
     )
 
 
     def save(self, *args, **kwargs):
 
-      if self.Move_ID or self.Same_ID or self.Delete_ID or Subclass_ID:
+      if self.Move_ID or self.Same_ID or self.Delete_ID or self.Subclass_ID:
 
         super().full_clean()           
         super().save(*args, **kwargs)
@@ -361,12 +361,12 @@ class Card_Relationship_Move_Action(models.Model):
     )
     Card_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_move_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationship_move_id", 
     )
 
     Topic_ID = models.ForeignKey(
       'timelapsed.Topic',
-      on_delete=models.CASCADE, related_name="card_relationship_topic_id", null=True      
+      on_delete=models.CASCADE, related_name="card_relationship_topic_id",      
     )
 
     def save(self, *args, **kwargs):
@@ -398,12 +398,12 @@ class Card_Relationship_In_Same_Action(models.Model):
     )
     Card_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_same_first_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationship_same_first_id",
     )
 
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_same_second_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationship_same_second_id",
     )
     def save(self, *args, **kwargs):
       super().full_clean()           
@@ -435,7 +435,7 @@ class Card_Relationship_Delete_Action(models.Model):
     )
     Card_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_delete_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationship_delete_id",
     )
 
     def save(self, *args, **kwargs):
@@ -467,12 +467,12 @@ class Card_Relationship_Subclass_Action(models.Model):
     )
     Card_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_subclass_card_id", null=True
+      on_delete=models.CASCADE, related_name="card_relationship_subclass_card_id", 
     )
 
     Subclass_ID = models.ForeignKey(
       'timelapsed.Subclass',
-        on_delete=models.CASCADE, related_name="card_relationship_subclass_id", null=True
+        on_delete=models.CASCADE, related_name="card_relationship_subclass_id", 
     )
 
     def save(self, *args, **kwargs):
@@ -508,11 +508,11 @@ class Topic_Relationships(models.Model):
     )
     Parent_ID = models.ForeignKey(
       'timelapsed.Topic',
-      on_delete=models.CASCADE, related_name="topic_relationships_parent", null=True
+      on_delete=models.CASCADE, related_name="topic_relationships_parent", 
     )
     Child_ID = models.ForeignKey(
       'timelapsed.Topic',
-      on_delete=models.CASCADE, related_name="topic_relationships_child", null=True
+      on_delete=models.CASCADE, related_name="topic_relationships_child",
     )
     def save(self, *args, **kwargs):
       if self.Parent_ID == self.Child_ID:
