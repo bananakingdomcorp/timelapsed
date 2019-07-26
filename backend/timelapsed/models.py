@@ -295,7 +295,7 @@ class Card_Relationship_Child_Action(models.Model):
     )
     Child_ID = models.ForeignKey(
       'timelapsed.Card',
-      on_delete=models.CASCADE, related_name="card_relationship_child_id", 
+      on_delete=models.CASCADE, related_name="card_relationship_child_id",
     )
 
     Parent_Action = models.ForeignKey(
