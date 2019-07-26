@@ -185,6 +185,8 @@ class TestCardRelationshipResponses(APITestCase):
 
     self.assertEqual(response.status_code, 400)    
 
+  #Add tests for deletion
+
 
 
 class TestCardRelationshipCreation(APITestCase):
@@ -220,15 +222,45 @@ class TestCardRelationshipCreation(APITestCase):
 
   def test_if_properly_creates_move_relationship(self):
 
-    # response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.parent_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.topic_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
 
-    # print(decode_response(response) )
-    pass
+    move_relationship_id = decode_response(response)['Parent']['id']
+
+    move_relationship = Card_Relationship_Move_Action.objects.get(id = move_relationship_id)
+
+    self.assertEqual(move_relationship.Card_ID.id, self.first_child_id)
+    self.assertEqual(move_relationship.Topic_ID.id, self.topic_id)
+
+
   def test_if_properly_creates_same_relationship(self):
-    pass
-  def test_if_properly_creates_subclass_relationship(self):
-    pass
 
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Same': {'Card_ID': self.parent_id, 'Child_ID': self.first_child_id}}}, format = 'json')
+
+    same_relationship_id = decode_response(response)['Parent']['id']
+
+    same_relationship = Card_Relationship_In_Same_Action.objects.get(id = same_relationship_id)
+
+    self.assertEqual(same_relationship.Card_ID.id, self.parent_id)
+    self.assertEqual(same_relationship.Child_ID.id, self.first_child_id)
+
+
+  def test_if_properly_creates_subclass_relationship(self):
+
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}}, 'Child_Action': {'Subclass': {'Card_ID': self.parent_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
+    
+    subclass_relationship_id = decode_response(response)['Parent']['id']
+
+    subclass_relationship = Card_Relationship_Subclass_Action.objects.get(id = subclass_relationship_id)
+
+    self.assertEqual(subclass_relationship.Card_ID.id, self.first_child_id)
+    self.assertEqual(subclass_relationship.Subclass_ID.id, self.first_subclass_id)
+
+  def test_if_properly_creates_delete_relationship(self):
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Delete': {'Card_ID': self.parent_id}}, 'Child_Action': {'Delete': {'Card_ID': self.first_child_id}} }, format = 'json')
+   
+    delete_relationship_id = decode_response(response)['Parent']['id']
+
+    self.assertEqual(delete_relationship_id.Card_ID.id, self.parent_id)
 
 
 
@@ -265,7 +297,23 @@ class TestCardRelationshipFunctionality(APITestCase):
 
 
   def test_if_properly_moves_child_card(self):
+    
+
+
     pass
+  def test_if_same_properly_works(self):
+    pass
+  def test_if_subclass_properly_works(self):
+    pass
+  def test_if_delete_properly_works(self):
+    pass
+  def test_if_same_is_removed_when_one_card_is_removed(self):
+    pass
+  def test_if_subclass_is_removed_when_subclass_is_deleted(self):
+    pass
+  def test_if_move_is_removed_when_topic_is_deleted(self):
+    pass
+
   def test_if_properly_moves_multiple_chained_cards(self):
     pass
   def test_if_deletes_same_if_either_card_is_deleted(self):

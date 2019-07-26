@@ -53,7 +53,7 @@ def create_card_relationship(data, user):
   if 'Delete' in data:
     delete_card = Card.objects.get(id = data['Delete']['Card_ID'])
 
-    res['id'] = Card_Relationship_Delete_Action(Email = Users.objects.get(Email = user), Card_ID = delete_card ).id
+    res['id'] = Card_Relationship_Delete_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = delete_card ).id
     res['str'] = f'{delete_card.Name} is deleted'
 
     return res
@@ -64,7 +64,7 @@ def create_card_relationship(data, user):
     subclass_card = Card.objects.get(id = data['Subclass']['Card_ID'])
     subclass = Subclass.objects.get(id = data['Subclass']['Subclass_ID'])
 
-    res['id'] = Card_Relationship_Subclass_Action(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
+    res['id'] = Card_Relationship_Subclass_Action.objects.create(Email = Users.objects.get(Email = user), Card_ID = subclass_card, Subclass_ID = subclass).id
     res['str'] = f'{subclass_card.Name} is added to subclass on card {subclass.Head.Name}'
 
     return res
