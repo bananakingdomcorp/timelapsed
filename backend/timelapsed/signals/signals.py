@@ -28,7 +28,7 @@ def peform_child_action(child_action):
   if child_action.Move_ID is not None:
 
     move_action = child_action.Move_ID
-    move_action_card = move_action.Child_ID
+    move_action_card = move_action.Card_ID
     move_action_card.Topic = move_action.Topic_ID
     move_action_card.save()
 
