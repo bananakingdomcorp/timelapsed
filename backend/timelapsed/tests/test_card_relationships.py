@@ -319,28 +319,13 @@ class TestCardRelationshipFunctionality(APITestCase):
 
     second = self.client.put(f'/api/card/{self.parent_id}/', {'Data': {'Switch_Topic': self.second_topic_id}}, format = 'json' )    
 
-    # print(second.status_code) 
-
-    # second_response =  decode_response(second)
-
-    # print(second_response, 'HELOOOOOOOOOO NURSE')
-
-
-    # Test that we have the proper response.
-    # print(self.topic_id, 'original topic')
-
-    # print(self.second_topic_id, 'topic to move to!')
-
-
+    second_response =  decode_response(second)
 
     #Test that the card has been accuratley moved. 
 
     self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
 
 
-
-
-    pass
   def test_if_same_properly_works(self):
     pass
   def test_if_subclass_properly_works(self):

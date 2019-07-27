@@ -100,8 +100,7 @@ def card_save_signal(sender, instance, *args, **kwargs):
     if instance_in_DB.Topic != instance.Topic:
       perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ))
 
-    else:
-      card_response_builder.edit(instance)
+    card_response_builder.edit(instance)
 
     #perform ES call. 
 
