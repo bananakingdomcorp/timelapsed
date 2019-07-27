@@ -338,16 +338,27 @@ class TestCardRelationshipFunctionality(APITestCase):
     
     second_response =  decode_response(second)
 
+
     #Check if response is correct. 
 
-    # self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
-
-    pass
+    self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
 
   def test_if_same_properly_works_as_child(self):
-    pass
+    self.client.post('/api/card_relationship/', {'Parent_Action': {'Same': {'Card_ID': self.parent_id, 'Child_ID': self.first_child_id}}}, format = 'json')
+
+    second = self.client.put(f'/api/card/{self.first_child_id}/', {'Data': {'Switch_Topic': self.second_topic_id}}, format = 'json' )   
+    
+    second_response =  decode_response(second)
+
+    #Check if response is correct. 
+
+    self.assertEqual(Card.objects.get(id = self.parent_id).Topic.id, self.second_topic_id)
 
   def test_if_subclass_properly_works(self):
+
+    
+
+
     pass
   def test_if_delete_properly_works(self):
     pass

@@ -68,32 +68,36 @@ def peform_card_action(card_action):
 
 
 def peform_card_same_action(instance, relationship):
+  become_same = None
 
   #If parent
 
   if instance.id == relationship.Card_ID.id:
     become_same = relationship.Child_ID
     become_same.Topic = instance.Topic
-    become_same.save() 
-
-    card_response_builder.edit(become_same)
 
 
   else:
-    
+
     become_same = relationship.Card_ID
     become_same.Topic = instance.Topic
-    become_same.save() 
+  
 
-    card_response_builder.edit(become_same)
+  parent = Card_Relationship_Parent_Action.objects.get(Same_ID = relationship)
+  parent.delete()
+  relationship.delete()
+
+  become_same.save() 
+
+  card_response_builder.edit(become_same)
 
 
 
 
-def perform_card_relationship_lookup(relationship, action_type):
+
+def perform_card_relationship_lookup(relationship):
   for i in relationship:
-    if action_type == 'Move':
-      parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)    
+    parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)    
     for j in parent_actions:
       try:
         child_actions = Card_Relationship_Child_Action.objects.filter(Parent_Action = j)
@@ -104,12 +108,6 @@ def perform_card_relationship_lookup(relationship, action_type):
       finally:
         j.delete()
         #This deletion should also cascade to delete the card action model as well. 
-    if action_type == 'Same':
-      for i in relationship:
-        parent_actions =Card_Relationship_Parent_Action.objects.filter(Same_ID = i)     
-        for j in parent_actions:
-          peform_card_action(i)
-        i.delete()
       
 
 
@@ -125,21 +123,26 @@ def card_save_signal(sender, instance, *args, **kwargs):
       # Perform checks for moves
       perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ))
       # Perform checks for same as parent
+
+
     try:
+      #Try to find card relationships where you are are card_ID.
       find_same =  Card_Relationship_In_Same_Action.objects.get(Card_ID = instance)
+    
     except Card_Relationship_In_Same_Action.DoesNotExist:
-      pass
+      try:
+        #If can't find as card_ID, try as Child_ID. 
+        find_same_child =  Card_Relationship_In_Same_Action.objects.get(Child_ID = instance)     
+  
+      except Card_Relationship_In_Same_Action.DoesNotExist:      
+        pass
+      
+      else:
+        peform_card_same_action(instance, find_same_child)
+    
     else:
       peform_card_same_action(instance, find_same)
 
-
-      # Perform checks for same as child 
-    try:
-      find_same =  Card_Relationship_In_Same_Action.objects.get(Child_ID = instance)
-    except Card_Relationship_In_Same_Action.DoesNotExist:
-      pass
-    else:
-      peform_card_same_action(instance, find_same)
       
     card_response_builder.edit(instance)
 
