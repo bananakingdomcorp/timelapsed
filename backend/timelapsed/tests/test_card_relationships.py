@@ -313,13 +313,13 @@ class TestCardRelationshipFunctionality(APITestCase):
 
 
   def test_if_properly_moves_child_card(self):
-    # specific_testing_card = self.client.post('/api/card/', {'Data': {'Name': 'TEST SPECIFIC', 'Description': 'TESTING MOVE', 'Topic': self.topic_id}}, format = 'json')    
-    # specific_testing_card_id =  decode_response(specific_testing_card)['Data']['id']
+    specific_testing_card = self.client.post('/api/card/', {'Data': {'Name': 'TEST SPECIFIC', 'Description': 'TESTING MOVE', 'Topic': self.topic_id}}, format = 'json')    
+    specific_testing_card_id =  decode_response(specific_testing_card)['Data']['id']
     
 
-    # response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : specific_testing_card_id, 'Topic_ID' : self.second_topic_id}},'Child_Action': {'Move': {'Card_ID': self.first_child_id, 'Topic_ID': self.second_topic_id}}}, format = 'json'  )
+    response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : specific_testing_card_id, 'Topic_ID' : self.second_topic_id}},'Child_Action': {'Move': {'Card_ID': self.first_child_id, 'Topic_ID': self.second_topic_id}}}, format = 'json'  )
 
-    # second = self.client.put(f'/api/card/{specific_testing_card_id}/', {'Data': {'Switch_Topic': self.second_topic_id}}, format = 'json' )    
+    second = self.client.put(f'/api/card/{specific_testing_card_id}/', {'Data': {'Switch_Topic': self.second_topic_id}}, format = 'json' )    
 
     # print(second.status_code) 
 
@@ -328,16 +328,16 @@ class TestCardRelationshipFunctionality(APITestCase):
     # print(second_response, 'HELOOOOOOOOOO NURSE')
 
 
-    # #Test that we have the proper response.
+    # Test that we have the proper response.
     # print(self.topic_id, 'original topic')
 
     # print(self.second_topic_id, 'topic to move to!')
 
 
 
-    # #Test that the card has been accuratley moved. 
+    #Test that the card has been accuratley moved. 
 
-    # self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
+    self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
 
 
 
@@ -362,6 +362,9 @@ class TestCardRelationshipFunctionality(APITestCase):
     pass
 
   def test_if_does_not_create_multiples_if_relationship_already_exists(self):
+    pass
+  def test_if_properly_deletes_out_old_relationships(self):
+    
     pass
   
   
