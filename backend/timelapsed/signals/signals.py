@@ -28,7 +28,7 @@ def peform_child_action(child_action):
   if child_action.Move_ID is not None:
 
     move_action = child_action.Move_ID
-    move_action_card = move_action.Child_ID
+    move_action_card = move_action.Card_ID
     move_action_card.Topic = move_action.Topic_ID
     move_action_card.save()
 
@@ -59,27 +59,26 @@ def peform_child_action(child_action):
 
     return 
 
-  if child_action.Tag_ID is not None:
+  # if child_action.Tag_ID is not None:
 
     # Fill in later once tags are finished. 
 
 
-    return
+    # return
 
 
 
 
 def perform_card_relationship_lookup(relationship):
   for i in relationship:
-    print(i)
     parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)
-    print(parent_actions, 'parent actions')
     for j in parent_actions:
       try:
-        child_action = Card_Relationship_Child_Action(Parent_Action = j)
+        child_actions = Card_Relationship_Child_Action.objects.filter(Parent_Action = j)
         #Class that performs this action found in services. 
-        peform_child_action(child_action)
-        child_action.delete()
+        for k in child_actions:
+          peform_child_action(k)
+          k.delete()
       finally:
         j.delete()
 
@@ -101,8 +100,7 @@ def card_save_signal(sender, instance, *args, **kwargs):
     if instance_in_DB.Topic != instance.Topic:
       perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ))
 
-    else:
-      card_response_builder.edit(instance)
+    card_response_builder.edit(instance)
 
     #perform ES call. 
 
