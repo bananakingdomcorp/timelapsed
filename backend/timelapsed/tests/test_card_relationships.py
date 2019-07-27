@@ -232,9 +232,11 @@ class TestCardRelationshipCreation(APITestCase):
 
     response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Move': {'Card_ID' : self.first_child_id, 'Topic_ID' : self.topic_id}},'Child_Action': {'Delete': {'Card_ID': self.parent_id}}}, format = 'json'  )
 
-    move_relationship_id = decode_response(response)['Parent']['id']
+    parent_relationship_id = decode_response(response)['Parent']['id']
 
-    move_relationship = Card_Relationship_Move_Action.objects.get(id = move_relationship_id)
+    parent_relationship = Card_Relationship_Parent_Action.objects.get(id = parent_relationship_id)
+
+    move_relationship = parent_relationship.Move_ID
 
     self.assertEqual(move_relationship.Card_ID.id, self.first_child_id)
     self.assertEqual(move_relationship.Topic_ID.id, self.topic_id)
@@ -244,9 +246,11 @@ class TestCardRelationshipCreation(APITestCase):
 
     response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Same': {'Card_ID': self.parent_id, 'Child_ID': self.first_child_id}}}, format = 'json')
 
-    same_relationship_id = decode_response(response)['Parent']['id']
+    parent_relationship_id = decode_response(response)['Parent']['id']
 
-    same_relationship = Card_Relationship_In_Same_Action.objects.get(id = same_relationship_id)
+    parent_relationship = Card_Relationship_Parent_Action.objects.get(id = parent_relationship_id)
+
+    same_relationship = parent_relationship.Same_ID
 
     self.assertEqual(same_relationship.Card_ID.id, self.parent_id)
     self.assertEqual(same_relationship.Child_ID.id, self.first_child_id)
@@ -256,9 +260,11 @@ class TestCardRelationshipCreation(APITestCase):
 
     response = self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}}, 'Child_Action': {'Subclass': {'Card_ID': self.parent_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
     
-    subclass_relationship_id = decode_response(response)['Parent']['id']
+    parent_relationship_id = decode_response(response)['Parent']['id']
 
-    subclass_relationship = Card_Relationship_Subclass_Action.objects.get(id = subclass_relationship_id)
+    parent_relationship = Card_Relationship_Parent_Action.objects.get(id = parent_relationship_id)
+
+    subclass_relationship = parent_relationship.Subclass_ID
 
     self.assertEqual(subclass_relationship.Card_ID.id, self.first_child_id)
     self.assertEqual(subclass_relationship.Subclass_ID.id, self.first_subclass_id)
