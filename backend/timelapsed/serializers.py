@@ -5,7 +5,7 @@ from .models import Users, Topic, Date_Range, Card, Subclass, Card_Relationship_
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from searchapp import search
-from .services import create_card_relationship
+from .services import create_parent_relationship, create_child_relationship
 from .batching.responses import card_response_builder
 from .validation.circularity_check import circularity_checker
 
@@ -538,17 +538,17 @@ class CreateCardRelationshipsSerializer(serializers.ModelSerializer):
 
     # If Same...
     if 'Same' in validated_data['Parent_Action']:
-      res['Parent']= create_card_relationship(validated_data['Parent_Action'],'Parent', user)
+      res['Parent']= create_parent_relationship(validated_data['Parent_Action'], user)
       return res
 
     #Else...
 
     #Create parent action...
 
-    res['Parent'] = create_card_relationship(validated_data['Parent_Action'],'Parent', user)
+    res['Parent'] = create_parent_relationship(validated_data['Parent_Action'], user)
 
     #Create child action...
-    res['Child'] = create_card_relationship(validated_data['Child_Action'],'Child', user)
+    res['Child'] = create_child_relationship(validated_data['Child_Action'], res['Parent']['id'], user)
 
 
     return res

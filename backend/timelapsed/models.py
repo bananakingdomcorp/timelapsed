@@ -239,35 +239,36 @@ class Card_Relationship_Parent_Action(models.Model):
 
     Move_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Move_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_parent_move_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_parent_move_id", blank=True, null = True,     
     )
 
     Same_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_In_Same_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_parent_same_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_parent_same_id", blank=True,  null = True,      
     )
 
     Delete_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Delete_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_parent_delete_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_parent_delete_id", blank=True,  null = True, 
     )
 
     Subclass_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Subclass_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_parent_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_parent_id", blank=True,  null = True,       
     )
 
 
     def save(self, *args, **kwargs):
 
-      if self.Move_ID or self.Same_ID or self.Delete_ID or self.Subclass_ID:
+      # if 'Move_ID' in self or 'Same_ID' in self or 'Delete_ID' in self or 'Subclass_ID' in self:
 
-        super().full_clean()           
-        super().save(*args, **kwargs)
-      else :
-        raise Exception("Enter one card relationship type")
+      #   super().full_clean()           
+      #   super().save(*args, **kwargs)
+      # else :
+      #   raise Exception("Enter one card relationship type")
 
-      
+      super().full_clean()           
+      super().save(*args, **kwargs)
     class Meta:
         ordering = ('-pk',)
 
@@ -307,34 +308,36 @@ class Card_Relationship_Child_Action(models.Model):
 
     Move_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Move_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_move_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_move_id", blank=True,  null = True,       
     )
 
     Same_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_In_Same_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_same_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_same_id", blank=True,  null = True, 
     )
 
     Delete_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Delete_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_delete_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_delete_id", blank=True,  null = True,      
     )
 
     Subclass_ID = models.ForeignKey(
       'timelapsed.Card_Relationship_Subclass_Action',
-      on_delete=models.CASCADE, related_name="card_relationship_child_subclass_id", blank=True      
+      on_delete=models.CASCADE, related_name="card_relationship_child_subclass_id", blank=True,  null = True,       
     )
 
 
     def save(self, *args, **kwargs):
 
-      if self.Move_ID or self.Same_ID or self.Delete_ID or self.Subclass_ID:
+      # if 'Move_ID' in self or 'Same_ID' in self or 'Delete_ID' in self or 'Subclass_ID' in self:
 
-        super().full_clean()           
-        super().save(*args, **kwargs)
-      else :
-        raise Exception("Enter one card relationship type")
+      #   super().full_clean()           
+      #   super().save(*args, **kwargs)
+      # else :
+      #   raise Exception("Enter one card relationship type")
 
+      super().full_clean()           
+      super().save(*args, **kwargs)
 
     class Meta:
         ordering = ('-pk',)
