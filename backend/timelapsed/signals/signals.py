@@ -71,7 +71,9 @@ def peform_child_action(child_action):
 
 def perform_card_relationship_lookup(relationship):
   for i in relationship:
+    print(i)
     parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)
+    print(parent_actions, 'parent actions')
     for j in parent_actions:
       try:
         child_action = Card_Relationship_Child_Action(Parent_Action = j)
@@ -97,7 +99,6 @@ def card_save_signal(sender, instance, *args, **kwargs):
     instance_in_DB = Card.objects.get(id = instance.id)
 
     if instance_in_DB.Topic != instance.Topic:
-
       perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ))
 
     else:
