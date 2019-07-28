@@ -65,17 +65,35 @@ class card_response_builder:
     if 'Add' not in subclasses:
       subclasses['Add'] = {}
 
-
     if subclass_info['Subclass'] not in subclasses['Add']:
       subclasses['Add'][subclass_info['Subclass']] = [subclass_info['Child_ID']]
     else:
       subclasses['Add'][subclass_info['Subclass']].append(subclass_info['Child_ID'])
+
+    cache.set('Subclass', subclasses)
 
 
     return
 
   @staticmethod
   def subclass_delete(info):
+
+    if 'Subclass' not in cache:
+      cache.set('Subclass', {})
+
+    subclasses = cache.get('Subclass')
+
+    if 'Remove' not in subclasses:
+      subclasses['Remove'] = {}
+
+    if info.id not in subclasses['Remove']:
+      subclasses['Remove'][info.id] = [info.Child_ID.id]
+
+    else :
+      subclasses['Remove'][info.id].append(info.Child_ID.id)
+
+    cache.set('Subclass', subclasses)
+
     #Fill in later
 
     return

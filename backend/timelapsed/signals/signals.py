@@ -55,7 +55,7 @@ def peform_card_action(card_action):
     new_relationship = Subclass_Relationships.objects.create(Email = subclass_action.Email, Subclass = subclass_action.Subclass_ID, Child_ID = subclass_action_card)
     
 
-    card_response_builder.subclass(new_relationship)
+    card_response_builder.subclass_add(new_relationship)
 
     return 
 
@@ -95,9 +95,14 @@ def peform_card_same_action(instance, relationship):
 
 
 
-def perform_card_relationship_lookup(relationship):
+def perform_card_relationship_lookup(relationship, relationship_type):
   for i in relationship:
-    parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)    
+    if relationship_type == 'Move':
+      parent_actions =Card_Relationship_Parent_Action.objects.filter(Move_ID = i)    
+    if relationship_type == 'Subclass':
+      parent_actions =Card_Relationship_Parent_Action.objects.filter(Subclass_ID = i)     
+    if relationship_type == 'Delete':
+      parent_actions = Card_Relationship_Parent_Action.objects.filter(Delete_ID = i)     
     for j in parent_actions:
       try:
         child_actions = Card_Relationship_Child_Action.objects.filter(Parent_Action = j)
@@ -121,7 +126,7 @@ def card_save_signal(sender, instance, *args, **kwargs):
 
     if instance_in_DB.Topic != instance.Topic:
       # Perform checks for moves
-      perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ))
+      perform_card_relationship_lookup( Card_Relationship_Move_Action.objects.filter(Card_ID = instance, Topic_ID = instance.Topic ), 'Move')
       # Perform checks for same as parent
 
 
@@ -171,7 +176,7 @@ def delete_signal(sender, instance, **kwargs):
 
 
 
-  perform_card_relationship_lookup(Card_Relationship_Delete_Action.objects.filter(Card_ID = instance))
+  perform_card_relationship_lookup(Card_Relationship_Delete_Action.objects.filter(Card_ID = instance), 'Delete')
 
 
 #Subclass
@@ -180,7 +185,18 @@ def delete_signal(sender, instance, **kwargs):
 def subclass_signal(sender, instance, **kwargs):
 
 
-  perform_card_relationship_lookup( Card_Relationship_Subclass_Action.objects.filter(Subclass_ID = instance.Subclass, Card_ID = instance.Child_ID))
+  perform_card_relationship_lookup( Card_Relationship_Subclass_Action.objects.filter(Subclass_ID = instance.Subclass, Card_ID = instance.Child_ID), 'Subclass')
+
+@receiver(pre_delete, sender = Subclass_Relationships)
+def subclass_delete_signal(sender, instance, **kwargs):
+
+    card_response_builder.subclass_delete(instance)
+
+
+
+#Add in subclass deletion here. 
+
+
 
 
 #Tag

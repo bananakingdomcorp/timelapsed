@@ -399,17 +399,15 @@ class EditSubclassSerializer(serializers.ModelSerializer):
 
     if 'Remove' in validated_data:
       for j in validated_data['Remove']:
-        deleted = Subclass_Relationships.objects.get(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = j) ).delete()
+        Subclass_Relationships.objects.get(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = j) ).delete()
 
     if 'Add' in validated_data:
-      temp = []
       for i in validated_data['Add']:
         if Card.objects.get(id = i) != sub.Head or Subclass_Relationships.objects.filter(Subclass =  Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user),Child_ID = Card.objects.get(id = i)).count() > 0:
-          created = Subclass_Relationships.objects.create(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = i))
-          temp.append(created.id)
-      return temp
+          new_relationship = Subclass_Relationships.objects.create(Subclass = Subclass.objects.get(id = sub.id), Email = Users.objects.get(Email = user), Child_ID = Card.objects.get(id = i))
+          card_response_builder.subclass_add(new_relationship)        
     
-    return
+    return card_response_builder.return_response()
 
   class Meta:
     model = Subclass
