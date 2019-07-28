@@ -379,10 +379,19 @@ class TestCardRelationshipFunctionality(APITestCase):
 
   def test_if_delete_properly_works(self):
 
-    
+    self.client.post('/api/card_relationship/', {'Parent_Action': {'Delete': {'Card_ID': self.parent_id}}, 'Child_Action': {'Delete': {'Card_ID': self.first_child_id}} }, format = 'json')
+
+    response = self.client.delete(f'/api/card/{self.parent_id}/')    
+
+    # print(decode_response(response))
+
+    #Seems to be deleting, but response is incorrect right now. 
 
 
-    pass
+    with self.assertRaises(ObjectDoesNotExist):
+      Card.objects.get(id = self.parent_id)
+    with self.assertRaises(ObjectDoesNotExist):
+      Card.objects.get(id = self.first_child_id)
   
   def test_if_can_mix_move_and_subclass(self):
     pass

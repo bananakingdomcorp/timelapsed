@@ -118,8 +118,8 @@ class CardView(viewsets.ModelViewSet):
   def destroy(self, request, pk):
     serializer = DeleteCardSerializer(data = {id:pk})
     if(serializer.is_valid()):
-      created = serializer.destroy(pk)
-      return Response('Deleted', 204)
+      destroy = serializer.destroy(pk)
+      return Response(destroy, 204)
 
     print(serializer.errors)
     
