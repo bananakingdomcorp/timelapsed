@@ -227,9 +227,10 @@ class TestSubclassFunctionality(APITestCase):
 
     response = self.client.put(f'/api/subclass/{subclass_id}/', {'Add': [self.first_child_id]})
 
-    subclass_cards = decode_response(response)
+    subclass_cards = decode_response(response)['Subclass']
 
-    self.assertEqual(Subclass_Relationships.objects.get(id =subclass_cards[0]).Child_ID, Card.objects.get(id = self.first_child_id))    
+
+    self.assertTrue(Subclass_Relationships.objects.filter(Subclass = subclass_id, Child_ID = self.first_child_id).exists())
 
 
   def test_if_correctly_deletes_on_put(self):

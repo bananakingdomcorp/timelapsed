@@ -338,8 +338,10 @@ class TestCardRelationshipFunctionality(APITestCase):
     
     second_response =  decode_response(second)
 
-
     #Check if response is correct. 
+
+    self.assertEqual(second_response['Edit'][f'{self.parent_id}']['Topic'], self.second_topic_id)
+    self.assertEqual(second_response['Edit'][f'{self.parent_id}']['Topic'], second_response['Edit'][f'{self.first_child_id}']['Topic'])  
 
     self.assertEqual(Card.objects.get(id = self.first_child_id).Topic.id, self.second_topic_id)
 
@@ -352,16 +354,54 @@ class TestCardRelationshipFunctionality(APITestCase):
 
     #Check if response is correct. 
 
+    self.assertEqual(second_response['Edit'][f'{self.parent_id}']['Topic'], self.second_topic_id)
+    self.assertEqual(second_response['Edit'][f'{self.parent_id}']['Topic'], second_response['Edit'][f'{self.first_child_id}']['Topic'])  
+
+
     self.assertEqual(Card.objects.get(id = self.parent_id).Topic.id, self.second_topic_id)
 
   def test_if_subclass_properly_works(self):
 
+    self.client.post('/api/card_relationship/', {'Parent_Action': {'Subclass': {'Card_ID': self.parent_id, 'Subclass_ID': self.first_subclass_id}}, 'Child_Action': {'Subclass': {'Card_ID': self.first_child_id, 'Subclass_ID': self.first_subclass_id}} }, format = 'json')
     
+    response = self.client.put(f'/api/subclass/{self.first_subclass_id}/', {'Add': [self.parent_id]})
+
+    subclass_response = decode_response(response)['Subclass']
+
+    #Test Response
+
+    self.assertTrue(self.parent_id in subclass_response['Add'][f'{self.first_subclass_id}'])
+    self.assertTrue(self.first_child_id in subclass_response['Add'][f'{self.first_subclass_id}'])
+
+    self.assertTrue(Subclass_Relationships.objects.filter(Subclass = self.first_subclass_id, Child_ID = self.parent_id).exists())
+    self.assertTrue(Subclass_Relationships.objects.filter(Subclass = self.first_subclass_id, Child_ID = self.first_child_id).exists())    
 
 
-    pass
   def test_if_delete_properly_works(self):
+
+    self.client.post('/api/card_relationship/', {'Parent_Action': {'Delete': {'Card_ID': self.parent_id}}, 'Child_Action': {'Delete': {'Card_ID': self.first_child_id}} }, format = 'json')
+
+    response = self.client.delete(f'/api/card/{self.parent_id}/')    
+
+    # print(decode_response(response))
+
+    #Seems to be deleting, but response is incorrect right now. 
+
+
+    with self.assertRaises(ObjectDoesNotExist):
+      Card.objects.get(id = self.parent_id)
+    with self.assertRaises(ObjectDoesNotExist):
+      Card.objects.get(id = self.first_child_id)
+  
+  def test_if_can_mix_move_and_subclass(self):
     pass
+  
+  def test_if_can_mix_move_and_delete(self):
+    pass
+  
+  def test_if_can_mix_delete_and_subclass(self):
+    pass
+
   def test_if_same_is_removed_when_one_card_is_removed(self):
     pass
   def test_if_subclass_is_removed_when_subclass_is_deleted(self):
