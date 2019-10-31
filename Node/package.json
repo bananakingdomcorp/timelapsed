@@ -10,7 +10,7 @@
     "express": "^4.16.4",
     "lodash": "^4.17.14",
     "mongodb": "^3.2.5",
-    "mongoose": "^5.5.9",
+    "mongoose": "^5.7.5",
     "socket.io": "^2.2.0"
   }
 }
